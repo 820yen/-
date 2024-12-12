@@ -1,6 +1,6 @@
 #include "gamemain.h"
 
-char g_mapdata[MAP_HEIGHT][MAP_WIDTH + 1];
+char g_mapdata[MAXSTAGE][MAP_HEIGHT][MAP_WIDTH + 1];
 StageData g_stagedata;
 
 //ステージ初期化
@@ -9,10 +9,16 @@ void InitStage(){
 	sprintf_s(buf, 256, "media\\stage%d.txt", g_stagedata.stagenum + 1);
 	int fh = FileRead_open(buf);
 	for (int y = 0; y < MAP_HEIGHT; y++){
-		FileRead_gets(g_mapdata[y], 256, fh);
+		FileRead_gets(g_mapdata[0][y], 256, fh);
 	}
 	FileRead_close(fh);
-	g_stagedata.mapwidth = (int)strlen(g_mapdata[0]);
+	sprintf_s(buf, 256, "media\\stage%d.txt", g_stagedata.stagenum + 2);
+	fh = FileRead_open(buf);
+	for (int y = 0; y < MAP_HEIGHT; y++){
+		FileRead_gets(g_mapdata[1][y], 256, fh);
+	}
+	FileRead_close(fh);
+	g_stagedata.mapwidth = (int)strlen(g_mapdata[0][0]);
 
 	//主人公の位置とステータスを初期化
 	g_stagedata.hero.x = 2 * IMG_CHIPSIZE;
@@ -41,10 +47,10 @@ void GameMain(){
 	DrawEnemy(ac);
 
 	//ゲームクリア判定
-	if (g_stagedata.hero.x >= (g_stagedata.mapwidth - 1) * IMG_CHIPSIZE){
-		g_gamestate = GAME_CLEAR;
-		g_timerstart = g_lasttime;	//タイマーセット
-	}
+	//if (g_stagedata.hero.x >= (g_stagedata.mapwidth - 1) * IMG_CHIPSIZE){
+	//	g_gamestate = GAME_CLEAR;
+	//	g_timerstart = g_lasttime;	//タイマーセット
+	//}
 }
 
 void DrawHero(int ac){
@@ -142,7 +148,7 @@ void DrawHero(int ac){
 	}
 
 	//スクロール補正
-	if (hx - g_stagedata.scrollx > SCROLL_STAPOS && hx <= (MAP_WIDTH - 448) * IMG_CHIPSIZE) {
+	if (hx - g_stagedata.scrollx > SCROLL_STAPOS) {
 		g_stagedata.scrollx += (hx - g_stagedata.hero.x);
 		g_stagedata.scroll_stop = g_stagedata.scrollx;
 	}
@@ -154,9 +160,9 @@ void DrawHero(int ac){
 	g_stagedata.hero.y = hy;
 
 	//画面端に来たらスクロールストップ
-	if (hx >(MAP_WIDTH - 448) * IMG_CHIPSIZE){
-		g_stagedata.scrollx = g_stagedata.scroll_stop;
-	}
+	//if (hx >(MAP_WIDTH - 448) * IMG_CHIPSIZE){
+	//	g_stagedata.scrollx = g_stagedata.scroll_stop;
+	//}
 
 	//主人公描画
 	DrawRotaGraph2((int)(g_stagedata.hero.x - g_stagedata.scrollx), 
@@ -170,14 +176,16 @@ void DrawHero(int ac){
 
 //ブロックとの当たり判定
 BOOL _CheckBlockSub(float x, float y){
+	char blockType;
 	int mx = (int)(x / IMG_CHIPSIZE);
 	int my = (int)(y / IMG_CHIPSIZE);
 	//マップの範囲外ならFALSE
 	if ((mx < 0) || (mx >= g_stagedata.mapwidth) || (my >= MAP_HEIGHT) || (my < 0)){
-		return FALSE;
+		blockType = g_mapdata[1][my][mx - g_stagedata.mapwidth];
 	}
-
-	char blockType = g_mapdata[my][mx];
+	else{
+		blockType = g_mapdata[0][my][mx];
+	}
 
 	//通常ブロック
 	if (blockType == 'A') return TRUE;
@@ -211,13 +219,17 @@ AtariInfo CheckBlock(float x, float y, float rx){
 
 //マップ描画
 void DrawMap(){
+	char cell;
 	int sc = (int)(g_stagedata.scrollx / IMG_CHIPSIZE);
 	int shiftx = (int)g_stagedata.scrollx % IMG_CHIPSIZE;
 	for (int y = 0; y < MAP_HEIGHT; y++){
 		for (int x = 0; x < SCR_WIDTH + 1; x++){
-			if (x + sc >= g_stagedata.mapwidth) break;
-
-			char cell = g_mapdata[y][x + sc];
+			if (x + sc >= g_stagedata.mapwidth){
+				cell = g_mapdata[1][y][x + sc - g_stagedata.mapwidth];
+			}
+			else{
+				cell = g_mapdata[0][y][x + sc];
+			}
 
 			//ブロック描画（A～Z）
 			if (cell >= 'A' && cell <= 'Z'){

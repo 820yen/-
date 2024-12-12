@@ -6,6 +6,8 @@ int g_lasttime = 0;		//直前の計測時間
 float g_frametime = 0;	//1ループにかかった時間
 int g_timerstart;		//タイマー用変数
 
+int g_stagenumber;	//ステージ番号
+
 GameState g_gamestate = GAME_TITLE;
 
 int g_gametitleimg;			//タイトルイメージ
@@ -21,9 +23,9 @@ int g_smallfont;			//小サイズフォントハンドル
 
 int WINAPI WinMain(HINSTANCE h1, HINSTANCE hP, LPSTR lpC, int nC){
 	//ウィンドウモードにする
-	ChangeWindowMode(TRUE);
+	ChangeWindowMode(FALSE);
 	//ウィンドウサイズを変更する
-	SetGraphMode(800, 700, 32);
+	SetGraphMode(1300, 730, 32);
 	//DXライブラリ初期化
 	if (DxLib_Init() == -1) return -1;
 

@@ -10,8 +10,8 @@
 #define SLOWSPEED 0.00005
 #define MAP_WIDTH 511
 #define MAP_HEIGHT 14
-#define MAXSTAGE 1
-#define SCR_WIDTH 16
+#define MAXSTAGE 5
+#define SCR_WIDTH 26
 #define ANIM_RATE 4
 #define SCROLL_STAPOS 500
 #define JUMP_POWER 750.0f
@@ -20,7 +20,9 @@
 #define MAX_ENEMY 25
 #define MAX_KNIFE 4
 
-extern char g_mapdata[MAP_HEIGHT][MAP_WIDTH+1];
+extern char g_mapdata[MAXSTAGE][MAP_HEIGHT][MAP_WIDTH + 1];
+
+extern int g_stagenumber;
 
 enum EnemyType{
 	ET_CRAB = 2,

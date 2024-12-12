@@ -1,7 +1,7 @@
 #include "enemy.h"
 
 void SetEnemy(int mx, int my){
-	char c = g_mapdata[my][mx];
+	char c = g_mapdata[0][my][mx];
 	//空きを探す
 	int i;
 	for (i = 0; i < MAX_ENEMY; i++){
@@ -28,7 +28,7 @@ void SetEnemy(int mx, int my){
 			break;
 		}
 		//マップデータを空に
-		g_mapdata[my][mx] = '0';
+		g_mapdata[0][my][mx] = '0';
 	}
 }
 
