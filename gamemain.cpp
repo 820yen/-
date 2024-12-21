@@ -213,9 +213,10 @@ BOOL _CheckBlockSub(float x, float y){
 	else if ((mx >= g_stagedata.mapwidth * 4) && (mx < g_stagedata.mapwidth * 5) && (my < MAP_HEIGHT) && (my > 0)){
 		blockType = g_mapdata[4][my][mx - g_stagedata.mapwidth * 4];
 	}
-	else{
+	if (mx >= g_stagedata.mapwidth * MAXSTAGE) {
 		g_gamestate = GAME_CLEAR;
 		g_timerstart = g_lasttime;
+		return FALSE;
 	}
 
 	//’ÊíƒuƒƒbƒN
