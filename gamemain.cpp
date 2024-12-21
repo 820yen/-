@@ -18,6 +18,24 @@ void InitStage(){
 		FileRead_gets(g_mapdata[1][y], 256, fh);
 	}
 	FileRead_close(fh);
+	sprintf_s(buf, 256, "media\\stage%d.txt", g_stagedata.stagenum + 3);
+	fh = FileRead_open(buf);
+	for (int y = 0; y < MAP_HEIGHT; y++){
+		FileRead_gets(g_mapdata[2][y], 256, fh);
+	}
+	FileRead_close(fh);
+	sprintf_s(buf, 256, "media\\stage%d.txt", g_stagedata.stagenum + 4);
+	fh = FileRead_open(buf);
+	for (int y = 0; y < MAP_HEIGHT; y++){
+		FileRead_gets(g_mapdata[3][y], 256, fh);
+	}
+	FileRead_close(fh);
+	sprintf_s(buf, 256, "media\\stage%d.txt", g_stagedata.stagenum + 5);
+	fh = FileRead_open(buf);
+	for (int y = 0; y < MAP_HEIGHT; y++){
+		FileRead_gets(g_mapdata[4][y], 256, fh);
+	}
+	FileRead_close(fh);
 	g_stagedata.mapwidth = (int)strlen(g_mapdata[0][0]);
 
 	//主人公の位置とステータスを初期化
@@ -180,11 +198,24 @@ BOOL _CheckBlockSub(float x, float y){
 	int mx = (int)(x / IMG_CHIPSIZE);
 	int my = (int)(y / IMG_CHIPSIZE);
 	//マップの範囲外ならFALSE
-	if ((mx < 0) || (mx >= g_stagedata.mapwidth) || (my >= MAP_HEIGHT) || (my < 0)){
+	if ((mx >= 0) && (mx < g_stagedata.mapwidth) && (my < MAP_HEIGHT) && (my > 0)){
+		blockType = g_mapdata[0][my][mx];
+	}
+	else if ((mx >= g_stagedata.mapwidth) && (mx < g_stagedata.mapwidth * 2) && (my < MAP_HEIGHT) && (my > 0)){
 		blockType = g_mapdata[1][my][mx - g_stagedata.mapwidth];
 	}
+	else if ((mx >= g_stagedata.mapwidth * 2) && (mx < g_stagedata.mapwidth * 3) && (my < MAP_HEIGHT) && (my > 0)){
+		blockType = g_mapdata[2][my][mx - g_stagedata.mapwidth * 2];
+	}
+	else if ((mx >= g_stagedata.mapwidth * 3) && (mx < g_stagedata.mapwidth * 4) && (my < MAP_HEIGHT) && (my > 0)){
+		blockType = g_mapdata[3][my][mx - g_stagedata.mapwidth * 3];
+	}
+	else if ((mx >= g_stagedata.mapwidth * 4) && (mx < g_stagedata.mapwidth * 5) && (my < MAP_HEIGHT) && (my > 0)){
+		blockType = g_mapdata[4][my][mx - g_stagedata.mapwidth * 4];
+	}
 	else{
-		blockType = g_mapdata[0][my][mx];
+		g_gamestate = GAME_CLEAR;
+		g_timerstart = g_lasttime;
 	}
 
 	//通常ブロック
@@ -224,11 +255,20 @@ void DrawMap(){
 	int shiftx = (int)g_stagedata.scrollx % IMG_CHIPSIZE;
 	for (int y = 0; y < MAP_HEIGHT; y++){
 		for (int x = 0; x < SCR_WIDTH + 1; x++){
-			if (x + sc >= g_stagedata.mapwidth){
+			if (x + sc < g_stagedata.mapwidth){
+				cell = g_mapdata[0][y][x + sc];
+			}
+			else if (x + sc < g_stagedata.mapwidth * 2){
 				cell = g_mapdata[1][y][x + sc - g_stagedata.mapwidth];
 			}
-			else{
-				cell = g_mapdata[0][y][x + sc];
+			else if (x + sc < g_stagedata.mapwidth * 3){
+				cell = g_mapdata[2][y][x + sc - g_stagedata.mapwidth * 2];
+			}
+			else if (x + sc < g_stagedata.mapwidth * 4){
+				cell = g_mapdata[3][y][x + sc - g_stagedata.mapwidth * 3];
+			}
+			else if (x + sc < g_stagedata.mapwidth * 5){
+				cell = g_mapdata[4][y][x + sc - g_stagedata.mapwidth * 4];
 			}
 
 			//ブロック描画（A～Z）
