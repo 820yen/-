@@ -3,40 +3,50 @@
 char g_mapdata[MAXSTAGE][MAP_HEIGHT][MAP_WIDTH + 1];
 StageData g_stagedata;
 
+int g_savepoint = 0;
+int g_randamstage;
+
 //ステージ初期化
 void InitStage(){
 	char buf[256];
-	sprintf_s(buf, 256, "media\\stage%d.txt", g_stagedata.stagenum + 1);
+	sprintf_s(buf, 256, "media\\stage%d.txt", 1);
 	int fh = FileRead_open(buf);
 	for (int y = 0; y < MAP_HEIGHT; y++){
 		FileRead_gets(g_mapdata[0][y], 256, fh);
 	}
 	FileRead_close(fh);
-	sprintf_s(buf, 256, "media\\stage%d.txt", g_stagedata.stagenum + 2);
+	g_randamstage = rand() % 3 + 1;
+	sprintf_s(buf, 256, "media\\stage%d-%d.txt", 2, g_randamstage);
 	fh = FileRead_open(buf);
 	for (int y = 0; y < MAP_HEIGHT; y++){
 		FileRead_gets(g_mapdata[1][y], 256, fh);
 	}
 	FileRead_close(fh);
-	sprintf_s(buf, 256, "media\\stage%d.txt", g_stagedata.stagenum + 3);
+	g_randamstage = rand() % 3 + 1;
+	sprintf_s(buf, 256, "media\\stage%d-%d.txt", 3, g_randamstage);
 	fh = FileRead_open(buf);
 	for (int y = 0; y < MAP_HEIGHT; y++){
 		FileRead_gets(g_mapdata[2][y], 256, fh);
 	}
 	FileRead_close(fh);
-	sprintf_s(buf, 256, "media\\stage%d.txt", g_stagedata.stagenum + 4);
+	g_randamstage = rand() % 3 + 1;
+	sprintf_s(buf, 256, "media\\stage%d-%d.txt", 4, g_randamstage);
 	fh = FileRead_open(buf);
 	for (int y = 0; y < MAP_HEIGHT; y++){
 		FileRead_gets(g_mapdata[3][y], 256, fh);
 	}
 	FileRead_close(fh);
-	sprintf_s(buf, 256, "media\\stage%d.txt", g_stagedata.stagenum + 5);
+	sprintf_s(buf, 256, "media\\stage%d.txt", 5);
 	fh = FileRead_open(buf);
 	for (int y = 0; y < MAP_HEIGHT; y++){
 		FileRead_gets(g_mapdata[4][y], 256, fh);
 	}
 	FileRead_close(fh);
-	g_stagedata.mapwidth = (int)strlen(g_mapdata[0][0]);
+	g_stagedata.mapwidth[0] = (int)strlen(g_mapdata[0][0]);
+	g_stagedata.mapwidth[1] = (int)strlen(g_mapdata[0][0]) + (int)strlen(g_mapdata[1][0]);
+	g_stagedata.mapwidth[2] = (int)strlen(g_mapdata[0][0]) + (int)strlen(g_mapdata[1][0]) + (int)strlen(g_mapdata[2][0]);
+	g_stagedata.mapwidth[3] = (int)strlen(g_mapdata[0][0]) + (int)strlen(g_mapdata[1][0]) + (int)strlen(g_mapdata[2][0]) + (int)strlen(g_mapdata[3][0]);
+	g_stagedata.mapwidth[4] = (int)strlen(g_mapdata[0][0]) + (int)strlen(g_mapdata[1][0]) + (int)strlen(g_mapdata[2][0]) + (int)strlen(g_mapdata[3][0]) + (int)strlen(g_mapdata[4][0]);
 
 	//主人公の位置とステータスを初期化
 	g_stagedata.hero.x = 2 * IMG_CHIPSIZE;
@@ -47,6 +57,7 @@ void InitStage(){
 	g_stagedata.hero.noground = FALSE;
 	g_stagedata.hero.jumppower = 0;
 	g_stagedata.hero.jumpforward = 0;
+
 
 	ZeroMemory(g_stagedata.enemies, sizeof(g_stagedata.enemies));
 	ZeroMemory(g_stagedata.knives, sizeof(g_stagedata.knives));
@@ -146,7 +157,7 @@ void DrawHero(int ac){
 
 	//落下判定
 	if (hy > MAP_HEIGHT * IMG_CHIPSIZE){
- 		hx = 0;
+		hx = 0;
 		mv = 0;
 
 		SetFontSize(32);
@@ -154,7 +165,21 @@ void DrawHero(int ac){
 		SetFontSize(16);
 
 		if (IsRKeyTrigger(rKey)) {
-			hx = 2 * IMG_CHIPSIZE;
+			if (g_savepoint == 0){
+				hx = 2 * IMG_CHIPSIZE;
+			}
+			else if (g_savepoint == 1){
+				hx = (g_stagedata.mapwidth[0] + 2) * IMG_CHIPSIZE;
+			}
+			else if (g_savepoint == 2){
+				hx = (g_stagedata.mapwidth[1] + 2) * IMG_CHIPSIZE;
+			}
+			else if (g_savepoint == 3){
+				hx = (g_stagedata.mapwidth[2] + 2) * IMG_CHIPSIZE;
+			}
+			else if (g_savepoint == 4){
+				hx = (g_stagedata.mapwidth[3] + 2) * IMG_CHIPSIZE;
+			}
 			hy = 10 * IMG_CHIPSIZE;
 			InitStage();
 			g_timerstart = g_lasttime;
@@ -198,22 +223,30 @@ BOOL _CheckBlockSub(float x, float y){
 	int mx = (int)(x / IMG_CHIPSIZE);
 	int my = (int)(y / IMG_CHIPSIZE);
 	//マップの範囲外ならFALSE
-	if ((mx >= 0) && (mx < g_stagedata.mapwidth) && (my < MAP_HEIGHT) && (my > 0)){
+	if ((mx >= 0) && (mx < g_stagedata.mapwidth[0]) && (my < MAP_HEIGHT) && (my > 0)){
 		blockType = g_mapdata[0][my][mx];
+		g_savepoint = 0;
 	}
-	else if ((mx >= g_stagedata.mapwidth) && (mx < g_stagedata.mapwidth * 2) && (my < MAP_HEIGHT) && (my > 0)){
-		blockType = g_mapdata[1][my][mx - g_stagedata.mapwidth];
+	else if ((mx >= g_stagedata.mapwidth[0]) && (mx < g_stagedata.mapwidth[1]) && (my < MAP_HEIGHT) && (my > 0)){
+		blockType = g_mapdata[1][my][mx - g_stagedata.mapwidth[0]];
+		g_savepoint = 1;
 	}
-	else if ((mx >= g_stagedata.mapwidth * 2) && (mx < g_stagedata.mapwidth * 3) && (my < MAP_HEIGHT) && (my > 0)){
-		blockType = g_mapdata[2][my][mx - g_stagedata.mapwidth * 2];
+	else if ((mx >= g_stagedata.mapwidth[1]) && (mx < g_stagedata.mapwidth[2]) && (my < MAP_HEIGHT) && (my > 0)){
+		blockType = g_mapdata[2][my][mx - g_stagedata.mapwidth[1]];
+		g_savepoint = 2;
 	}
-	else if ((mx >= g_stagedata.mapwidth * 3) && (mx < g_stagedata.mapwidth * 4) && (my < MAP_HEIGHT) && (my > 0)){
-		blockType = g_mapdata[3][my][mx - g_stagedata.mapwidth * 3];
+	else if ((mx >= g_stagedata.mapwidth[2]) && (mx < g_stagedata.mapwidth[3]) && (my < MAP_HEIGHT) && (my > 0)){
+		blockType = g_mapdata[3][my][mx - g_stagedata.mapwidth[2]];
+		g_savepoint = 3;
 	}
-	else if ((mx >= g_stagedata.mapwidth * 4) && (mx < g_stagedata.mapwidth * 5) && (my < MAP_HEIGHT) && (my > 0)){
-		blockType = g_mapdata[4][my][mx - g_stagedata.mapwidth * 4];
+	else if ((mx >= g_stagedata.mapwidth[3]) && (mx < g_stagedata.mapwidth[4]) && (my < MAP_HEIGHT) && (my > 0)){
+		blockType = g_mapdata[4][my][mx - g_stagedata.mapwidth[3]];
+		g_savepoint = 4;
 	}
-	if (mx >= g_stagedata.mapwidth * MAXSTAGE) {
+	else if (mx < g_stagedata.mapwidth[4]){
+		return FALSE;
+	}
+	if (mx >= g_stagedata.mapwidth[4]) {
 		g_gamestate = GAME_CLEAR;
 		g_timerstart = g_lasttime;
 		return FALSE;
@@ -256,20 +289,20 @@ void DrawMap(){
 	int shiftx = (int)g_stagedata.scrollx % IMG_CHIPSIZE;
 	for (int y = 0; y < MAP_HEIGHT; y++){
 		for (int x = 0; x < SCR_WIDTH + 1; x++){
-			if (x + sc < g_stagedata.mapwidth){
+			if (x + sc < g_stagedata.mapwidth[0]){
 				cell = g_mapdata[0][y][x + sc];
 			}
-			else if (x + sc < g_stagedata.mapwidth * 2){
-				cell = g_mapdata[1][y][x + sc - g_stagedata.mapwidth];
+			else if (x + sc < g_stagedata.mapwidth[1]){
+				cell = g_mapdata[1][y][x + sc - g_stagedata.mapwidth[0]];
 			}
-			else if (x + sc < g_stagedata.mapwidth * 3){
-				cell = g_mapdata[2][y][x + sc - g_stagedata.mapwidth * 2];
+			else if (x + sc < g_stagedata.mapwidth[2]){
+				cell = g_mapdata[2][y][x + sc - g_stagedata.mapwidth[1]];
 			}
-			else if (x + sc < g_stagedata.mapwidth * 4){
-				cell = g_mapdata[3][y][x + sc - g_stagedata.mapwidth * 3];
+			else if (x + sc < g_stagedata.mapwidth[3]){
+				cell = g_mapdata[3][y][x + sc - g_stagedata.mapwidth[2]];
 			}
-			else if (x + sc < g_stagedata.mapwidth * 5){
-				cell = g_mapdata[4][y][x + sc - g_stagedata.mapwidth * 4];
+			else if (x + sc < g_stagedata.mapwidth[4]){
+				cell = g_mapdata[4][y][x + sc - g_stagedata.mapwidth[3]];
 			}
 
 			//ブロック描画（A～Z）

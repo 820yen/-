@@ -23,6 +23,8 @@
 extern char g_mapdata[MAXSTAGE][MAP_HEIGHT][MAP_WIDTH + 1];
 
 extern int g_stagenumber;
+extern int g_savepoint;
+extern int g_randamstage;
 
 enum EnemyType{
 	ET_CRAB = 2,
@@ -44,7 +46,7 @@ struct CharaData{
 
 struct StageData{
 	int stagenum;
-	int mapwidth;
+	int mapwidth[MAXSTAGE];
 	int animcounter;
 	CharaData hero;
 	float scrollx;

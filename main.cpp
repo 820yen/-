@@ -1,4 +1,5 @@
 #include "main.h"
+#include<time.h>
 
 //グローバル変数
 //時間計測用変数
@@ -28,6 +29,8 @@ int WINAPI WinMain(HINSTANCE h1, HINSTANCE hP, LPSTR lpC, int nC){
 	SetGraphMode(1300, 730, 32);
 	//DXライブラリ初期化
 	if (DxLib_Init() == -1) return -1;
+
+	srand((unsigned int)time(NULL));
 
 	//画像を読み込み
 	if (LoadGameImage() == FALSE) return -1;
