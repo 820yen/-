@@ -6,6 +6,10 @@
 int g_lasttime = 0;		//直前の計測時間
 float g_frametime = 0;	//1ループにかかった時間
 int g_timerstart;		//タイマー用変数
+int g_limittimerstart;	//タイマー用変数時間制限
+int g_limittimemin;	//時間制限分
+int g_limittimesec;	//時間制限秒
+int g_scoretime;	//スコアタイム
 
 int g_stagenumber;	//ステージ番号
 
@@ -45,6 +49,9 @@ int WINAPI WinMain(HINSTANCE h1, HINSTANCE hP, LPSTR lpC, int nC){
 		int curtime = GetNowCount();
 		g_frametime = (float)(curtime - g_lasttime) / 1000.0f;
 		g_lasttime = curtime;
+		g_limittimemin = (TIMELIMIT - (g_lasttime - g_limittimerstart) / 1000) / 60;
+		g_limittimesec = (TIMELIMIT - (g_lasttime - g_limittimerstart) / 1000) % 60;
+		g_scoretime = TIMELIMIT - (g_lasttime - g_limittimerstart);
 
 		ClearDrawScreen();
 		//画面描画関数に切り替え
@@ -89,6 +96,7 @@ void DrawGameTitle(){
 	int key = GetJoypadInputState(DX_INPUT_KEY_PAD1);
 	if (IsAKeyTrigger(key) == TRUE) {
 		g_gamestate = GAME_MAIN;
+		g_limittimerstart = g_lasttime;
 		InitStage();
 	}
 }
@@ -115,7 +123,14 @@ void DrawGameOver(){
 		InitStage();
 		g_timerstart = g_lasttime;
 	}
-	g_gamestate = GAME_MAIN;
+	DrawBox(0, 0, 800, 600, GetColor(0, 0, 0), TRUE);
+	//テキスト表示
+	DrawStringToHandle(100, 200, "ゲームオーバー",
+		GetColor(255, 0, 0), g_largefont);
+	//5秒経ったらタイトル画面へ
+	if (g_lasttime - g_timerstart > 500) {
+		g_gamestate = GAME_TITLE;
+	}
 }
 
 //キートリガー処理

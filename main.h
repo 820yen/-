@@ -10,6 +10,10 @@
 extern int g_lasttime;		//直前の計測時間
 extern float g_frametime;	//1ループにかかった時間
 extern int g_timerstart;	//タイマー用変数
+extern int g_limittimerstart;	//タイマー用変数時間制限
+extern int g_limittimemin;	//時間制限分
+extern int g_limittimesec;	//時間制限秒
+extern int g_scoretime;	//スコアタイム
 
 enum GameState{				//ゲーム状態
 	GAME_TITLE, GAME_MAIN,

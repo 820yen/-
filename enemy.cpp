@@ -56,10 +56,7 @@ void DrawEnemy(int ac){
 				break;
 			}
 
-			if ((g_stagedata.enemies[i].x < g_stagedata.scrollx - IMG_CHIPSIZE) ||
-				(g_stagedata.enemies[i].x > g_stagedata.scrollx + 1600)){
-				g_stagedata.enemies[i].living = FALSE;
-			}
+			
 			if (type != ET_BULLET && type != ET_COIN){
 				DrawRotaGraph2(
 					(int)(g_stagedata.enemies[i].x - g_stagedata.scrollx),

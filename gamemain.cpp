@@ -6,6 +6,8 @@ StageData g_stagedata;
 int g_savepoint = 0;
 int g_randamstage;
 
+BOOL g_limitflag = TRUE;	//時間制限でゲームオーバーになるか選べる
+
 //ステージ初期化
 void InitStage(){
 	char buf[256];
@@ -74,6 +76,11 @@ void GameMain(){
 	DrawMap();
 	DrawHero(ac);
 	DrawEnemy(ac);
+
+	if ((TIMELIMIT - (g_lasttime - g_limittimerstart) / 1000) <= 0 && g_limitflag == TRUE){
+		g_gamestate = GAME_OVER;
+		g_timerstart = g_lasttime;	//タイマーセット
+	}
 
 	//ゲームクリア判定
 	//if (g_stagedata.hero.x >= (g_stagedata.mapwidth - 1) * IMG_CHIPSIZE){
@@ -181,7 +188,16 @@ void DrawHero(int ac){
 				hx = (g_stagedata.mapwidth[3] + 2) * IMG_CHIPSIZE;
 			}
 			hy = 10 * IMG_CHIPSIZE;
-			InitStage();
+			//主人公の位置とステータスを初期化
+			g_stagedata.hero.x = 2 * IMG_CHIPSIZE;
+			g_stagedata.hero.y = 10 * IMG_CHIPSIZE;
+			g_stagedata.hero.pushSpeed = 0;
+			g_stagedata.hero.turn = FALSE;
+			g_stagedata.hero.jumping = FALSE;
+			g_stagedata.hero.noground = FALSE;
+			g_stagedata.hero.jumppower = 0;
+			g_stagedata.hero.jumpforward = 0;
+			g_stagedata.scrollx = 0;
 			g_timerstart = g_lasttime;
 		}
 	}
@@ -218,6 +234,15 @@ void DrawHero(int ac){
 	//コイン所持数
 	DrawFormatString(100, 170, GetColor(255, 255, 255),
 		"コイン：%d", g_stagedata.hero.coinCount);
+	//残り時間
+	if (10 <= g_limittimesec){
+		DrawFormatString(100, 140, GetColor(255, 255, 255),
+			"残り時間 :  %d:%d", g_limittimemin, g_limittimesec);
+	}
+	else{
+		DrawFormatString(100, 140, GetColor(255, 255, 255),
+			"残り時間 :  %d:0%d", g_limittimemin, g_limittimesec);
+	}
 }
 
 //ブロックとの当たり判定
