@@ -12,6 +12,9 @@ BOOL LoadGameImage(){
 	if (LoadDivGraph("media\\smp2_chara03.png", 2, 2, 1, 50, 50, g_imghandles.monster[1]) == -1){
 		return FALSE;
 	}
+	if (LoadDivGraph("media\\coin.png", 6, 6, 1, 50, 50, g_imghandles.coin) == -1){
+		return FALSE;
+	}
 
 	if ((g_imghandles.block = LoadGraph("media\\smp2_block.png")) == -1) return FALSE;
 	if ((g_imghandles.diagblock = LoadGraph("media\\smp2_diagonalblock.png")) == -1) return FALSE;

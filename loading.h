@@ -9,6 +9,7 @@ struct ImageHandles{
 	int hero[ANIMFRAME];
 	int monster[2][ANIMFRAME];
 	int block, diagblock, knife, bullet;
+	int coin[6];
 	int title;
 };
 extern ImageHandles g_imghandles;

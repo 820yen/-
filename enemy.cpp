@@ -50,21 +50,26 @@ void DrawEnemy(int ac){
 				g_stagedata.enemies[i] =
 					MoveBullet(g_stagedata.enemies[i]);
 				break;
+			case ET_COIN:
+				g_stagedata.enemies[i] =
+					CoinSetting(g_stagedata.enemies[i]);
+				break;
 			}
 
 			if ((g_stagedata.enemies[i].x < g_stagedata.scrollx - IMG_CHIPSIZE) ||
 				(g_stagedata.enemies[i].x > g_stagedata.scrollx + 1600)){
 				g_stagedata.enemies[i].living = FALSE;
 			}
-
-			if (type != ET_BULLET){
+			if (type != ET_BULLET && type != ET_COIN){
 				DrawRotaGraph2(
 					(int)(g_stagedata.enemies[i].x - g_stagedata.scrollx),
 					(int)g_stagedata.enemies[i].y,
 					0, 0, 1, 0, g_imghandles.monster[(int)type - 2][ac % ANIMFRAME],
 					TRUE, g_stagedata.enemies[i].turn);
 			}
-			AtariHeroAndMonster(i);
+			if (type != ET_COIN) {
+				AtariHeroAndMonster(i);
+			}
 		}
 	}
 }
@@ -158,7 +163,42 @@ CharaData MoveBullet(CharaData cd){
 	return cd;
 }
 
+CharaData CoinSetting(CharaData cd) {
+	//アニメーションフレームの計算
+	int coinAnimFrame = g_stagedata.animcounter / ANIM_RATE % 6;
+
+
+	//主人公との当たり判定
+	float ax1 = g_stagedata.hero.x + 10;
+	float ay1 = g_stagedata.hero.y + 10;
+	float ax2 = g_stagedata.hero.x + IMG_CHIPSIZE - 10;
+	float ay2 = g_stagedata.hero.y + IMG_CHIPSIZE - 10;
+	float bx1 = cd.x + 10;
+	float by1 = cd.y + 10;
+	float bx2 = cd.x + IMG_CHIPSIZE - 10;
+	float by2 = cd.y + IMG_CHIPSIZE - 10;
+
+	//コイン接触時の処理
+	if ((ax1 < bx2) && (bx1 < ax2) && (ay1 < by2) && (by1 < ay2)) {
+		cd.living = FALSE;
+		g_stagedata.hero.coinCount++;
+		return cd;
+	}
+
+	//コインを描画する
+	DrawGraph(
+		(int)(cd.x - g_stagedata.scrollx), (int)cd.y,
+		g_imghandles.coin[coinAnimFrame], TRUE);
+
+	return cd;
+}
+
 void AtariHeroAndMonster(int idx){
+	//コインは当たり判定の対象外
+	if (g_stagedata.enemies[idx].type == ET_COIN) {
+		return;
+	}
+	//主人公との当たり判定
 	float ax1 = g_stagedata.hero.x + 10;
 	float ay1 = g_stagedata.hero.y + 10;
 	float ax2 = g_stagedata.hero.x + IMG_CHIPSIZE - 10;
@@ -168,6 +208,7 @@ void AtariHeroAndMonster(int idx){
 	float bx2 = g_stagedata.enemies[idx].x + IMG_CHIPSIZE - 10;
 	float by2 = g_stagedata.enemies[idx].y + IMG_CHIPSIZE - 10;
 
+	//敵接触時の処理
 	if ((ax1 < bx2) && (bx1 < ax2) && (ay1 < by2) && (by1 < ay2)){
 		g_gamestate = GAME_OVER;
 		g_timerstart = g_lasttime;

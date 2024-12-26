@@ -28,8 +28,9 @@ extern int g_randamstage;
 
 enum EnemyType{
 	ET_CRAB = 2,
-	ET_OCT = 3,
-	ET_BULLET = 4
+	ET_OCT,
+	ET_BULLET,
+	ET_COIN,
 };
 
 struct CharaData{
@@ -42,6 +43,7 @@ struct CharaData{
 	BOOL living;
 	EnemyType type;
 	int life;
+	int coinCount;
 };
 
 struct StageData{

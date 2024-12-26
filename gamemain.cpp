@@ -215,6 +215,9 @@ void DrawHero(int ac){
 	//スピードメータ
 	DrawFormatString(100, 200, GetColor(255, 255, 255),
 		"スピード：%.2f", mv);
+	//コイン所持数
+	DrawFormatString(100, 170, GetColor(255, 255, 255),
+		"コイン：%d", g_stagedata.hero.coinCount);
 }
 
 //ブロックとの当たり判定
