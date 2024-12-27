@@ -243,6 +243,9 @@ void DrawHero(int ac){
 		DrawFormatString(100, 140, GetColor(255, 255, 255),
 			"残り時間 :  %d:0%d", g_limittimemin, g_limittimesec);
 	}
+	//残り距離
+	DrawFormatString(1000, 300, GetColor(255, 255, 255),
+		"菓道まで：%.1fkm →", ((g_stagedata.mapwidth[4] - g_stagedata.hero.x / 50) / (g_stagedata.mapwidth[4] - 2)) * 17.5);
 }
 
 //ブロックとの当たり判定
