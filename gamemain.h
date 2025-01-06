@@ -68,7 +68,7 @@ struct StageData{
 extern StageData g_stagedata;
 
 struct AtariInfo{
-	BOOL UL, UR, DL, DR, GL, GR;
+	BOOL UL, UR, DL, DR, GL, GR, ULU, URU, URR, DRR;
 };
 
 void GameMain();

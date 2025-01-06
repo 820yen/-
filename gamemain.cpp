@@ -121,15 +121,28 @@ void DrawHero(int ac){
 	//マップ当たり判定
 	AtariInfo atari = CheckBlock(hx, hy, g_stagedata.hero.x);
 	if (g_stagedata.hero.turn == FALSE){
-		if (atari.DR == TRUE || atari.UR == TRUE){
-			hx = g_stagedata.hero.x;
+		if (atari.UL){
+			if (atari.ULU == TRUE){
+				hy = g_stagedata.hero.y;
+			}
+		}
+		if (atari.UR == TRUE){
+			if (atari.URU == TRUE){
+				hy = g_stagedata.hero.y;
+			}
+			if (atari.URR == TRUE){
+				hx = g_stagedata.hero.x;
+				g_stagedata.hero.pushSpeed -= SLOWSPEED * 2;
+			}
+		}
+		if (atari.DR == TRUE){
+			if (atari.DRR == TRUE){
+				hx = g_stagedata.hero.x;
+				g_stagedata.hero.pushSpeed -= SLOWSPEED * 2;
+			}
 		}
 	}
-	else {
-		if (atari.DL == TRUE || atari.UL == TRUE){
-			hx = g_stagedata.hero.x;
-		}
-	}
+
 	//接地チェック
 	if (atari.GL == TRUE || atari.GR == TRUE) {
 		g_stagedata.hero.noground = FALSE;
@@ -143,14 +156,6 @@ void DrawHero(int ac){
 		g_stagedata.hero.noground = TRUE;
 		//重力で落下
 		g_stagedata.hero.jumping = TRUE;
-	}
-	//天井チェック
-	if (g_stagedata.hero.jumping == TRUE){
-		if (atari.UL == TRUE || atari.UR == TRUE){
-			g_stagedata.hero.jumppower = 0;
-			g_stagedata.hero.jumpforward = 0;
-			hy = (float)((int)(hy / IMG_CHIPSIZE) * IMG_CHIPSIZE + IMG_CHIPSIZE);
-		}
 	}
 	//ジャンプ処理その2
 	if (g_stagedata.hero.jumping == FALSE){
@@ -245,7 +250,9 @@ void DrawHero(int ac){
 	}
 	//残り距離
 	DrawFormatString(1000, 300, GetColor(255, 255, 255),
-		"菓道まで：%.1fkm →", ((g_stagedata.mapwidth[4] - g_stagedata.hero.x / 50) / (g_stagedata.mapwidth[4] - 2)) * 17.5);
+		"菓道まで：%.1fkm →", ((g_stagedata.mapwidth[4] - g_stagedata.hero.x / 50)
+		/ (g_stagedata.mapwidth[4] - 2))
+		 * 17.5);
 }
 
 //ブロックとの当たり判定
@@ -307,6 +314,11 @@ AtariInfo CheckBlock(float x, float y, float rx){
 	result.DR = _CheckBlockSub(x + IMG_CHIPSIZE - 1, y + IMG_CHIPSIZE -1);
 	result.GL = _CheckBlockSub(rx, y + IMG_CHIPSIZE);
 	result.GR = _CheckBlockSub(rx + IMG_CHIPSIZE - 1, y + IMG_CHIPSIZE);
+
+	result.ULU = _CheckBlockSub(x, y - IMG_CHIPSIZE - 1);
+	result.URU = _CheckBlockSub(x + IMG_CHIPSIZE - 1, y - IMG_CHIPSIZE - 1);
+	result.URR = _CheckBlockSub(x + IMG_CHIPSIZE, y);
+	result.DRR = _CheckBlockSub(x + IMG_CHIPSIZE, y + IMG_CHIPSIZE - 1);
 
 	//ここに斜めブロックの補正
 
