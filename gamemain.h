@@ -20,7 +20,6 @@
 #define MAX_ENEMY 100
 #define MAX_KNIFE 4
 #define TIMELIMIT 180
-#define MAXRANKING 3
 
 extern char g_mapdata[MAXSTAGE][MAP_HEIGHT][MAP_WIDTH + 1];
 
@@ -29,8 +28,6 @@ extern BOOL g_limitflag;
 extern int g_stagenumber;
 extern int g_savepoint;
 extern int g_randamstage;
-extern int score;
-extern int scoreranking[MAXRANKING];
 
 enum EnemyType{
 	ET_CRAB = 2,

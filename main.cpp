@@ -1,4 +1,5 @@
 #include "main.h"
+#include "score.h"
 #include<time.h>
 
 //グローバル変数
@@ -25,6 +26,11 @@ int g_middlefont;			//中サイズフォントハンドル
 int g_largefont;			//大サイズフォントハンドル
 int g_smallfont;			//小サイズフォントハンドル
 
+//スコア管理用変数
+ScoreData scores[MAXRANKING] = { 0 };
+int playerScore = 0;				//プレイヤースコア
+BOOL g_scoreAdded = FALSE;			//スコアが追加されたかどうか
+
 
 int WINAPI WinMain(HINSTANCE h1, HINSTANCE hP, LPSTR lpC, int nC){
 	//ウィンドウモードにする
@@ -33,6 +39,9 @@ int WINAPI WinMain(HINSTANCE h1, HINSTANCE hP, LPSTR lpC, int nC){
 	SetGraphMode(1300, 730, 32);
 	//DXライブラリ初期化
 	if (DxLib_Init() == -1) return -1;
+
+	//スコアを読みこむ
+	LoadScore(scores);
 
 	srand((unsigned int)time(NULL));
 
@@ -51,7 +60,7 @@ int WINAPI WinMain(HINSTANCE h1, HINSTANCE hP, LPSTR lpC, int nC){
 		g_lasttime = curtime;
 		g_limittimemin = (TIMELIMIT - (g_lasttime - g_limittimerstart) / 1000) / 60;
 		g_limittimesec = (TIMELIMIT - (g_lasttime - g_limittimerstart) / 1000) % 60;
-		g_scoretime = TIMELIMIT - (g_lasttime - g_limittimerstart);
+		g_scoretime = TIMELIMIT * 10 - ((g_lasttime - g_limittimerstart) / 100);
 
 		ClearDrawScreen();
 		//画面描画関数に切り替え
@@ -72,8 +81,13 @@ int WINAPI WinMain(HINSTANCE h1, HINSTANCE hP, LPSTR lpC, int nC){
 		default:
 			break;
 		}
+		//ランキングを右上に表示
+        DrawRanking(scores);
+
 		ScreenFlip();
 	}
+	//ゲーム終了時にスコアを保存
+	SaveScore(scores);
 
 	//待機
 	WaitKey();
@@ -98,11 +112,13 @@ void DrawGameTitle(){
 		g_gamestate = GAME_MAIN;
 		g_limittimerstart = g_lasttime;
 		InitStage();
+		playerScore = 0; //スコアをリセット
 	}
 }
 //ゲーム本編描画
 void DrawGameMain(){
 	GameMain();
+	playerScore = g_scoretime;		//スコアを加算
 }
 //ゲームクリア画面描画
 void DrawGameClear(){
@@ -110,9 +126,17 @@ void DrawGameClear(){
 	//テキスト表示
 	DrawStringToHandle(100, 200, "ゲームクリア",
 		GetColor(80, 128, 255), g_largefont);
+
+	//スコアをランキングに一度だけ追加
+	if (g_scoreAdded == FALSE) {
+		AddScore(scores, playerScore);
+		g_scoreAdded = TRUE;			//スコアが追加されたことを記録
+	}
+
 	//5秒経ったらタイトル画面へ
 	if (g_lasttime - g_timerstart > 500) {
 		g_gamestate = GAME_TITLE;
+		g_scoreAdded = FALSE;	//フラグをリセット
 	}
 }
 //ゲームオーバー画面描画

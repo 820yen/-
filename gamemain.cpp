@@ -81,12 +81,6 @@ void GameMain(){
 		g_gamestate = GAME_OVER;
 		g_timerstart = g_lasttime;	//タイマーセット
 	}
-
-	//ゲームクリア判定
-	//if (g_stagedata.hero.x >= (g_stagedata.mapwidth - 1) * IMG_CHIPSIZE){
-	//	g_gamestate = GAME_CLEAR;
-	//	g_timerstart = g_lasttime;	//タイマーセット
-	//}
 }
 
 void DrawHero(int ac){
