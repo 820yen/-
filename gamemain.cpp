@@ -88,13 +88,30 @@ void DrawHero(int ac){
 	int enterKey = CheckHitKey(KEY_INPUT_RETURN);
 	int rKey = CheckHitKey(KEY_INPUT_R);
 
-	//Enterキーを押すたびに加速
-	if (IsEnterKeyTrigger(enterKey)){
-		g_stagedata.hero.pushSpeed += HEROSPEED;
-	}
 	double mv = 200.0 * g_stagedata.hero.pushSpeed; //移動量計算
 	float hx = g_stagedata.hero.x;
 	float hy = g_stagedata.hero.y;
+
+	//Enterキーを押すたびに加速
+	if (IsEnterKeyTrigger(enterKey)){
+		if (mv <= 3){
+			g_stagedata.hero.pushSpeed += HEROSPEED;
+		}
+		else if (mv <= 5){
+			g_stagedata.hero.pushSpeed += HEROSPEED / 3;
+		}
+		else if (mv <= 10){
+			g_stagedata.hero.pushSpeed += HEROSPEED / 5;
+		}
+		else if (mv <= 15){
+			g_stagedata.hero.pushSpeed += HEROSPEED / 10;
+		}
+		else{
+			g_stagedata.hero.pushSpeed += HEROSPEED / 100;
+		}
+	}
+
+	mv = 200.0 * g_stagedata.hero.pushSpeed;
 
 	//ジャンプ処理
 	if (g_stagedata.hero.jumping == TRUE){
@@ -163,42 +180,35 @@ void DrawHero(int ac){
 
 	//落下判定
 	if (hy > MAP_HEIGHT * IMG_CHIPSIZE){
-		hx = 0;
 		mv = 0;
 
-		SetFontSize(32);
-		DrawString(10, 50, "'R'キーでリスタート", GetColor(255, 255, 255));
-		SetFontSize(16);
-
-		if (IsRKeyTrigger(rKey)) {
-			if (g_savepoint == 0){
-				hx = 2 * IMG_CHIPSIZE;
-			}
-			else if (g_savepoint == 1){
-				hx = (g_stagedata.mapwidth[0] + 2) * IMG_CHIPSIZE;
-			}
-			else if (g_savepoint == 2){
-				hx = (g_stagedata.mapwidth[1] + 2) * IMG_CHIPSIZE;
-			}
-			else if (g_savepoint == 3){
-				hx = (g_stagedata.mapwidth[2] + 2) * IMG_CHIPSIZE;
-			}
-			else if (g_savepoint == 4){
-				hx = (g_stagedata.mapwidth[3] + 2) * IMG_CHIPSIZE;
-			}
-			hy = 10 * IMG_CHIPSIZE;
-			//主人公の位置とステータスを初期化
-			g_stagedata.hero.x = 2 * IMG_CHIPSIZE;
-			g_stagedata.hero.y = 10 * IMG_CHIPSIZE;
-			g_stagedata.hero.pushSpeed = 0;
-			g_stagedata.hero.turn = FALSE;
-			g_stagedata.hero.jumping = FALSE;
-			g_stagedata.hero.noground = FALSE;
-			g_stagedata.hero.jumppower = 0;
-			g_stagedata.hero.jumpforward = 0;
-			g_stagedata.scrollx = 0;
-			g_timerstart = g_lasttime;
+		
+		if (g_savepoint == 0){
+			hx = 2 * IMG_CHIPSIZE;
 		}
+		else if (g_savepoint == 1){
+			hx = (g_stagedata.mapwidth[0] + 2) * IMG_CHIPSIZE;
+		}
+		else if (g_savepoint == 2){
+			hx = (g_stagedata.mapwidth[1] + 2) * IMG_CHIPSIZE;
+		}
+		else if (g_savepoint == 3){
+			hx = (g_stagedata.mapwidth[2] + 2) * IMG_CHIPSIZE;
+		}
+		else if (g_savepoint == 4){
+			hx = (g_stagedata.mapwidth[3] + 2) * IMG_CHIPSIZE;
+		}
+		hy = 10 * IMG_CHIPSIZE;
+		//主人公の位置とステータスを初期化
+		g_stagedata.hero.y = 10 * IMG_CHIPSIZE;
+		g_stagedata.hero.pushSpeed = 0;
+		g_stagedata.hero.turn = FALSE;
+		g_stagedata.hero.jumping = FALSE;
+		g_stagedata.hero.noground = FALSE;
+		g_stagedata.hero.jumppower = 0;
+		g_stagedata.hero.jumpforward = 0;
+		g_stagedata.scrollx = hx - 2 * IMG_CHIPSIZE;
+		g_timerstart = g_lasttime;
 	}
 	//y座標のリセット
 	if (hy < 0.0f || hy > MAP_HEIGHT * IMG_CHIPSIZE) {
@@ -247,6 +257,8 @@ void DrawHero(int ac){
 		"菓道まで：%.1fkm →", ((g_stagedata.mapwidth[4] - g_stagedata.hero.x / 50)
 		/ (g_stagedata.mapwidth[4] - 2))
 		 * 17.5);
+	DrawFormatString(1000, 400, GetColor(255, 255, 255),
+		"SAVEPOINT：%d ", g_savepoint);
 }
 
 //ブロックとの当たり判定
@@ -255,23 +267,23 @@ BOOL _CheckBlockSub(float x, float y){
 	int mx = (int)(x / IMG_CHIPSIZE);
 	int my = (int)(y / IMG_CHIPSIZE);
 	//マップの範囲外ならFALSE
-	if ((mx >= 0) && (mx < g_stagedata.mapwidth[0]) && (my < MAP_HEIGHT) && (my > 0)){
+	if ((mx >= 0) && (mx < g_stagedata.mapwidth[0]) && (my < MAP_HEIGHT) && (my <= MAP_HEIGHT * IMG_CHIPSIZE)){
 		blockType = g_mapdata[0][my][mx];
 		g_savepoint = 0;
 	}
-	else if ((mx >= g_stagedata.mapwidth[0]) && (mx < g_stagedata.mapwidth[1]) && (my < MAP_HEIGHT) && (my > 0)){
+	else if ((mx >= g_stagedata.mapwidth[0]) && (mx < g_stagedata.mapwidth[1]) && (my < MAP_HEIGHT) && (my <= MAP_HEIGHT * IMG_CHIPSIZE)){
 		blockType = g_mapdata[1][my][mx - g_stagedata.mapwidth[0]];
 		g_savepoint = 1;
 	}
-	else if ((mx >= g_stagedata.mapwidth[1]) && (mx < g_stagedata.mapwidth[2]) && (my < MAP_HEIGHT) && (my > 0)){
+	else if ((mx >= g_stagedata.mapwidth[1]) && (mx < g_stagedata.mapwidth[2]) && (my < MAP_HEIGHT) && (my <= MAP_HEIGHT * IMG_CHIPSIZE)){
 		blockType = g_mapdata[2][my][mx - g_stagedata.mapwidth[1]];
 		g_savepoint = 2;
 	}
-	else if ((mx >= g_stagedata.mapwidth[2]) && (mx < g_stagedata.mapwidth[3]) && (my < MAP_HEIGHT) && (my > 0)){
+	else if ((mx >= g_stagedata.mapwidth[2]) && (mx < g_stagedata.mapwidth[3]) && (my < MAP_HEIGHT) && (my <= MAP_HEIGHT * IMG_CHIPSIZE)){
 		blockType = g_mapdata[3][my][mx - g_stagedata.mapwidth[2]];
 		g_savepoint = 3;
 	}
-	else if ((mx >= g_stagedata.mapwidth[3]) && (mx < g_stagedata.mapwidth[4]) && (my < MAP_HEIGHT) && (my > 0)){
+	else if ((mx >= g_stagedata.mapwidth[3]) && (mx < g_stagedata.mapwidth[4]) && (my < MAP_HEIGHT) && (my <= MAP_HEIGHT * IMG_CHIPSIZE)){
 		blockType = g_mapdata[4][my][mx - g_stagedata.mapwidth[3]];
 		g_savepoint = 4;
 	}

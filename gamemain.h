@@ -6,7 +6,7 @@
 #include "enemy.h"
 
 #define IMG_CHIPSIZE 50
-#define HEROSPEED 0.001
+#define HEROSPEED 0.006
 #define SLOWSPEED 0.00005
 #define MAP_WIDTH 511
 #define MAP_HEIGHT 14
