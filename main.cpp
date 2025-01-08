@@ -41,8 +41,9 @@ int WINAPI WinMain(HINSTANCE h1, HINSTANCE hP, LPSTR lpC, int nC){
 	//DXライブラリ初期化
 	if (DxLib_Init() == -1) return -1;
 
-	//スコアを読みこむ
+	//スコアと番号を読みこむ
 	LoadScore(scores);
+	LoadPlayerNumber();
 
 	srand((unsigned int)time(NULL));
 
@@ -89,6 +90,7 @@ int WINAPI WinMain(HINSTANCE h1, HINSTANCE hP, LPSTR lpC, int nC){
 	}
 	//ゲーム終了時にスコアを保存
 	SaveScore(scores);
+	SavePlayerNumber();
 
 	//待機
 	WaitKey();
@@ -129,6 +131,7 @@ void DrawGameClear(){
 
 	//スコアを一度だけ反映させる
 	if (g_scoreTotaled == FALSE){
+
 		playerScore += g_scoretime + g_stagedata.hero.coinCount * 100;	//スコアを加算
 		g_scoreTotaled = TRUE;			//スコアが加算されたことを記録
 	}
