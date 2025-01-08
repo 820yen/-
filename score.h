@@ -2,9 +2,10 @@
 #define SCORE_H
 
 #define MAXRANKING 5	//ランキングの最大数
-#define SCORE_FILE "score.txt"
+#define SCORE_FILE "media\\score.txt"
 
 struct ScoreData{
+	int number;		//順番
 	int score;		//スコア
 };
 

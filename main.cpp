@@ -30,6 +30,7 @@ int g_smallfont;			//小サイズフォントハンドル
 ScoreData scores[MAXRANKING] = { 0 };
 int playerScore = 0;				//プレイヤースコア
 BOOL g_scoreAdded = FALSE;			//スコアが追加されたかどうか
+BOOL g_scoreTotaled = FALSE;		//スコアが加算されたかどうか
 
 
 int WINAPI WinMain(HINSTANCE h1, HINSTANCE hP, LPSTR lpC, int nC){
@@ -118,7 +119,6 @@ void DrawGameTitle(){
 //ゲーム本編描画
 void DrawGameMain(){
 	GameMain();
-	playerScore = g_scoretime;		//スコアを加算
 }
 //ゲームクリア画面描画
 void DrawGameClear(){
@@ -126,6 +126,12 @@ void DrawGameClear(){
 	//テキスト表示
 	DrawStringToHandle(100, 200, "ゲームクリア",
 		GetColor(80, 128, 255), g_largefont);
+
+	//スコアを一度だけ反映させる
+	if (g_scoreTotaled == FALSE){
+		playerScore += g_scoretime + g_stagedata.hero.coinCount * 100;	//スコアを加算
+		g_scoreTotaled = TRUE;			//スコアが加算されたことを記録
+	}
 
 	//スコアをランキングに一度だけ追加
 	if (g_scoreAdded == FALSE) {
@@ -136,7 +142,9 @@ void DrawGameClear(){
 	//5秒経ったらタイトル画面へ
 	if (g_lasttime - g_timerstart > 500) {
 		g_gamestate = GAME_TITLE;
-		g_scoreAdded = FALSE;	//フラグをリセット
+		//フラグをリセット
+		g_scoreTotaled = FALSE;
+		g_scoreAdded = FALSE;	
 	}
 }
 //ゲームオーバー画面描画

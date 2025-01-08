@@ -45,7 +45,7 @@ void AddScore(ScoreData scores[], int score) {
 	//スコアを挿入
 	for (int i = 0; i < MAXRANKING; i++) {
 		if (score > scores[i].score) {
-			//スコアをずらす
+			//スコアと番号ずらす
 			for (int j = MAXRANKING - 1; j > i; j--) {
 				scores[j].score = scores[j - 1].score;
 			}
@@ -65,7 +65,7 @@ void DrawRanking(const ScoreData scores[]) {
 	//ランキングの出力
 	for (int i = 0; i < MAXRANKING; i++) {
 		char text[64];
-		sprintf_s(text, "%2d. %d", i + 1, scores[i].score);
+		sprintf_s(text, "%2d. %6d", i + 1, scores[i].score);
 		DrawString(x, y + i * 20, text, GetColor(255, 255, 255));
 	}
 }
