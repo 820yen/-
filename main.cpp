@@ -60,7 +60,7 @@ int WINAPI WinMain(HINSTANCE h1, HINSTANCE hP, LPSTR lpC, int nC){
 		g_lasttime = curtime;
 		g_limittimemin = (TIMELIMIT - (g_lasttime - g_limittimerstart) / 1000) / 60;
 		g_limittimesec = (TIMELIMIT - (g_lasttime - g_limittimerstart) / 1000) % 60;
-		g_scoretime = TIMELIMIT * 10 - ((g_lasttime - g_limittimerstart) / 100);
+		g_scoretime = TIMELIMIT * 1000 - ((g_lasttime - g_limittimerstart));
 
 		ClearDrawScreen();
 		//‰æ–Ê•`‰æŠÖ”‚ÉØ‚è‘Ö‚¦
