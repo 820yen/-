@@ -1,7 +1,25 @@
 #include "enemy.h"
 
 void SetEnemy(int mx, int my){
-	char c = g_mapdata[0][my][mx];
+	char c;
+	if (g_coincheck == 0){
+		c = g_mapdata[0][my][mx];
+	}
+	else if (g_coincheck == 1){
+		c = g_mapdata[1][my][mx - g_stagedata.mapwidth[0]];
+	}
+	else if (g_coincheck == 2){
+		c = g_mapdata[2][my][mx - g_stagedata.mapwidth[1]];
+	}
+	else if (g_coincheck == 3){
+		c = g_mapdata[3][my][mx - g_stagedata.mapwidth[2]];
+	}
+	else if (g_coincheck == 4){
+		c = g_mapdata[4][my][mx - g_stagedata.mapwidth[3]];
+	}
+
+	
+
 	//空きを探す
 	int i;
 	for (i = 0; i < MAX_ENEMY; i++){
@@ -28,7 +46,21 @@ void SetEnemy(int mx, int my){
 			break;
 		}
 		//マップデータを空に
-		g_mapdata[0][my][mx] = '0';
+		if (g_coincheck == 0){
+			g_mapdata[0][my][mx] = '0';
+		}
+		else if (g_coincheck == 1){
+			g_mapdata[1][my][mx - g_stagedata.mapwidth[0]] = '0';
+		}
+		else if (g_coincheck == 2){
+			g_mapdata[2][my][mx - g_stagedata.mapwidth[1]] = '0';
+		}
+		else if (g_coincheck == 3){
+			g_mapdata[3][my][mx - g_stagedata.mapwidth[2]] = '0';
+		}
+		else if (g_coincheck == 4){
+			g_mapdata[4][my][mx - g_stagedata.mapwidth[3]] = '0';
+		}
 	}
 }
 
@@ -163,7 +195,6 @@ CharaData MoveBullet(CharaData cd){
 CharaData CoinSetting(CharaData cd) {
 	//アニメーションフレームの計算
 	int coinAnimFrame = g_stagedata.animcounter / ANIM_RATE % 6;
-
 
 	//主人公との当たり判定
 	float ax1 = g_stagedata.hero.x + 10;

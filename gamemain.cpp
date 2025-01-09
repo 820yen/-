@@ -4,6 +4,7 @@ char g_mapdata[MAXSTAGE][MAP_HEIGHT][MAP_WIDTH + 1];
 StageData g_stagedata;
 
 int g_savepoint = 0;
+int g_coincheck = 0;
 int g_randamstage;
 
 BOOL g_limitflag = TRUE;	//時間制限でゲームオーバーになるか選べる
@@ -11,13 +12,13 @@ BOOL g_limitflag = TRUE;	//時間制限でゲームオーバーになるか選べる
 //ステージ初期化
 void InitStage(){
 	char buf[256];
-	sprintf_s(buf, 256, "media\\stage%d.txt", 1);
+	sprintf_s(buf, 256, "media\\stage%d.txt", 6);
 	int fh = FileRead_open(buf);
 	for (int y = 0; y < MAP_HEIGHT; y++){
 		FileRead_gets(g_mapdata[0][y], 256, fh);
 	}
 	FileRead_close(fh);
-	g_randamstage = rand() % 3 + 1;
+	g_randamstage = 2;// rand() % 3 +
 	sprintf_s(buf, 256, "media\\stage%d-%d.txt", 2, g_randamstage);
 	fh = FileRead_open(buf);
 	for (int y = 0; y < MAP_HEIGHT; y++){
@@ -124,22 +125,25 @@ void DrawHero(int ac){
 	//加速減少処理
 	if (g_stagedata.hero.pushSpeed > 0) {
 		g_stagedata.hero.pushSpeed -= SLOWSPEED;
-		if (g_stagedata.hero.pushSpeed < 0) {
-			g_stagedata.hero.pushSpeed = 0;
-		}
+	}
+	else{
+		g_stagedata.hero.pushSpeed = 0;
+	}
+	if (mv < 0) {
+		mv = 0;
 	}
 
 	//マップ当たり判定
 	AtariInfo atari = CheckBlock(hx, hy, g_stagedata.hero.x);
 	if (g_stagedata.hero.turn == FALSE){
-		if (atari.UL){
+		if (atari.UL == TRUE){
 			if (atari.ULU == TRUE){
-				hy = g_stagedata.hero.y;
+				g_stagedata.hero.jumppower = 0;
 			}
 		}
 		if (atari.UR == TRUE){
 			if (atari.URU == TRUE){
-				hy = g_stagedata.hero.y;
+				g_stagedata.hero.jumppower = 0;
 			}
 			if (atari.URR == TRUE){
 				hx = g_stagedata.hero.x;
@@ -168,6 +172,7 @@ void DrawHero(int ac){
 		//重力で落下
 		g_stagedata.hero.jumping = TRUE;
 	}
+	
 	//ジャンプ処理その2
 	if (g_stagedata.hero.jumping == FALSE){
  		if (IsSpaceKeyTrigger(spaceKey) == TRUE && g_stagedata.hero.noground == FALSE)
@@ -179,10 +184,9 @@ void DrawHero(int ac){
 	}
 
 	//落下判定
-	if (hy > MAP_HEIGHT * IMG_CHIPSIZE){
+	if (hy > MAP_HEIGHT * IMG_CHIPSIZE - IMG_CHIPSIZE){
 		mv = 0;
 
-		
 		if (g_savepoint == 0){
 			hx = 2 * IMG_CHIPSIZE;
 		}
@@ -209,10 +213,6 @@ void DrawHero(int ac){
 		g_stagedata.hero.jumpforward = 0;
 		g_stagedata.scrollx = hx - 2 * IMG_CHIPSIZE;
 		g_timerstart = g_lasttime;
-	}
-	//y座標のリセット
-	if (hy < 0.0f || hy > MAP_HEIGHT * IMG_CHIPSIZE) {
-		hy = MAP_HEIGHT * IMG_CHIPSIZE;
 	}
 
 	//スクロール補正
@@ -318,15 +318,16 @@ AtariInfo CheckBlock(float x, float y, float rx){
 	result.UR = _CheckBlockSub(x + IMG_CHIPSIZE - 1, y);
 	result.DL = _CheckBlockSub(x, y + IMG_CHIPSIZE -1);
 	result.DR = _CheckBlockSub(x + IMG_CHIPSIZE - 1, y + IMG_CHIPSIZE -1);
-	result.GL = _CheckBlockSub(rx, y + IMG_CHIPSIZE);
-	result.GR = _CheckBlockSub(rx + IMG_CHIPSIZE - 1, y + IMG_CHIPSIZE);
+	result.GL = _CheckBlockSub(rx + 10, y + IMG_CHIPSIZE);
+	result.GR = _CheckBlockSub(rx + IMG_CHIPSIZE - 10, y + IMG_CHIPSIZE);
 
-	result.ULU = _CheckBlockSub(x, y - IMG_CHIPSIZE - 1);
-	result.URU = _CheckBlockSub(x + IMG_CHIPSIZE - 1, y - IMG_CHIPSIZE - 1);
-	result.URR = _CheckBlockSub(x + IMG_CHIPSIZE, y);
-	result.DRR = _CheckBlockSub(x + IMG_CHIPSIZE, y + IMG_CHIPSIZE - 1);
+	result.ULU = _CheckBlockSub(x + 10, y - 30);
+	result.URU = _CheckBlockSub(x + IMG_CHIPSIZE - 10, y - 30);
+	result.URR = _CheckBlockSub(x + IMG_CHIPSIZE + 30, y + 10);
+	result.DRR = _CheckBlockSub(x + IMG_CHIPSIZE + 30, y + IMG_CHIPSIZE - 1);
 
-	//ここに斜めブロックの補正
+	DrawFormatString(150, 300, GetColor(255, 255, 255), "UL:%d\nUR:%d\nDL:%d\nDR:%d\nGL:%d\nGR:%d", result.UL, result.UR, result.DL, result.DR, result.GL, result.GR);
+	DrawFormatString(100, 300, GetColor(255, 255, 255), "ULU:%d\nURU:%d\nURR:%d\nDRR:%d", result.ULU, result.URU, result.URR, result.DRR);
 
 	return result;
 }
@@ -340,18 +341,23 @@ void DrawMap(){
 		for (int x = 0; x < SCR_WIDTH + 1; x++){
 			if (x + sc < g_stagedata.mapwidth[0]){
 				cell = g_mapdata[0][y][x + sc];
+				g_coincheck = 0;
 			}
 			else if (x + sc < g_stagedata.mapwidth[1]){
 				cell = g_mapdata[1][y][x + sc - g_stagedata.mapwidth[0]];
+				g_coincheck = 1;
 			}
 			else if (x + sc < g_stagedata.mapwidth[2]){
 				cell = g_mapdata[2][y][x + sc - g_stagedata.mapwidth[1]];
+				g_coincheck = 2;
 			}
 			else if (x + sc < g_stagedata.mapwidth[3]){
 				cell = g_mapdata[3][y][x + sc - g_stagedata.mapwidth[2]];
+				g_coincheck = 3;
 			}
 			else if (x + sc < g_stagedata.mapwidth[4]){
 				cell = g_mapdata[4][y][x + sc - g_stagedata.mapwidth[3]];
+				g_coincheck = 4;
 			}
 
 			//ブロック描画（A～Z）
@@ -369,7 +375,7 @@ void DrawMap(){
 			}
 			//モンスターの検出 (1～9)
 			if (cell >= '1' && cell <= '9') {
-				SetEnemy(x + sc, y);  // 敵の位置だけを SetEnemy に渡す
+				SetEnemy(x + sc, y);  //敵の位置だけを SetEnemy に渡す
 			}
 		}
 	}

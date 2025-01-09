@@ -8,7 +8,7 @@
 #define IMG_CHIPSIZE 50
 #define HEROSPEED 0.006
 #define SLOWSPEED 0.00005
-#define MAP_WIDTH 511
+#define MAP_WIDTH 700
 #define MAP_HEIGHT 14
 #define MAXSTAGE 5
 #define SCR_WIDTH 26
@@ -17,7 +17,7 @@
 #define JUMP_POWER 750.0f
 #define GRAVITY 30.0f
 #define JUMP_FORWARD 200.0f
-#define MAX_ENEMY 100
+#define MAX_ENEMY 200
 #define MAX_KNIFE 4
 #define TIMELIMIT 180
 
@@ -28,6 +28,7 @@ extern BOOL g_limitflag;
 extern int g_stagenumber;
 extern int g_savepoint;
 extern int g_randamstage;
+extern int g_coincheck;
 
 enum EnemyType{
 	ET_CRAB = 2,
