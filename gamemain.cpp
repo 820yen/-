@@ -8,7 +8,7 @@ int g_coincheck = 0;
 int g_randamstage;
 
 BOOL g_limitflag = TRUE;	//時間制限でゲームオーバーになるか選べる
-BOOL g_debugflag = FALSE;	//でバックの時に分かりやすくするために表示するか選べる
+BOOL g_debugflag = TRUE;	//でバックの時に分かりやすくするために表示するか選べる
 
 //ステージ初期化
 void InitStage(){
