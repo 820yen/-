@@ -24,6 +24,7 @@
 extern char g_mapdata[MAXSTAGE][MAP_HEIGHT][MAP_WIDTH + 1];
 
 extern BOOL g_limitflag;
+extern BOOL g_debugflag;
 
 extern int g_stagenumber;
 extern int g_savepoint;

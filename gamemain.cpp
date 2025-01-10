@@ -8,6 +8,7 @@ int g_coincheck = 0;
 int g_randamstage;
 
 BOOL g_limitflag = TRUE;	//時間制限でゲームオーバーになるか選べる
+BOOL g_debugflag = FALSE;	//でバックの時に分かりやすくするために表示するか選べる
 
 //ステージ初期化
 void InitStage(){
@@ -328,6 +329,22 @@ AtariInfo CheckBlock(float x, float y, float rx){
 
 	DrawFormatString(150, 300, GetColor(255, 255, 255), "UL:%d\nUR:%d\nDL:%d\nDR:%d\nGL:%d\nGR:%d", result.UL, result.UR, result.DL, result.DR, result.GL, result.GR);
 	DrawFormatString(100, 300, GetColor(255, 255, 255), "ULU:%d\nURU:%d\nURR:%d\nDRR:%d", result.ULU, result.URU, result.URR, result.DRR);
+
+	//当たり判定可視化
+	if (g_debugflag == TRUE){
+		DrawBox(x - 2 - g_stagedata.scrollx, y - 2, x + 2 - g_stagedata.scrollx, y + 2, GetColor(255, 0, 0), TRUE);//UL
+		DrawBox(x + IMG_CHIPSIZE - 3 - g_stagedata.scrollx, y - 2, x + IMG_CHIPSIZE + 1 - g_stagedata.scrollx, y + 2, GetColor(255, 0, 0), TRUE);//UR
+		DrawBox(x - 2 - g_stagedata.scrollx, y + IMG_CHIPSIZE - 3, x + 2 - g_stagedata.scrollx, y + IMG_CHIPSIZE + 1, GetColor(255, 0, 0), TRUE);//DL
+		DrawBox(x + IMG_CHIPSIZE - 3 - g_stagedata.scrollx, y + IMG_CHIPSIZE - 3, x + IMG_CHIPSIZE + 1 - g_stagedata.scrollx, y + IMG_CHIPSIZE + 1, GetColor(255, 0, 0), TRUE);//DR
+
+		DrawBox(x + 8 - g_stagedata.scrollx, y - 32, x + 12 - g_stagedata.scrollx, y - 28, GetColor(255, 0, 0), FALSE);//ULU
+		DrawBox(x + IMG_CHIPSIZE - 12 - g_stagedata.scrollx, y - 32, x + IMG_CHIPSIZE - 8 - g_stagedata.scrollx, y - 28, GetColor(255, 0, 0), FALSE);//URU
+		DrawBox(x + IMG_CHIPSIZE + 28 - g_stagedata.scrollx, y + 8, x + IMG_CHIPSIZE + 32 - g_stagedata.scrollx, y + 12, GetColor(255, 0, 0), FALSE);//URR
+		DrawBox(x + IMG_CHIPSIZE + 28 - g_stagedata.scrollx, y + IMG_CHIPSIZE - 3, x + IMG_CHIPSIZE + 32 - g_stagedata.scrollx, y + IMG_CHIPSIZE + 1, GetColor(255, 0, 0), FALSE);//DRR
+
+		DrawBox(rx + 8 - g_stagedata.scrollx, y + IMG_CHIPSIZE - 2, rx + 12 - g_stagedata.scrollx, y + IMG_CHIPSIZE + 2, GetColor(0, 0, 255), FALSE);//GL
+		DrawBox(rx + IMG_CHIPSIZE - 12 - g_stagedata.scrollx, y + IMG_CHIPSIZE - 2, rx + IMG_CHIPSIZE - 8 - g_stagedata.scrollx, y + IMG_CHIPSIZE + 2, GetColor(0, 0, 255), FALSE);//GR
+	}
 
 	return result;
 }
