@@ -314,36 +314,48 @@ BOOL _CheckBlockSub(float x, float y){
 	return FALSE;
 }
 AtariInfo CheckBlock(float x, float y, float rx){
-	AtariInfo result;
-	result.UL = _CheckBlockSub(x, y);
-	result.UR = _CheckBlockSub(x + IMG_CHIPSIZE - 1, y);
-	result.DL = _CheckBlockSub(x, y + IMG_CHIPSIZE -1);
-	result.DR = _CheckBlockSub(x + IMG_CHIPSIZE - 1, y + IMG_CHIPSIZE -1);
-	result.GL = _CheckBlockSub(rx + 10, y + IMG_CHIPSIZE);
-	result.GR = _CheckBlockSub(rx + IMG_CHIPSIZE - 10, y + IMG_CHIPSIZE);
+	int debugAtari_x[10] = { x, x + IMG_CHIPSIZE - 1,						//UL,UR
+							x, x + IMG_CHIPSIZE - 1,						//DL,DR
+							rx, rx + IMG_CHIPSIZE - 1,						//GL,GR
+							x + 10, x + IMG_CHIPSIZE - 10,					//ULU,URU
+							x + IMG_CHIPSIZE + 30, x + IMG_CHIPSIZE + 30 };	//URR,DRR
 
-	result.ULU = _CheckBlockSub(x + 10, y - 30);
-	result.URU = _CheckBlockSub(x + IMG_CHIPSIZE - 10, y - 30);
-	result.URR = _CheckBlockSub(x + IMG_CHIPSIZE + 30, y + 10);
-	result.DRR = _CheckBlockSub(x + IMG_CHIPSIZE + 30, y + IMG_CHIPSIZE - 1);
+	int debugAtari_y[10] = { y, y,											//UL,UR
+							y + IMG_CHIPSIZE - 1, y + IMG_CHIPSIZE - 1,		//DL,DR
+							y + IMG_CHIPSIZE, y + IMG_CHIPSIZE, 			//GL,GR
+							y - 30, y - 30, 								//ULU,URU
+							y + 10, y + IMG_CHIPSIZE - 1 };					//URR,DRR
+
+	AtariInfo result;
+	result.UL = _CheckBlockSub(debugAtari_x[0], debugAtari_y[0]);
+	result.UR = _CheckBlockSub(debugAtari_x[1], debugAtari_y[1]);
+	result.DL = _CheckBlockSub(debugAtari_x[2], debugAtari_y[2]);
+	result.DR = _CheckBlockSub(debugAtari_x[3], debugAtari_y[3]);
+	result.GL = _CheckBlockSub(debugAtari_x[4], debugAtari_y[4]);
+	result.GR = _CheckBlockSub(debugAtari_x[5], debugAtari_y[5]);
+
+	result.ULU = _CheckBlockSub(debugAtari_x[6], debugAtari_y[6]);
+	result.URU = _CheckBlockSub(debugAtari_x[7], debugAtari_y[7]);
+	result.URR = _CheckBlockSub(debugAtari_x[8], debugAtari_y[8]);
+	result.DRR = _CheckBlockSub(debugAtari_x[9], debugAtari_y[9]);
 
 	DrawFormatString(150, 300, GetColor(255, 255, 255), "UL:%d\nUR:%d\nDL:%d\nDR:%d\nGL:%d\nGR:%d", result.UL, result.UR, result.DL, result.DR, result.GL, result.GR);
 	DrawFormatString(100, 300, GetColor(255, 255, 255), "ULU:%d\nURU:%d\nURR:%d\nDRR:%d", result.ULU, result.URU, result.URR, result.DRR);
 
 	//“–‚½‚è”»’è‰ÂŽ‹‰»
 	if (g_debugflag == TRUE){
-		DrawBox(x - 2 - g_stagedata.scrollx, y - 2, x + 2 - g_stagedata.scrollx, y + 2, GetColor(255, 0, 0), TRUE);//UL
-		DrawBox(x + IMG_CHIPSIZE - 3 - g_stagedata.scrollx, y - 2, x + IMG_CHIPSIZE + 1 - g_stagedata.scrollx, y + 2, GetColor(255, 0, 0), TRUE);//UR
-		DrawBox(x - 2 - g_stagedata.scrollx, y + IMG_CHIPSIZE - 3, x + 2 - g_stagedata.scrollx, y + IMG_CHIPSIZE + 1, GetColor(255, 0, 0), TRUE);//DL
-		DrawBox(x + IMG_CHIPSIZE - 3 - g_stagedata.scrollx, y + IMG_CHIPSIZE - 3, x + IMG_CHIPSIZE + 1 - g_stagedata.scrollx, y + IMG_CHIPSIZE + 1, GetColor(255, 0, 0), TRUE);//DR
+		DrawBox(debugAtari_x[0] - 2 - g_stagedata.scrollx, debugAtari_y[0] - 2, debugAtari_x[0] + 2 - g_stagedata.scrollx, debugAtari_y[0] + 2, GetColor(255, 0, 0), TRUE);//UL
+		DrawBox(debugAtari_x[1] - 2 - g_stagedata.scrollx, debugAtari_y[1] - 2, debugAtari_x[1] + 2 - g_stagedata.scrollx, debugAtari_y[1] + 2, GetColor(255, 0, 0), TRUE);//UR
+		DrawBox(debugAtari_x[2] - 2 - g_stagedata.scrollx, debugAtari_y[2] - 2, debugAtari_x[2] + 2 - g_stagedata.scrollx, debugAtari_y[2] + 2, GetColor(255, 0, 0), TRUE);//DL
+		DrawBox(debugAtari_x[3] - 2 - g_stagedata.scrollx, debugAtari_y[3] - 2, debugAtari_x[3] + 2 - g_stagedata.scrollx, debugAtari_y[3] + 2, GetColor(255, 0, 0), TRUE);//DR
 
-		DrawBox(x + 8 - g_stagedata.scrollx, y - 32, x + 12 - g_stagedata.scrollx, y - 28, GetColor(255, 0, 0), FALSE);//ULU
-		DrawBox(x + IMG_CHIPSIZE - 12 - g_stagedata.scrollx, y - 32, x + IMG_CHIPSIZE - 8 - g_stagedata.scrollx, y - 28, GetColor(255, 0, 0), FALSE);//URU
-		DrawBox(x + IMG_CHIPSIZE + 28 - g_stagedata.scrollx, y + 8, x + IMG_CHIPSIZE + 32 - g_stagedata.scrollx, y + 12, GetColor(255, 0, 0), FALSE);//URR
-		DrawBox(x + IMG_CHIPSIZE + 28 - g_stagedata.scrollx, y + IMG_CHIPSIZE - 3, x + IMG_CHIPSIZE + 32 - g_stagedata.scrollx, y + IMG_CHIPSIZE + 1, GetColor(255, 0, 0), FALSE);//DRR
+		DrawBox(debugAtari_x[4] - 2 - g_stagedata.scrollx, debugAtari_y[4] - 2, debugAtari_x[4] + 2 - g_stagedata.scrollx, debugAtari_y[4] + 2, GetColor(0, 0, 255), FALSE);//GL
+		DrawBox(debugAtari_x[5] - 2 - g_stagedata.scrollx, debugAtari_y[5] - 2, debugAtari_x[5] + 2 - g_stagedata.scrollx, debugAtari_y[5] + 2, GetColor(0, 0, 255), FALSE);//GR
 
-		DrawBox(rx + 8 - g_stagedata.scrollx, y + IMG_CHIPSIZE - 2, rx + 12 - g_stagedata.scrollx, y + IMG_CHIPSIZE + 2, GetColor(0, 0, 255), FALSE);//GL
-		DrawBox(rx + IMG_CHIPSIZE - 12 - g_stagedata.scrollx, y + IMG_CHIPSIZE - 2, rx + IMG_CHIPSIZE - 8 - g_stagedata.scrollx, y + IMG_CHIPSIZE + 2, GetColor(0, 0, 255), FALSE);//GR
+		DrawBox(debugAtari_x[6] - 2 - g_stagedata.scrollx, debugAtari_y[6] - 2, debugAtari_x[6] + 2 - g_stagedata.scrollx, debugAtari_y[6] + 2, GetColor(255, 0, 0), FALSE);//ULU
+		DrawBox(debugAtari_x[7] - 2 - g_stagedata.scrollx, debugAtari_y[7] - 2, debugAtari_x[7] + 2 - g_stagedata.scrollx, debugAtari_y[7] + 2, GetColor(255, 0, 0), FALSE);//URU
+		DrawBox(debugAtari_x[8] - 2 - g_stagedata.scrollx, debugAtari_y[8] - 2, debugAtari_x[8] + 2 - g_stagedata.scrollx, debugAtari_y[8] + 2, GetColor(255, 0, 0), FALSE);//URR
+		DrawBox(debugAtari_x[9] - 2 - g_stagedata.scrollx, debugAtari_y[9] - 2, debugAtari_x[9] + 2 - g_stagedata.scrollx, debugAtari_y[9] + 2, GetColor(255, 0, 0), FALSE);//DRR
 	}
 
 	return result;
