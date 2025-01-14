@@ -151,8 +151,8 @@ void DrawGameClear(){
 		playerTimeSec = g_limittimesec;
 
 		//スコアを計算
-		playerScore += g_scoretime + g_stagedata.hero.coinCount * 100;
-		playerScore -= g_stagedata.hero.deathCount * 10000;
+		playerScore += g_scoretime + g_stagedata.hero.coinCount * 500;
+		//playerScore -= g_stagedata.hero.deathCount * 10000;
 
 		if (playerScore < 0){
 			playerScore = 0;

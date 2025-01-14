@@ -8,32 +8,33 @@ int g_coincheck = 0;
 int g_randamstage;
 
 BOOL g_limitflag = TRUE;	//時間制限でゲームオーバーになるか選べる
-BOOL g_debugflag = FALSE;	//でバックの時に分かりやすくするために表示するか選べる
+BOOL g_debugflag = FALSE;	//デバックの時に分かりやすくするために表示するか選べる
+BOOL g_deviceflag = FALSE;	//デバイスが異なる時に変更する
 
 //ステージ初期化
 void InitStage(){
 	char buf[256];
-	sprintf_s(buf, 256, "media\\stage%d.txt", 6);
+	sprintf_s(buf, 256, "media\\stage%d.txt", 1);
 	int fh = FileRead_open(buf);
 	for (int y = 0; y < MAP_HEIGHT; y++){
 		FileRead_gets(g_mapdata[0][y], 256, fh);
 	}
 	FileRead_close(fh);
-	g_randamstage = 2;// rand() % 3 +
+	g_randamstage = 2;// rand() % 3 + 1;
 	sprintf_s(buf, 256, "media\\stage%d-%d.txt", 2, g_randamstage);
 	fh = FileRead_open(buf);
 	for (int y = 0; y < MAP_HEIGHT; y++){
 		FileRead_gets(g_mapdata[1][y], 256, fh);
 	}
 	FileRead_close(fh);
-	g_randamstage = rand() % 3 + 1;
+	g_randamstage = 2;//rand() % 3 + 1;
 	sprintf_s(buf, 256, "media\\stage%d-%d.txt", 3, g_randamstage);
 	fh = FileRead_open(buf);
 	for (int y = 0; y < MAP_HEIGHT; y++){
 		FileRead_gets(g_mapdata[2][y], 256, fh);
 	}
 	FileRead_close(fh);
-	g_randamstage = rand() % 3 + 1;
+	g_randamstage = 2;// rand() % 3 + 1;
 	sprintf_s(buf, 256, "media\\stage%d-%d.txt", 4, g_randamstage);
 	fh = FileRead_open(buf);
 	for (int y = 0; y < MAP_HEIGHT; y++){
@@ -61,13 +62,13 @@ void InitStage(){
 	g_stagedata.hero.noground = FALSE;
 	g_stagedata.hero.jumppower = 0;
 	g_stagedata.hero.jumpforward = 0;
-
+	g_stagedata.hero.coinCount = 0;
+	g_stagedata.hero.deathCount = 0;
 
 	ZeroMemory(g_stagedata.enemies, sizeof(g_stagedata.enemies));
 	ZeroMemory(g_stagedata.knives, sizeof(g_stagedata.knives));
 	g_stagedata.scrollx = 0;
 }
-
 
 void GameMain(){
 	//アニメーションカウンタ
@@ -90,27 +91,80 @@ void DrawHero(int ac){
 	int enterKey = CheckHitKey(KEY_INPUT_RETURN);
 	int rKey = CheckHitKey(KEY_INPUT_R);
 	int qKey = CheckHitKey(KEY_INPUT_Q);
+	int wKey = CheckHitKey(KEY_INPUT_W);
 
 	double mv = 200.0 * g_stagedata.hero.pushSpeed; //移動量計算
 	float hx = g_stagedata.hero.x;
 	float hy = g_stagedata.hero.y;
 
+	//デバイスチェック
+	if (CheckHitKey(KEY_INPUT_1) && CheckHitKey(KEY_INPUT_5) && CheckHitKey(KEY_INPUT_9)){
+		if (g_deviceflag == TRUE) g_deviceflag = FALSE;
+		else g_deviceflag = TRUE;
+	}
+
 	//Enterキーを押すたびに加速
-	if (IsEnterKeyTrigger(enterKey)){
-		if (mv <= 3){
-			g_stagedata.hero.pushSpeed += HEROSPEED;
+	if (g_deviceflag == TRUE){
+		DrawString(100, 300, "別デバイス用", GetColor(255, 255, 255));
+		if (IsEnterKeyTrigger(enterKey)){
+			if (mv <= 3){
+				g_stagedata.hero.pushSpeed += HEROSPEED / 2;
+			}
+			else if (mv <= 5){
+				g_stagedata.hero.pushSpeed += HEROSPEED / 4;
+			}
+			else if (mv <= 7){
+				g_stagedata.hero.pushSpeed += HEROSPEED / 6;
+			}
+			else if (mv <= 9){
+				g_stagedata.hero.pushSpeed += HEROSPEED / 8;
+			}
+			else if (mv <= 10){
+				g_stagedata.hero.pushSpeed += HEROSPEED / 10;
+			}
+			else if (mv <= 12){
+				g_stagedata.hero.pushSpeed += HEROSPEED / 14;
+			}
+			else if (mv <= 13){
+				g_stagedata.hero.pushSpeed += HEROSPEED / 18;
+			}
+			else if (mv <= 15){
+				g_stagedata.hero.pushSpeed += HEROSPEED / 20;
+			}
+			else{
+				g_stagedata.hero.pushSpeed += HEROSPEED / 200;
+			}
 		}
-		else if (mv <= 5){
-			g_stagedata.hero.pushSpeed += HEROSPEED / 3;
-		}
-		else if (mv <= 10){
-			g_stagedata.hero.pushSpeed += HEROSPEED / 5;
-		}
-		else if (mv <= 15){
-			g_stagedata.hero.pushSpeed += HEROSPEED / 10;
-		}
-		else{
-			g_stagedata.hero.pushSpeed += HEROSPEED / 100;
+	}
+	else{
+		if (IsEnterKeyTrigger(enterKey)){
+			if (mv <= 3){
+				g_stagedata.hero.pushSpeed += HEROSPEED;
+			}
+			else if (mv <= 5){
+				g_stagedata.hero.pushSpeed += HEROSPEED / 2;
+			}
+			else if (mv <= 7){
+				g_stagedata.hero.pushSpeed += HEROSPEED / 3;
+			}
+			else if (mv <= 9){
+				g_stagedata.hero.pushSpeed += HEROSPEED / 4;
+			}
+			else if (mv <= 10){
+				g_stagedata.hero.pushSpeed += HEROSPEED / 5;
+			}
+			else if (mv <= 12){
+				g_stagedata.hero.pushSpeed += HEROSPEED / 7;
+			}
+			else if (mv <= 13){
+				g_stagedata.hero.pushSpeed += HEROSPEED / 9;
+			}
+			else if (mv <= 15){
+				g_stagedata.hero.pushSpeed += HEROSPEED / 10;
+			}
+			else{
+				g_stagedata.hero.pushSpeed += HEROSPEED / 100;
+			}
 		}
 	}
 
@@ -140,12 +194,12 @@ void DrawHero(int ac){
 	if (g_stagedata.hero.turn == FALSE){
 		if (atari.UL == TRUE){
 			if (atari.ULU == TRUE){
-				g_stagedata.hero.jumppower = 0;
+				g_stagedata.hero.jumppower = -GRAVITY;
 			}
 		}
 		if (atari.UR == TRUE){
 			if (atari.URU == TRUE){
-				g_stagedata.hero.jumppower = 0;
+				g_stagedata.hero.jumppower = -GRAVITY;
 			}
 			if (atari.URR == TRUE){
 				hx = g_stagedata.hero.x;
@@ -268,6 +322,18 @@ void DrawHero(int ac){
 	if (IsQKeyTrigger(qKey)){
 		if (g_debugflag == FALSE) g_debugflag = TRUE;
 		else g_debugflag = FALSE;
+	}
+
+	//タイムリミットのオンオフ
+	if (IsWKeyTrigger(wKey)){
+		if (g_limitflag == FALSE) g_limitflag = TRUE;
+		else {
+			g_limitflag = FALSE;
+		}
+	}
+	//タイムリミットのテキスト表示
+	if (g_limitflag == FALSE){
+		DrawString(100, 260, "タイムリミット：オフ", GetColor(255, 255, 255));
 	}
 }
 
@@ -468,6 +534,19 @@ BOOL IsQKeyTrigger(int key){
 	}
 	else {
 		g_stagedata.g_qkey_prev = FALSE;
+	}
+	return FALSE;
+}
+
+BOOL IsWKeyTrigger(int key){
+	if (key){
+		if (g_stagedata.g_wkey_prev == FALSE){
+			g_stagedata.g_wkey_prev = TRUE;
+			return TRUE;
+		}
+	}
+	else {
+		g_stagedata.g_wkey_prev = FALSE;
 	}
 	return FALSE;
 }

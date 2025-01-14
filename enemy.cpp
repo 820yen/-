@@ -18,8 +18,6 @@ void SetEnemy(int mx, int my){
 		c = g_mapdata[4][my][mx - g_stagedata.mapwidth[3]];
 	}
 
-	
-
 	//‹ó‚«‚ð’T‚·
 	int i;
 	for (i = 0; i < MAX_ENEMY; i++){
