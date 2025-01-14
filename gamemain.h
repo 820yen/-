@@ -49,6 +49,7 @@ struct CharaData{
 	EnemyType type;
 	int life;
 	int coinCount;
+	int deathCount;
 };
 
 struct StageData{

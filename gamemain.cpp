@@ -188,6 +188,7 @@ void DrawHero(int ac){
 	//落下判定
 	if (hy > MAP_HEIGHT * IMG_CHIPSIZE - IMG_CHIPSIZE){
 		mv = 0;
+		g_stagedata.hero.deathCount++;
 
 		if (g_savepoint == 0){
 			hx = 2 * IMG_CHIPSIZE;
@@ -259,13 +260,15 @@ void DrawHero(int ac){
 		"菓道まで：%.1fkm →", ((g_stagedata.mapwidth[4] - g_stagedata.hero.x / 50)
 		/ (g_stagedata.mapwidth[4] - 2))
 		 * 17.5);
+	//死亡回数
+	DrawFormatString(100, 230, GetColor(255, 255, 255),
+		"死亡回数：%d", g_stagedata.hero.deathCount);
 
 	//デバッグモード
 	if (IsQKeyTrigger(qKey)){
 		if (g_debugflag == FALSE) g_debugflag = TRUE;
 		else g_debugflag = FALSE;
 	}
-	
 }
 
 //ブロックとの当たり判定

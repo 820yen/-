@@ -25,9 +25,11 @@ extern GameState g_gamestate;
 //ボタン
 extern BOOL g_akey_prev;	//直前のAボタンの状態
 //フォント
-extern int g_middlefont;	//中サイズフォントハンドル
-extern int g_largefont;		//大サイズフォントハンドル
 extern int g_smallfont;		//小サイズフォントハンドル
+extern int g_normalfont;	//小中サイズフォントハンドル
+extern int g_middlefont;	//中サイズフォントハンドル
+extern int g_mediumfont;	//中大サイズフォントハンドル
+extern int g_largefont;		//大サイズフォントハンドル
 
 //関数プロトタイプ宣言
 void DrawGameTitle();
