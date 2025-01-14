@@ -63,6 +63,7 @@ struct StageData{
 	BOOL g_spacekey_prev;
 	BOOL g_enterkey_prev;
 	BOOL g_rkey_prev;
+	BOOL g_qkey_prev;
 };
 extern StageData g_stagedata;
 
@@ -79,5 +80,6 @@ void DrawKnife(int key);
 BOOL IsSpaceKeyTrigger(int key);
 BOOL IsEnterKeyTrigger(int key);
 BOOL IsRKeyTrigger(int key);
+BOOL IsQKeyTrigger(int key);
 
 #endif

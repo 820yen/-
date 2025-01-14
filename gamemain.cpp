@@ -8,7 +8,7 @@ int g_coincheck = 0;
 int g_randamstage;
 
 BOOL g_limitflag = TRUE;	//時間制限でゲームオーバーになるか選べる
-BOOL g_debugflag = TRUE;	//でバックの時に分かりやすくするために表示するか選べる
+BOOL g_debugflag = FALSE;	//でバックの時に分かりやすくするために表示するか選べる
 
 //ステージ初期化
 void InitStage(){
@@ -89,6 +89,7 @@ void DrawHero(int ac){
 	int spaceKey = CheckHitKey(KEY_INPUT_SPACE);
 	int enterKey = CheckHitKey(KEY_INPUT_RETURN);
 	int rKey = CheckHitKey(KEY_INPUT_R);
+	int qKey = CheckHitKey(KEY_INPUT_Q);
 
 	double mv = 200.0 * g_stagedata.hero.pushSpeed; //移動量計算
 	float hx = g_stagedata.hero.x;
@@ -258,8 +259,13 @@ void DrawHero(int ac){
 		"菓道まで：%.1fkm →", ((g_stagedata.mapwidth[4] - g_stagedata.hero.x / 50)
 		/ (g_stagedata.mapwidth[4] - 2))
 		 * 17.5);
-	DrawFormatString(1000, 400, GetColor(255, 255, 255),
-		"SAVEPOINT：%d ", g_savepoint);
+
+	//デバッグモード
+	if (IsQKeyTrigger(qKey)){
+		if (g_debugflag == FALSE) g_debugflag = TRUE;
+		else g_debugflag = FALSE;
+	}
+	
 }
 
 //ブロックとの当たり判定
@@ -339,11 +345,14 @@ AtariInfo CheckBlock(float x, float y, float rx){
 	result.URR = _CheckBlockSub(debugAtari_x[8], debugAtari_y[8]);
 	result.DRR = _CheckBlockSub(debugAtari_x[9], debugAtari_y[9]);
 
-	DrawFormatString(150, 300, GetColor(255, 255, 255), "UL:%d\nUR:%d\nDL:%d\nDR:%d\nGL:%d\nGR:%d", result.UL, result.UR, result.DL, result.DR, result.GL, result.GR);
-	DrawFormatString(100, 300, GetColor(255, 255, 255), "ULU:%d\nURU:%d\nURR:%d\nDRR:%d", result.ULU, result.URU, result.URR, result.DRR);
-
-	//当たり判定可視化
+	//デバッグ、当たり判定可視化
 	if (g_debugflag == TRUE){
+		DrawFormatString(1000, 400, GetColor(255, 255, 255),
+			"SAVEPOINT：%d ", g_savepoint);
+
+		DrawFormatString(150, 300, GetColor(255, 255, 255), "UL:%d\nUR:%d\nDL:%d\nDR:%d\nGL:%d\nGR:%d", result.UL, result.UR, result.DL, result.DR, result.GL, result.GR);
+		DrawFormatString(100, 300, GetColor(255, 255, 255), "ULU:%d\nURU:%d\nURR:%d\nDRR:%d", result.ULU, result.URU, result.URR, result.DRR);
+
 		DrawBox(debugAtari_x[0] - 2 - g_stagedata.scrollx, debugAtari_y[0] - 2, debugAtari_x[0] + 2 - g_stagedata.scrollx, debugAtari_y[0] + 2, GetColor(255, 0, 0), TRUE);//UL
 		DrawBox(debugAtari_x[1] - 2 - g_stagedata.scrollx, debugAtari_y[1] - 2, debugAtari_x[1] + 2 - g_stagedata.scrollx, debugAtari_y[1] + 2, GetColor(255, 0, 0), TRUE);//UR
 		DrawBox(debugAtari_x[2] - 2 - g_stagedata.scrollx, debugAtari_y[2] - 2, debugAtari_x[2] + 2 - g_stagedata.scrollx, debugAtari_y[2] + 2, GetColor(255, 0, 0), TRUE);//DL
@@ -444,6 +453,18 @@ BOOL IsRKeyTrigger(int key){
 	}
 	else {
 		g_stagedata.g_rkey_prev = FALSE;
+	}
+	return FALSE;
+}
+BOOL IsQKeyTrigger(int key){
+	if (key){
+		if (g_stagedata.g_qkey_prev == FALSE){
+			g_stagedata.g_qkey_prev = TRUE;
+			return TRUE;
+		}
+	}
+	else {
+		g_stagedata.g_qkey_prev = FALSE;
 	}
 	return FALSE;
 }
