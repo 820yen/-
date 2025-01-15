@@ -71,6 +71,27 @@ void InitStage(){
 }
 
 void GameMain(){
+	//背景画像
+	DrawBox(0, 0, 1300, 730, GetColor(255, 255, 255), TRUE);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
+	DrawGraph(0 - g_stagedata.scrollx / 5, 0, g_imghandles.background[0], TRUE);
+	//DrawGraph(1140 - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[0], TRUE);
+	DrawGraph(2280 - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[0], TRUE);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	DrawBox(3000 - int(g_stagedata.scrollx / 5), 0, 1300, 730, GetColor(255, 255, 255), TRUE);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
+	DrawGraph(3000 - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[1], TRUE);
+	DrawGraph(4460 - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[1], TRUE);
+	DrawGraph(5920 - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[1], TRUE);
+	DrawGraph(7380 - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[1], TRUE);
+	DrawGraph(8840 - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[1], TRUE);
+	DrawGraph(10300 - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[1], TRUE);
+	DrawGraph(10500 - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[2], TRUE);
+	//DrawGraph(0, 0, g_imghandles.background[0], TRUE);
+	//DrawGraph(0, 0, g_imghandles.background[0], TRUE);
+	//DrawGraph(0, 0, g_imghandles.background[0], TRUE);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
 	//アニメーションカウンタ
 	g_stagedata.animcounter++;
 	g_stagedata.animcounter &= MAXINT;
@@ -93,14 +114,22 @@ void DrawHero(int ac){
 	int qKey = CheckHitKey(KEY_INPUT_Q);
 	int wKey = CheckHitKey(KEY_INPUT_W);
 
+	int oneKey = CheckHitKey(KEY_INPUT_1);
+	int fiveKey = CheckHitKey(KEY_INPUT_5);
+	int nineKey = CheckHitKey(KEY_INPUT_9);
+
 	double mv = 200.0 * g_stagedata.hero.pushSpeed; //移動量計算
 	float hx = g_stagedata.hero.x;
 	float hy = g_stagedata.hero.y;
 
 	//デバイスチェック
-	if (CheckHitKey(KEY_INPUT_1) && CheckHitKey(KEY_INPUT_5) && CheckHitKey(KEY_INPUT_9)){
-		if (g_deviceflag == TRUE) g_deviceflag = FALSE;
-		else g_deviceflag = TRUE;
+	if (Is159KeyTrigger(oneKey, fiveKey, nineKey)){
+		if (g_deviceflag == FALSE) {
+			g_deviceflag = TRUE;
+		}
+		else {
+			g_deviceflag = FALSE;
+		}
 	}
 
 	//Enterキーを押すたびに加速
@@ -317,6 +346,7 @@ void DrawHero(int ac){
 	//死亡回数
 	DrawFormatString(100, 230, GetColor(255, 255, 255),
 		"死亡回数：%d", g_stagedata.hero.deathCount);
+	
 
 	//デバッグモード
 	if (IsQKeyTrigger(qKey)){
@@ -416,6 +446,9 @@ AtariInfo CheckBlock(float x, float y, float rx){
 
 	//デバッグ、当たり判定可視化
 	if (g_debugflag == TRUE){
+		//スクロールの座標
+		DrawFormatString(100, 260, GetColor(0,0,0),
+			"scrollx：%lf", g_stagedata.scrollx);
 		DrawFormatString(1000, 400, GetColor(255, 255, 255),
 			"SAVEPOINT：%d ", g_savepoint);
 
@@ -547,6 +580,19 @@ BOOL IsWKeyTrigger(int key){
 	}
 	else {
 		g_stagedata.g_wkey_prev = FALSE;
+	}
+	return FALSE;
+}
+
+BOOL Is159KeyTrigger(int key1, int key2, int key3){
+	if (key1 && key2 && key3){
+		if (g_stagedata.g_159key_prev == FALSE){
+			g_stagedata.g_159key_prev = TRUE;
+			return TRUE;
+		}
+	}
+	else {
+		g_stagedata.g_159key_prev = FALSE;
 	}
 	return FALSE;
 }

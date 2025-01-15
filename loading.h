@@ -11,6 +11,7 @@ struct ImageHandles{
 	int block, diagblock, knife, bullet;
 	int coin[6];
 	int title;
+	int background[5];
 };
 extern ImageHandles g_imghandles;
 

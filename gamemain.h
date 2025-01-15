@@ -66,6 +66,7 @@ struct StageData{
 	BOOL g_rkey_prev;
 	BOOL g_qkey_prev;
 	BOOL g_wkey_prev;
+	BOOL g_159key_prev;
 };
 extern StageData g_stagedata;
 
@@ -84,5 +85,6 @@ BOOL IsEnterKeyTrigger(int key);
 BOOL IsRKeyTrigger(int key);
 BOOL IsQKeyTrigger(int key);
 BOOL IsWKeyTrigger(int key);
+BOOL Is159KeyTrigger(int key1, int key2, int key3);
 
 #endif
