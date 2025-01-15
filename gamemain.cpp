@@ -75,21 +75,25 @@ void GameMain(){
 	DrawBox(0, 0, 1300, 730, GetColor(255, 255, 255), TRUE);
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
 	DrawGraph(0 - g_stagedata.scrollx / 5, 0, g_imghandles.background[0], TRUE);
-	//DrawGraph(1140 - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[0], TRUE);
-	DrawGraph(2280 - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[0], TRUE);
+	DrawGraph(1140 - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[0], TRUE);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-	DrawBox(3000 - int(g_stagedata.scrollx / 5), 0, 1300, 730, GetColor(255, 255, 255), TRUE);
+	DrawBox(1800 - int(g_stagedata.scrollx / 5), 0, 1300, 730, GetColor(255, 255, 255), TRUE);
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
-	DrawGraph(3000 - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[1], TRUE);
-	DrawGraph(4460 - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[1], TRUE);
-	DrawGraph(5920 - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[1], TRUE);
-	DrawGraph(7380 - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[1], TRUE);
-	DrawGraph(8840 - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[1], TRUE);
-	DrawGraph(10300 - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[1], TRUE);
-	DrawGraph(10500 - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[2], TRUE);
-	//DrawGraph(0, 0, g_imghandles.background[0], TRUE);
-	//DrawGraph(0, 0, g_imghandles.background[0], TRUE);
-	//DrawGraph(0, 0, g_imghandles.background[0], TRUE);
+	DrawGraph(1800 - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[1], TRUE);
+	DrawGraph(3260 - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[1], TRUE);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	DrawBox(3300 - int(g_stagedata.scrollx / 5), 0, 1300, 730, GetColor(255, 255, 255), TRUE);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
+	DrawGraph(3300 - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[2], TRUE);
+	DrawGraph(4396 - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[2], TRUE);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	DrawBox(4800 - int(g_stagedata.scrollx / 5), 0, 1300, 730, GetColor(255, 255, 255), TRUE);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
+	DrawGraph(4800 - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[3], TRUE);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	DrawBox(6300 - int(g_stagedata.scrollx / 5), 0, 1300, 730, GetColor(255, 255, 255), TRUE);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
+	DrawGraph(6300 - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[4], TRUE);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	//アニメーションカウンタ
@@ -449,11 +453,11 @@ AtariInfo CheckBlock(float x, float y, float rx){
 		//スクロールの座標
 		DrawFormatString(100, 260, GetColor(0,0,0),
 			"scrollx：%lf", g_stagedata.scrollx);
-		DrawFormatString(1000, 400, GetColor(255, 255, 255),
+		DrawFormatString(1000, 400, GetColor(0, 0, 0),
 			"SAVEPOINT：%d ", g_savepoint);
 
-		DrawFormatString(150, 300, GetColor(255, 255, 255), "UL:%d\nUR:%d\nDL:%d\nDR:%d\nGL:%d\nGR:%d", result.UL, result.UR, result.DL, result.DR, result.GL, result.GR);
-		DrawFormatString(100, 300, GetColor(255, 255, 255), "ULU:%d\nURU:%d\nURR:%d\nDRR:%d", result.ULU, result.URU, result.URR, result.DRR);
+		DrawFormatString(150, 300, GetColor(0, 0, 0), "UL:%d\nUR:%d\nDL:%d\nDR:%d\nGL:%d\nGR:%d", result.UL, result.UR, result.DL, result.DR, result.GL, result.GR);
+		DrawFormatString(100, 300, GetColor(0, 0, 0), "ULU:%d\nURU:%d\nURR:%d\nDRR:%d", result.ULU, result.URU, result.URR, result.DRR);
 
 		DrawBox(debugAtari_x[0] - 2 - g_stagedata.scrollx, debugAtari_y[0] - 2, debugAtari_x[0] + 2 - g_stagedata.scrollx, debugAtari_y[0] + 2, GetColor(255, 0, 0), TRUE);//UL
 		DrawBox(debugAtari_x[1] - 2 - g_stagedata.scrollx, debugAtari_y[1] - 2, debugAtari_x[1] + 2 - g_stagedata.scrollx, debugAtari_y[1] + 2, GetColor(255, 0, 0), TRUE);//UR
