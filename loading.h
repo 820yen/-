@@ -12,6 +12,7 @@ struct ImageHandles{
 	int coin[6];
 	int title;
 	int background[5];
+	int builda, buildb, buildc;
 };
 extern ImageHandles g_imghandles;
 

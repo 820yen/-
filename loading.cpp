@@ -28,5 +28,9 @@ BOOL LoadGameImage(){
 	if ((g_imghandles.knife = LoadGraph("media\\smp2_knife.png")) == -1) return FALSE;
 	if ((g_imghandles.title = LoadGraph("media\\title.png")) == -1) return FALSE;
 
+	if ((g_imghandles.builda = LoadGraph("media\\build_black_X.png")) == -1) return FALSE;
+	if ((g_imghandles.buildb = LoadGraph("media\\build_win_Y.png")) == -1) return FALSE;
+	if ((g_imghandles.buildc = LoadGraph("media\\build_win_Z.png")) == -1) return FALSE;
+
 	return TRUE;
 }

@@ -9,7 +9,7 @@
 #define HEROSPEED 0.006
 #define SLOWSPEED 0.00005
 #define MAP_WIDTH 700
-#define MAP_HEIGHT 14
+#define MAP_HEIGHT 15
 #define MAXSTAGE 5
 #define SCR_WIDTH 26
 #define ANIM_RATE 4

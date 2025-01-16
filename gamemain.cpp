@@ -71,6 +71,14 @@ void InitStage(){
 }
 
 void GameMain(){
+	//int &stage1x, &stage2x, &stage3x, &stage4x, &stage5x;
+	//int &stage1y, &stage2y, &stage3y, &stage4y, &stage5y;
+	//GetImageSize_File("media\\stage1_background.jpg", &stage1x, &stage1y);
+	//GetImageSize_File("media\\stage2_background.jpg", &stage2x, &stage2y);
+	//GetImageSize_File("media\\stage3_background.jpg", &stage3x, &stage3y);
+	//GetImageSize_File("media\\stage4_background.jpg", &stage4x, &stage4y);
+	//GetImageSize_File("media\\stage5_background.jpg", &stage5x, &stage5y);
+
 	//”wŒi‰æ‘œ
 	DrawBox(0, 0, 1300, 730, GetColor(255, 255, 255), TRUE);
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
@@ -504,7 +512,7 @@ void DrawMap(){
 				g_coincheck = 4;
 			}
 
-			//ƒuƒƒbƒN•`‰æiA`Zj
+			//ƒuƒƒbƒN•`‰æiA`Zjz
 			if (cell >= 'A' && cell <= 'Z'){
 				switch (cell){
 				case 'A':
@@ -514,6 +522,18 @@ void DrawMap(){
 				case 'B':
 					DrawGraph(x * IMG_CHIPSIZE - shiftx, y * IMG_CHIPSIZE,
 						g_imghandles.diagblock, TRUE);
+					break;
+				case 'X':
+					DrawGraph(x * IMG_CHIPSIZE - shiftx, y * IMG_CHIPSIZE,
+						g_imghandles.builda, TRUE);
+					break;
+				case 'Y':
+					DrawGraph(x * IMG_CHIPSIZE - shiftx, y * IMG_CHIPSIZE,
+						g_imghandles.buildb, TRUE);
+					break;
+				case 'Z':
+					DrawGraph(x * IMG_CHIPSIZE - shiftx, y * IMG_CHIPSIZE,
+						g_imghandles.buildc, TRUE);
 					break;
 				}
 			}
