@@ -120,13 +120,6 @@ int WINAPI WinMain(HINSTANCE h1, HINSTANCE hP, LPSTR lpC, int nC){
 //タイトル画面描画
 void DrawGameTitle(){
 	DrawGraph(0, 0, g_imghandles.title, FALSE);
-	//テキスト表示
-	DrawStringToHandle(30, 440, "Zキーでゲームスタート",
-		GetColor(255, 0, 255), g_middlefont);
-	DrawStringToHandle(30, 490, "カーソルキーで左右に移動",
-		GetColor(0, 0, 0), g_middlefont);
-	DrawStringToHandle(30, 540, "Zキーでジャンプ、Xキーでナイフ投げ、",
-		GetColor(0, 0, 0), g_middlefont);
 	//キーをチェックして画面を切り替え
 	int key = GetJoypadInputState(DX_INPUT_KEY_PAD1);
 	if (IsAKeyTrigger(key) == TRUE) {
