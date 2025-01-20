@@ -17,6 +17,13 @@ struct ImageHandles{
 };
 extern ImageHandles g_imghandles;
 
+struct SoundHandles{
+	int coin;
+	int jump;
+	int drop;
+};
+extern SoundHandles g_sndhandles;
+
 BOOL LoadGameImage();
 
 #endif

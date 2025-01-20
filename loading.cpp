@@ -1,6 +1,7 @@
 #include "loading.h"
 
 ImageHandles g_imghandles;
+SoundHandles g_sndhandles;
 
 BOOL LoadGameImage(){
 	if (LoadDivGraph("media\\smp2_chara01.png", 2, 2, 1, 50, 50, g_imghandles.hero) == -1){
@@ -34,6 +35,20 @@ BOOL LoadGameImage(){
 	if ((g_imghandles.tsuchi = LoadGraph("media\\block_tsuchi_H.png")) == -1) return FALSE;
 	if ((g_imghandles.ganpeki = LoadGraph("media\\maptile_ganpeki_I.png")) == -1) return FALSE;
 	if ((g_imghandles.wood = LoadGraph("media\\maptile_wood_J.png")) == -1) return FALSE;
+
+	return TRUE;
+}
+
+//âπäyÅAå¯â âπ
+BOOL LoadGameSound(){
+	if ((g_sndhandles.coin = LoadSoundMem("media\\coin.mp3")) == -1) return FALSE;
+	if ((g_sndhandles.jump = LoadSoundMem("media\\jump.mp3")) == -1) return FALSE;
+	if ((g_sndhandles.drop = LoadSoundMem("media\\drop.mp3")) == -1) return FALSE;
+
+	//âπó ÇÃïœçX(255:í èÌ 0:ñ≥âπ)
+	//ChangeVolumeSoundMem(128, g_sndhandles.coin);
+	ChangeVolumeSoundMem(200, g_sndhandles.jump);
+	//ChangeVolumeSoundMem(170, g_sndhandles.drop);
 
 	return TRUE;
 }

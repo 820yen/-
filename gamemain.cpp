@@ -11,6 +11,20 @@ BOOL g_limitflag = TRUE;	//時間制限でゲームオーバーになるか選べる
 BOOL g_debugflag = FALSE;	//デバックの時に分かりやすくするために表示するか選べる
 BOOL g_deviceflag = FALSE;	//デバイスが異なる時に変更する
 
+//フェードアウトとフェードイン
+int opacity = 0;
+BOOL fadein = FALSE;
+BOOL fadeout = FALSE;
+BOOL savepoint2 = FALSE;
+BOOL savepoint3 = FALSE;
+BOOL savepoint4 = FALSE;
+BOOL savepoint5 = FALSE;
+
+BOOL switch2 = FALSE;
+BOOL switch3 = FALSE;
+BOOL switch4 = FALSE;
+BOOL switch5 = FALSE;
+
 //ステージ初期化
 void InitStage(){
 	char buf[256];
@@ -65,6 +79,20 @@ void InitStage(){
 	g_stagedata.hero.coinCount = 0;
 	g_stagedata.hero.deathCount = 0;
 
+	//フェードイベントの初期化
+	opacity = 0;
+	fadein = FALSE;
+	fadeout = FALSE;
+	savepoint2 = FALSE;
+	savepoint3 = FALSE;
+	savepoint4 = FALSE;
+	savepoint5 = FALSE;
+
+	switch2 = FALSE;
+	switch3 = FALSE;
+	switch4 = FALSE;
+	switch5 = FALSE;
+
 	ZeroMemory(g_stagedata.enemies, sizeof(g_stagedata.enemies));
 	ZeroMemory(g_stagedata.knives, sizeof(g_stagedata.knives));
 	g_stagedata.scrollx = 0;
@@ -78,47 +106,114 @@ void GameMain(){
 	int size4x = 1140;
 	int size5x = 2393;
 
+
 	//背景画像
 	//白背景
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	DrawBox(0, 0, 1300, 730, GetColor(255, 255, 255), TRUE);
 	//stage1
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
-	DrawGraph(0 - g_stagedata.scrollx / 5, 0, g_imghandles.background[0], TRUE);
-	DrawGraph(size1x - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[0], TRUE);
-	//白背景
-	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-	DrawBox(1800 - int(g_stagedata.scrollx / 5), 0, 1300, 730, GetColor(255, 255, 255), TRUE);
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
+		DrawGraph(0 - g_stagedata.scrollx / 5, 0, g_imghandles.background[0], TRUE);
+		DrawGraph(size1x - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[0], TRUE);
 
-	//stage2
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
-	DrawGraph(1800 - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[1], TRUE);
-	DrawGraph(1800 + size2x - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[1], TRUE);
-	//白背景
-	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-	DrawBox(3300 - int(g_stagedata.scrollx / 5), 0, 1300, 730, GetColor(255, 255, 255), TRUE);
+	//stage2 1800
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
+		DrawGraph(size1x * 2 - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[1], TRUE);
+		DrawGraph(size1x * 3 - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[1], TRUE);
+		DrawGraph(size1x * 4 - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[1], TRUE);
 
-	//stage3
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
-	DrawGraph(3300 - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[2], TRUE);
-	DrawGraph(3300 + size3x - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[2], TRUE);
-	//白背景
-	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-	DrawBox(4800 - int(g_stagedata.scrollx / 5), 0, 1300, 730, GetColor(255, 255, 255), TRUE);
+	//stage3 3300
+	if (switch3 == TRUE){
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+		DrawBox(0, 0, 1300, 730, GetColor(255, 255, 255), TRUE);
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
+		DrawGraph(2000 - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[2], TRUE);
+		DrawGraph(2000 + size3x - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[2], TRUE);
+		DrawGraph(2000 + size3x * 2 - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[2], TRUE);
+	}
 
-	//stage4
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
-	DrawGraph(4800 - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[3], TRUE);
-	DrawGraph(4800 + size4x - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[3], TRUE);
-	//白背景
-	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-	DrawBox(6300 - int(g_stagedata.scrollx / 5), 0, 1300, 730, GetColor(255, 255, 255), TRUE);
+	//stage4 4800
+	if (switch4 == TRUE){
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+		DrawBox(0, 0, 1300, 730, GetColor(255, 255, 255), TRUE);
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
+		DrawGraph(3500 - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[3], TRUE);
+		DrawGraph(3500 + size4x - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[3], TRUE);
+		DrawGraph(3500 + size4x * 2 - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[3], TRUE);
+	}
 
-	//stage5
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
-	DrawGraph(6300 - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[4], TRUE);
-	DrawGraph(6300 + size5x - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[4], TRUE);
-	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	//stage5 6300
+	if (switch5 == TRUE){
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+		DrawBox(0, 0, 1300, 730, GetColor(255, 255, 255), TRUE);
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
+		DrawGraph(5000 - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[4], TRUE);
+		DrawGraph(5000 + size5x - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[4], TRUE);
+		DrawGraph(5000 + size5x * 2 - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[4], TRUE);
+	}
 
+
+	if (savepoint3 == FALSE){
+		if (g_savepoint == 2){
+			if (fadein == FALSE){
+				opacity += 5;
+				if (opacity == 255){
+					fadein = TRUE;
+					switch3 = TRUE;
+				}
+			}
+			if (fadein == TRUE){
+				opacity -= 5;
+				if (opacity == 0){
+					fadein = FALSE;
+					savepoint3 = TRUE;
+				}
+			}
+		}
+
+	}
+	if (savepoint4 == FALSE){
+		if (g_savepoint == 3){
+			if (fadein == FALSE){
+				opacity += 5;
+				if (opacity == 255){
+					fadein = TRUE;
+					switch4 = TRUE;
+				}
+			}
+			if (fadein == TRUE){
+				opacity -= 5;
+				if (opacity == 0){
+					fadein = FALSE;
+					savepoint4= TRUE;
+				}
+			}
+		}
+
+	}
+	if (savepoint5 == FALSE){
+		if (g_savepoint == 4){
+			if (fadein == FALSE){
+				opacity += 5;
+				if (opacity == 255){
+					fadein = TRUE;
+					switch5 = TRUE;
+				}
+			}
+			if (fadein == TRUE){
+				opacity -= 5;
+				if (opacity == 0){
+					fadein = FALSE;
+					savepoint5 = TRUE;
+				}
+			}
+		}
+
+	}
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, opacity);
+	DrawBox(0, 0, 1300, 730, GetColor(255, 255, 255), TRUE);
+
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	//アニメーションカウンタ
 	g_stagedata.animcounter++;
 	g_stagedata.animcounter &= MAXINT;
@@ -289,6 +384,9 @@ void DrawHero(int ac){
 	if (g_stagedata.hero.jumping == FALSE){
  		if (IsSpaceKeyTrigger(spaceKey) == TRUE && g_stagedata.hero.noground == FALSE)
 		{
+			if (CheckSoundMem(g_sndhandles.jump) == 0) {
+				PlaySoundMem(g_sndhandles.jump, DX_PLAYTYPE_NORMAL);
+			}
 			g_stagedata.hero.jumping = TRUE;
 			g_stagedata.hero.jumppower = JUMP_POWER;
 			g_stagedata.hero.jumpforward = hx;
@@ -299,6 +397,7 @@ void DrawHero(int ac){
 	if (hy > MAP_HEIGHT * IMG_CHIPSIZE - IMG_CHIPSIZE){
 		mv = 0;
 		g_stagedata.hero.deathCount++;
+		PlaySoundMem(g_sndhandles.drop, DX_PLAYTYPE_BACK);
 
 		if (g_savepoint == 0){
 			hx = 2 * IMG_CHIPSIZE;
