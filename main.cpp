@@ -127,6 +127,7 @@ void DrawGameTitle(){
 		g_limittimerstart = g_lasttime;
 		InitStage();
 		playerScore = 0; //スコアをリセット
+		g_TextStep = 0;	 //テキストステップをリセット
 	}
 }
 //ゲーム本編描画
