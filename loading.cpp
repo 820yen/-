@@ -31,6 +31,9 @@ BOOL LoadGameImage(){
 	if ((g_imghandles.builda = LoadGraph("media\\build_black_X.png")) == -1) return FALSE;
 	if ((g_imghandles.buildb = LoadGraph("media\\build_win_Y.png")) == -1) return FALSE;
 	if ((g_imghandles.buildc = LoadGraph("media\\build_win_Z.png")) == -1) return FALSE;
+	if ((g_imghandles.tsuchi = LoadGraph("media\\block_tsuchi_H.png")) == -1) return FALSE;
+	if ((g_imghandles.ganpeki = LoadGraph("media\\maptile_ganpeki_I.png")) == -1) return FALSE;
+	if ((g_imghandles.wood = LoadGraph("media\\maptile_wood_J.png")) == -1) return FALSE;
 
 	return TRUE;
 }

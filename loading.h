@@ -13,6 +13,7 @@ struct ImageHandles{
 	int title;
 	int background[5];
 	int builda, buildb, buildc;
+	int tsuchi, ganpeki, wood;
 };
 extern ImageHandles g_imghandles;
 

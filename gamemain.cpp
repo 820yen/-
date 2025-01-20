@@ -71,37 +71,52 @@ void InitStage(){
 }
 
 void GameMain(){
-	//int &stage1x, &stage2x, &stage3x, &stage4x, &stage5x;
-	//int &stage1y, &stage2y, &stage3y, &stage4y, &stage5y;
-	//GetImageSize_File("media\\stage1_background.jpg", &stage1x, &stage1y);
-	//GetImageSize_File("media\\stage2_background.jpg", &stage2x, &stage2y);
-	//GetImageSize_File("media\\stage3_background.jpg", &stage3x, &stage3y);
-	//GetImageSize_File("media\\stage4_background.jpg", &stage4x, &stage4y);
-	//GetImageSize_File("media\\stage5_background.jpg", &stage5x, &stage5y);
+	//背景画像の横サイズ
+	int size1x = 1096;
+	int size2x = 1096;
+	int size3x = 1460;
+	int size4x = 1140;
+	int size5x = 2393;
 
 	//背景画像
+	//白背景
 	DrawBox(0, 0, 1300, 730, GetColor(255, 255, 255), TRUE);
+	//stage1
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
 	DrawGraph(0 - g_stagedata.scrollx / 5, 0, g_imghandles.background[0], TRUE);
-	DrawGraph(1140 - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[0], TRUE);
+	DrawGraph(size1x - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[0], TRUE);
+	//白背景
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	DrawBox(1800 - int(g_stagedata.scrollx / 5), 0, 1300, 730, GetColor(255, 255, 255), TRUE);
+
+	//stage2
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
 	DrawGraph(1800 - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[1], TRUE);
-	DrawGraph(3260 - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[1], TRUE);
+	DrawGraph(1800 + size2x - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[1], TRUE);
+	//白背景
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	DrawBox(3300 - int(g_stagedata.scrollx / 5), 0, 1300, 730, GetColor(255, 255, 255), TRUE);
+
+	//stage3
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
 	DrawGraph(3300 - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[2], TRUE);
-	DrawGraph(4396 - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[2], TRUE);
+	DrawGraph(3300 + size3x - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[2], TRUE);
+	//白背景
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	DrawBox(4800 - int(g_stagedata.scrollx / 5), 0, 1300, 730, GetColor(255, 255, 255), TRUE);
+
+	//stage4
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
 	DrawGraph(4800 - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[3], TRUE);
+	DrawGraph(4800 + size4x - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[3], TRUE);
+	//白背景
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	DrawBox(6300 - int(g_stagedata.scrollx / 5), 0, 1300, 730, GetColor(255, 255, 255), TRUE);
+
+	//stage5
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
 	DrawGraph(6300 - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[4], TRUE);
+	DrawGraph(6300 + size5x - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[4], TRUE);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	//アニメーションカウンタ
@@ -416,17 +431,6 @@ BOOL _CheckBlockSub(float x, float y){
 
 	//通常ブロック
 	if (blockType == 'A') return TRUE;
-
-	//斜めブロック（右上がり）
-	if (blockType == 'B') {
-		
-	}
-
-	//斜めブロック（左上がり）
-	if (blockType == 'C') {
-		
-	}
-
 	if (blockType != '0') return TRUE;
 	return FALSE;
 }
@@ -522,6 +526,18 @@ void DrawMap(){
 				case 'B':
 					DrawGraph(x * IMG_CHIPSIZE - shiftx, y * IMG_CHIPSIZE,
 						g_imghandles.diagblock, TRUE);
+					break;
+				case 'H':
+					DrawGraph(x * IMG_CHIPSIZE - shiftx, y * IMG_CHIPSIZE,
+						g_imghandles.tsuchi, TRUE);
+					break;
+				case 'I':
+					DrawGraph(x * IMG_CHIPSIZE - shiftx, y * IMG_CHIPSIZE,
+						g_imghandles.ganpeki, TRUE);
+					break;
+				case 'J':
+					DrawGraph(x * IMG_CHIPSIZE - shiftx, y * IMG_CHIPSIZE,
+						g_imghandles.wood, TRUE);
 					break;
 				case 'X':
 					DrawGraph(x * IMG_CHIPSIZE - shiftx, y * IMG_CHIPSIZE,
