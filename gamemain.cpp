@@ -384,15 +384,14 @@ void DrawHero(int ac){
 	if (g_stagedata.hero.jumping == FALSE){
  		if (IsSpaceKeyTrigger(spaceKey) == TRUE && g_stagedata.hero.noground == FALSE)
 		{
-			if (CheckSoundMem(g_sndhandles.jump) == 0) {
-				PlaySoundMem(g_sndhandles.jump, DX_PLAYTYPE_NORMAL);
-			}
+			PlaySoundMem(g_sndhandles.jump, DX_PLAYTYPE_BACK);
+
 			g_stagedata.hero.jumping = TRUE;
 			g_stagedata.hero.jumppower = JUMP_POWER;
 			g_stagedata.hero.jumpforward = hx;
 		}
 	}
-
+	
 	//落下判定
 	if (hy > MAP_HEIGHT * IMG_CHIPSIZE - IMG_CHIPSIZE){
 		mv = 0;
@@ -438,11 +437,6 @@ void DrawHero(int ac){
 	}
 	g_stagedata.hero.x = hx;
 	g_stagedata.hero.y = hy;
-
-	//画面端に来たらスクロールストップ
-	//if (hx >(MAP_WIDTH - 448) * IMG_CHIPSIZE){
-	//	g_stagedata.scrollx = g_stagedata.scroll_stop;
-	//}
 
 	//主人公描画
 	DrawRotaGraph2((int)(g_stagedata.hero.x - g_stagedata.scrollx), 

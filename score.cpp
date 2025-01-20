@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <DxLib.h>
 
-static int playerNumber = 1; // プレイヤー番号を保持
+static int playerNumber = 1; //プレイヤー番号を保持
 
 //番号をファイルから読み込む
 void LoadPlayerNumber() {

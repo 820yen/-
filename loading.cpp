@@ -46,9 +46,9 @@ BOOL LoadGameSound(){
 	if ((g_sndhandles.drop = LoadSoundMem("media\\drop.mp3")) == -1) return FALSE;
 
 	//‰¹—Ê‚Ì•ÏX(255:’Êí 0:–³‰¹)
-	//ChangeVolumeSoundMem(128, g_sndhandles.coin);
-	ChangeVolumeSoundMem(200, g_sndhandles.jump);
-	//ChangeVolumeSoundMem(170, g_sndhandles.drop);
+	ChangeVolumeSoundMem(128, g_sndhandles.coin);
+	ChangeVolumeSoundMem(100, g_sndhandles.jump);
+	ChangeVolumeSoundMem(150, g_sndhandles.drop);
 
 	return TRUE;
 }

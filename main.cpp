@@ -65,6 +65,10 @@ int WINAPI WinMain(HINSTANCE h1, HINSTANCE hP, LPSTR lpC, int nC){
 
 	//画像を読み込み
 	if (LoadGameImage() == FALSE) return -1;
+	//BGM,効果音読み込み
+	if (LoadGameSound() == FALSE) return -1;
+
+	//フォント読みこみ
 	g_largefont = CreateFontToHandle("メイリオ", 90, -1, DX_FONTTYPE_ANTIALIASING);
 	g_mediumfont = CreateFontToHandle("メイリオ", 65, -1, DX_FONTTYPE_ANTIALIASING);
 	g_middlefont = CreateFontToHandle("メイリオ", 42, -1, DX_FONTTYPE_ANTIALIASING);
@@ -102,7 +106,7 @@ int WINAPI WinMain(HINSTANCE h1, HINSTANCE hP, LPSTR lpC, int nC){
 			break;
 		}
 		//ランキングを右上に表示
-        DrawRanking(scores);
+		DrawRanking(scores);
 
 		ScreenFlip();
 	}

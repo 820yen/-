@@ -25,5 +25,6 @@ struct SoundHandles{
 extern SoundHandles g_sndhandles;
 
 BOOL LoadGameImage();
+BOOL LoadGameSound();
 
 #endif
