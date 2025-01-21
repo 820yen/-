@@ -6,7 +6,6 @@ StageData g_stagedata;
 int g_savepoint = 0;
 int g_coincheck = 0;
 int g_randamstage;
-int countDown = 0;
 
 BOOL g_limitflag = TRUE;	//時間制限でゲームオーバーになるか選べる
 BOOL g_debugflag = FALSE;	//デバックの時に分かりやすくするために表示するか選べる
@@ -25,8 +24,6 @@ BOOL switch2 = FALSE;
 BOOL switch3 = FALSE;
 BOOL switch4 = FALSE;
 BOOL switch5 = FALSE;
-
-BOOL countDownFlag = FALSE;
 
 //ステージ初期化
 void InitStage(){
@@ -100,9 +97,6 @@ void InitStage(){
 	switch3 = FALSE;
 	switch4 = FALSE;
 	switch5 = FALSE;
-
-	countDown = 0;
-	countDownFlag = FALSE;
 
 	ZeroMemory(g_stagedata.enemies, sizeof(g_stagedata.enemies));
 	ZeroMemory(g_stagedata.knives, sizeof(g_stagedata.knives));
