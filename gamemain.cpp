@@ -6,6 +6,7 @@ StageData g_stagedata;
 int g_savepoint = 0;
 int g_coincheck = 0;
 int g_randamstage;
+int countDown = 0;
 
 BOOL g_limitflag = TRUE;	//時間制限でゲームオーバーになるか選べる
 BOOL g_debugflag = FALSE;	//デバックの時に分かりやすくするために表示するか選べる
@@ -24,6 +25,8 @@ BOOL switch2 = FALSE;
 BOOL switch3 = FALSE;
 BOOL switch4 = FALSE;
 BOOL switch5 = FALSE;
+
+BOOL countDownFlag = FALSE;
 
 //ステージ初期化
 void InitStage(){
@@ -67,6 +70,11 @@ void InitStage(){
 	g_stagedata.mapwidth[3] = (int)strlen(g_mapdata[0][0]) + (int)strlen(g_mapdata[1][0]) + (int)strlen(g_mapdata[2][0]) + (int)strlen(g_mapdata[3][0]);
 	g_stagedata.mapwidth[4] = (int)strlen(g_mapdata[0][0]) + (int)strlen(g_mapdata[1][0]) + (int)strlen(g_mapdata[2][0]) + (int)strlen(g_mapdata[3][0]) + (int)strlen(g_mapdata[4][0]);
 
+	StopSoundMem(g_sndhandles.title);
+	if (CheckSoundMem(g_sndhandles.main) == 0) {
+		PlaySoundMem(g_sndhandles.main, DX_PLAYTYPE_LOOP);
+	}
+
 	//主人公の位置とステータスを初期化
 	g_stagedata.hero.x = 2 * IMG_CHIPSIZE;
 	g_stagedata.hero.y = 10 * IMG_CHIPSIZE;
@@ -93,6 +101,9 @@ void InitStage(){
 	switch4 = FALSE;
 	switch5 = FALSE;
 
+	countDown = 0;
+	countDownFlag = FALSE;
+
 	ZeroMemory(g_stagedata.enemies, sizeof(g_stagedata.enemies));
 	ZeroMemory(g_stagedata.knives, sizeof(g_stagedata.knives));
 	g_stagedata.scrollx = 0;
@@ -105,7 +116,6 @@ void GameMain(){
 	int size3x = 1460;
 	int size4x = 1140;
 	int size5x = 2393;
-
 
 	//背景画像
 	//白背景
@@ -318,7 +328,7 @@ void DrawHero(int ac){
 			}
 		}
 	}
-
+	
 	mv = 200.0 * g_stagedata.hero.pushSpeed;
 
 	//ゴール後のスピード調整
@@ -450,27 +460,27 @@ void DrawHero(int ac){
 		g_imghandles.hero[ac % ANIMFRAME], TRUE, g_stagedata.hero.turn);
 
 	//スピードメータ
-	DrawFormatString(100, 200, GetColor(255, 255, 255),
+	DrawFormatString(100, 200, GetColor(0, 0, 0),
 		"スピード：%.2f", mv);
 	//コイン所持数
-	DrawFormatString(100, 170, GetColor(255, 255, 255),
+	DrawFormatString(100, 170, GetColor(0, 0, 0),
 		"コイン：%d", g_stagedata.hero.coinCount);
 	//残り時間
 	if (10 <= g_limittimesec){
-		DrawFormatString(100, 140, GetColor(255, 255, 255),
+		DrawFormatString(100, 140, GetColor(0, 0, 0),
 			"残り時間 :  %d:%d", g_limittimemin, g_limittimesec);
 	}
 	else{
-		DrawFormatString(100, 140, GetColor(255, 255, 255),
+		DrawFormatString(100, 140, GetColor(0, 0, 0),
 			"残り時間 :  %d:0%d", g_limittimemin, g_limittimesec);
 	}
 	//残り距離
-	DrawFormatString(1000, 300, GetColor(255, 255, 255),
+	DrawFormatString(1000, 300, GetColor(0, 0, 0),
 		"菓道まで：%.1fkm →", ((g_stagedata.mapwidth[4] - g_stagedata.hero.x / 50)
 		/ (g_stagedata.mapwidth[4] - 2))
 		 * 17.5);
 	//死亡回数
-	DrawFormatString(100, 230, GetColor(255, 255, 255),
+	DrawFormatString(100, 230, GetColor(0, 0, 0),
 		"死亡回数：%d", g_stagedata.hero.deathCount);
 	
 
@@ -661,6 +671,14 @@ void DrawMap(){
 				case 'K':
 					DrawGraph(x * IMG_CHIPSIZE - shiftx, y * IMG_CHIPSIZE,
 						g_imghandles.tsuchic, TRUE);
+					break;
+				case 'L':
+					DrawGraph(x * IMG_CHIPSIZE - shiftx, y * IMG_CHIPSIZE,
+						g_imghandles.tsuchil, TRUE);
+					break;
+				case 'M':
+					DrawGraph(x * IMG_CHIPSIZE - shiftx, y * IMG_CHIPSIZE,
+						g_imghandles.tsuchir, TRUE);
 					break;
 				case 'W':
 					DrawGraph(x * IMG_CHIPSIZE - shiftx, y * IMG_CHIPSIZE,

@@ -41,13 +41,13 @@ BOOL g_scoreAdded = FALSE;			//スコアが追加されたかどうか
 BOOL g_scoreTotaled = FALSE;		//スコアが加算されたかどうか
 
 //色
-int blownColor = GetColor(134, 74, 43);
-int orangeColor = GetColor(255, 160, 16);
-int yellowColor = GetColor(227, 199, 0);
-int whiteColor = GetColor(255, 255, 255);
-int pinkColor = GetColor(255, 0, 255);
-int blackColor = GetColor(0, 0, 0);
-int blueColor = GetColor(80, 128, 255);
+extern int blownColor = GetColor(134, 74, 43);
+extern int orangeColor = GetColor(255, 160, 16);
+extern int yellowColor = GetColor(227, 199, 0);
+extern int whiteColor = GetColor(255, 255, 255);
+extern int pinkColor = GetColor(255, 0, 255);
+extern int blackColor = GetColor(0, 0, 0);
+extern int blueColor = GetColor(80, 128, 255);
 
 int WINAPI WinMain(HINSTANCE h1, HINSTANCE hP, LPSTR lpC, int nC){
 	//ウィンドウモードにする
@@ -123,6 +123,10 @@ int WINAPI WinMain(HINSTANCE h1, HINSTANCE hP, LPSTR lpC, int nC){
 
 //タイトル画面描画
 void DrawGameTitle(){
+	StopSoundMem(g_sndhandles.main);
+	if (CheckSoundMem(g_sndhandles.title) == 0) {
+		PlaySoundMem(g_sndhandles.title, DX_PLAYTYPE_LOOP);
+	}
 	DrawGraph(0, 0, g_imghandles.title, FALSE);
 	//キーをチェックして画面を切り替え
 	int key = GetJoypadInputState(DX_INPUT_KEY_PAD1);

@@ -13,10 +13,11 @@ struct ImageHandles{
 	int title;
 	int background[5];
 	int builda, buildb, buildc;
-	int tsuchic, tsuchi, ganpeki, wood;
+	int tsuchi, ganpeki, wood;
 	int sogenc, sogenl, sogenr;
 	int kumoc, kumol, kumor;
 	int gold;
+	int tsuchic, tsuchil, tsuchir;
 };
 extern ImageHandles g_imghandles;
 
@@ -24,6 +25,7 @@ struct SoundHandles{
 	int coin;
 	int jump;
 	int drop;
+	int title, main;
 };
 extern SoundHandles g_sndhandles;
 

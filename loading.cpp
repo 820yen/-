@@ -24,7 +24,6 @@ BOOL LoadGameImage(){
 	if ((g_imghandles.background[4] = LoadGraph("media\\stage5_background.jpg")) == -1) return FALSE;
 
 	if ((g_imghandles.block = LoadGraph("media\\smp2_block.png")) == -1) return FALSE;
-	if ((g_imghandles.diagblock = LoadGraph("media\\smp2_diagonalblock.png")) == -1) return FALSE;
 	if ((g_imghandles.bullet = LoadGraph("media\\smp2_bullet.png")) == -1) return FALSE;
 	if ((g_imghandles.knife = LoadGraph("media\\smp2_knife.png")) == -1) return FALSE;
 	if ((g_imghandles.title = LoadGraph("media\\title.png")) == -1) return FALSE;
@@ -35,10 +34,12 @@ BOOL LoadGameImage(){
 	if ((g_imghandles.kumoc = LoadGraph("media\\kumo.center_E.png")) == -1) return FALSE;
 	if ((g_imghandles.kumol = LoadGraph("media\\kumo.left_F.png")) == -1) return FALSE;
 	if ((g_imghandles.kumor = LoadGraph("media\\kumo.right_G.png")) == -1) return FALSE;
-	if ((g_imghandles.tsuchi = LoadGraph("media\\block_tsuchi_H.png")) == -1) return FALSE;
+	if ((g_imghandles.tsuchi = LoadGraph("media\\tsuchi.center_H.png")) == -1) return FALSE;
 	if ((g_imghandles.ganpeki = LoadGraph("media\\maptile_ganpeki_I.png")) == -1) return FALSE;
 	if ((g_imghandles.wood = LoadGraph("media\\maptile_wood_J.png")) == -1) return FALSE;
 	if ((g_imghandles.tsuchic = LoadGraph("media\\tsuchi.center_K.png")) == -1) return FALSE;
+	if ((g_imghandles.tsuchil = LoadGraph("media\\tsuchi.left_L.png")) == -1) return FALSE;
+	if ((g_imghandles.tsuchir = LoadGraph("media\\tsuchi.right_M.png")) == -1) return FALSE;
 	if ((g_imghandles.gold = LoadGraph("media\\block_gold_W.png")) == -1) return FALSE;
 	if ((g_imghandles.builda = LoadGraph("media\\build_black_X.png")) == -1) return FALSE;
 	if ((g_imghandles.buildb = LoadGraph("media\\build_win_Y.png")) == -1) return FALSE;
@@ -54,7 +55,12 @@ BOOL LoadGameSound(){
 	if ((g_sndhandles.jump = LoadSoundMem("media\\jump.mp3")) == -1) return FALSE;
 	if ((g_sndhandles.drop = LoadSoundMem("media\\drop.mp3")) == -1) return FALSE;
 
+	if ((g_sndhandles.title = LoadSoundMem("media\\BGM_title.mp3")) == -1) return FALSE;
+	if ((g_sndhandles.main = LoadSoundMem("media\\BGM_main.mp3")) == -1) return FALSE;
+
 	//âπó ÇÃïœçX(255:í èÌ 0:ñ≥âπ)
+	ChangeVolumeSoundMem(128, g_sndhandles.title);
+	ChangeVolumeSoundMem(100, g_sndhandles.main);
 	ChangeVolumeSoundMem(128, g_sndhandles.coin);
 	ChangeVolumeSoundMem(100, g_sndhandles.jump);
 	ChangeVolumeSoundMem(150, g_sndhandles.drop);
