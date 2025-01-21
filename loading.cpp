@@ -24,7 +24,6 @@ BOOL LoadGameImage(){
 	if ((g_imghandles.background[4] = LoadGraph("media\\stage5_background.jpg")) == -1) return FALSE;
 
 	if ((g_imghandles.block = LoadGraph("media\\smp2_block.png")) == -1) return FALSE;
-	if ((g_imghandles.diagblock = LoadGraph("media\\smp2_diagonalblock.png")) == -1) return FALSE;
 	if ((g_imghandles.bullet = LoadGraph("media\\smp2_bullet.png")) == -1) return FALSE;
 	if ((g_imghandles.knife = LoadGraph("media\\smp2_knife.png")) == -1) return FALSE;
 	if ((g_imghandles.title = LoadGraph("media\\title.png")) == -1) return FALSE;
