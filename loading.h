@@ -13,7 +13,10 @@ struct ImageHandles{
 	int title;
 	int background[5];
 	int builda, buildb, buildc;
-	int tsuchi, ganpeki, wood;
+	int tsuchic, tsuchi, ganpeki, wood;
+	int sogenc, sogenl, sogenr;
+	int kumoc, kumol, kumor;
+	int gold;
 };
 extern ImageHandles g_imghandles;
 

@@ -29,12 +29,21 @@ BOOL LoadGameImage(){
 	if ((g_imghandles.knife = LoadGraph("media\\smp2_knife.png")) == -1) return FALSE;
 	if ((g_imghandles.title = LoadGraph("media\\title.png")) == -1) return FALSE;
 
-	if ((g_imghandles.builda = LoadGraph("media\\build_black_X.png")) == -1) return FALSE;
-	if ((g_imghandles.buildb = LoadGraph("media\\build_win_Y.png")) == -1) return FALSE;
-	if ((g_imghandles.buildc = LoadGraph("media\\build_win_Z.png")) == -1) return FALSE;
+	if ((g_imghandles.sogenc = LoadGraph("media\\jimen_sogen_center_B.png")) == -1) return FALSE;
+	if ((g_imghandles.sogenl = LoadGraph("media\\jimen_sogen_left_C.png")) == -1) return FALSE;
+	if ((g_imghandles.sogenr = LoadGraph("media\\jimen_sogen_right_D.png")) == -1) return FALSE;
+	if ((g_imghandles.kumoc = LoadGraph("media\\kumo.center_E.png")) == -1) return FALSE;
+	if ((g_imghandles.kumol = LoadGraph("media\\kumo.left_F.png")) == -1) return FALSE;
+	if ((g_imghandles.kumor = LoadGraph("media\\kumo.right_G.png")) == -1) return FALSE;
 	if ((g_imghandles.tsuchi = LoadGraph("media\\block_tsuchi_H.png")) == -1) return FALSE;
 	if ((g_imghandles.ganpeki = LoadGraph("media\\maptile_ganpeki_I.png")) == -1) return FALSE;
 	if ((g_imghandles.wood = LoadGraph("media\\maptile_wood_J.png")) == -1) return FALSE;
+	if ((g_imghandles.tsuchic = LoadGraph("media\\tsuchi.center_K.png")) == -1) return FALSE;
+	if ((g_imghandles.gold = LoadGraph("media\\block_gold_W.png")) == -1) return FALSE;
+	if ((g_imghandles.builda = LoadGraph("media\\build_black_X.png")) == -1) return FALSE;
+	if ((g_imghandles.buildb = LoadGraph("media\\build_win_Y.png")) == -1) return FALSE;
+	if ((g_imghandles.buildc = LoadGraph("media\\build_win_Z.png")) == -1) return FALSE;
+	
 
 	return TRUE;
 }

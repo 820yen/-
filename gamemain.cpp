@@ -624,7 +624,27 @@ void DrawMap(){
 					break;
 				case 'B':
 					DrawGraph(x * IMG_CHIPSIZE - shiftx, y * IMG_CHIPSIZE,
-						g_imghandles.diagblock, TRUE);
+						g_imghandles.sogenc, TRUE);
+					break;
+				case 'C':
+					DrawGraph(x * IMG_CHIPSIZE - shiftx, y * IMG_CHIPSIZE,
+						g_imghandles.sogenl, TRUE);
+					break;
+				case 'D':
+					DrawGraph(x * IMG_CHIPSIZE - shiftx, y * IMG_CHIPSIZE,
+						g_imghandles.sogenr, TRUE);
+					break;
+				case 'E':
+					DrawGraph(x * IMG_CHIPSIZE - shiftx, y * IMG_CHIPSIZE,
+						g_imghandles.kumoc, TRUE);
+					break;
+				case 'F':
+					DrawGraph(x * IMG_CHIPSIZE - shiftx, y * IMG_CHIPSIZE,
+						g_imghandles.kumol, TRUE);
+					break;
+				case 'G':
+					DrawGraph(x * IMG_CHIPSIZE - shiftx, y * IMG_CHIPSIZE,
+						g_imghandles.kumor, TRUE);
 					break;
 				case 'H':
 					DrawGraph(x * IMG_CHIPSIZE - shiftx, y * IMG_CHIPSIZE,
@@ -637,6 +657,14 @@ void DrawMap(){
 				case 'J':
 					DrawGraph(x * IMG_CHIPSIZE - shiftx, y * IMG_CHIPSIZE,
 						g_imghandles.wood, TRUE);
+					break;
+				case 'K':
+					DrawGraph(x * IMG_CHIPSIZE - shiftx, y * IMG_CHIPSIZE,
+						g_imghandles.tsuchic, TRUE);
+					break;
+				case 'W':
+					DrawGraph(x * IMG_CHIPSIZE - shiftx, y * IMG_CHIPSIZE,
+						g_imghandles.gold, TRUE);
 					break;
 				case 'X':
 					DrawGraph(x * IMG_CHIPSIZE - shiftx, y * IMG_CHIPSIZE,
