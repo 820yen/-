@@ -25,7 +25,7 @@ struct SoundHandles{
 	int coin;
 	int jump;
 	int drop;
-	int title, main, claer;
+	int title, main, clear;
 };
 extern SoundHandles g_sndhandles;
 

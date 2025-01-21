@@ -327,6 +327,10 @@ void DrawHero(int ac){
 
 	//ゴール後のスピード調整
 	if (g_savepoint == 4){
+		StopSoundMem(g_sndhandles.main);
+		if (CheckSoundMem(g_sndhandles.clear) == 0) {
+			PlaySoundMem(g_sndhandles.clear, DX_PLAYTYPE_LOOP);
+		}
 		g_stagedata.hero.pushSpeed = 0;
 		mv = 2;
 	}

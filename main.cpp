@@ -123,7 +123,7 @@ int WINAPI WinMain(HINSTANCE h1, HINSTANCE hP, LPSTR lpC, int nC){
 
 //タイトル画面描画
 void DrawGameTitle(){
-	StopSoundMem(g_sndhandles.main);
+	StopSoundMem(g_sndhandles.clear);
 	if (CheckSoundMem(g_sndhandles.title) == 0) {
 		PlaySoundMem(g_sndhandles.title, DX_PLAYTYPE_LOOP);
 	}
@@ -145,11 +145,6 @@ void DrawGameMain(){
 //ゲームクリア画面描画
 void DrawGameClear(){
 	DrawBox(0, 0, 1300, 730, blackColor, TRUE);
-
-	StopSoundMem(g_sndhandles.main);
-	if (CheckSoundMem(g_sndhandles.claer) == 0) {
-		PlaySoundMem(g_sndhandles.claer, DX_PLAYTYPE_LOOP);
-	}
 
 	//スコアを一度だけ反映させる
 	if (g_scoreTotaled == FALSE){
