@@ -257,7 +257,7 @@ void DrawHero(int ac){
 	//Enterキーを押すたびに加速
 	if (g_deviceflag == TRUE){
 		DrawString(100, 300, "別デバイス用", GetColor(255, 255, 255));
-		if (IsEnterKeyTrigger(enterKey)){
+		if (IsEnterKeyTrigger(enterKey) && g_savepoint != 4){
 			if (mv <= 3){
 				g_stagedata.hero.pushSpeed += HEROSPEED / 2;
 			}
@@ -288,7 +288,7 @@ void DrawHero(int ac){
 		}
 	}
 	else{
-		if (IsEnterKeyTrigger(enterKey)){
+		if (IsEnterKeyTrigger(enterKey) && g_savepoint != 4){
 			if (mv <= 3){
 				g_stagedata.hero.pushSpeed += HEROSPEED;
 			}
@@ -320,6 +320,12 @@ void DrawHero(int ac){
 	}
 
 	mv = 200.0 * g_stagedata.hero.pushSpeed;
+
+	//ゴール後のスピード調整
+	if (g_savepoint == 4){
+		g_stagedata.hero.pushSpeed = 0;
+		mv = 2;
+	}
 
 	//ジャンプ処理
 	if (g_stagedata.hero.jumping == TRUE){
@@ -382,7 +388,7 @@ void DrawHero(int ac){
 	
 	//ジャンプ処理その2
 	if (g_stagedata.hero.jumping == FALSE){
- 		if (IsSpaceKeyTrigger(spaceKey) == TRUE && g_stagedata.hero.noground == FALSE)
+		if (IsSpaceKeyTrigger(spaceKey) == TRUE && g_stagedata.hero.noground == FALSE && g_savepoint != 4)
 		{
 			PlaySoundMem(g_sndhandles.jump, DX_PLAYTYPE_BACK);
 
