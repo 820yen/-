@@ -14,6 +14,8 @@ extern int g_limittimerstart;	//タイマー用変数時間制限
 extern int g_limittimemin;	//時間制限分
 extern int g_limittimesec;	//時間制限秒
 extern int g_scoretime;	//スコアタイム
+extern BOOL g_countDownFlag; //カウントダウンしたかどうか
+extern int g_countDownEndTime; // カウントダウンが終了する時刻
 
 enum GameState{				//ゲーム状態
 	GAME_TITLE, GAME_MAIN,

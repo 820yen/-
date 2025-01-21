@@ -61,8 +61,8 @@ BOOL LoadGameSound(){
 
 	//‰¹—Ê‚Ì•ÏX(255:’Êí 0:–³‰¹)
 	ChangeVolumeSoundMem(128, g_sndhandles.title);
-	ChangeVolumeSoundMem(100, g_sndhandles.main);
-	ChangeVolumeSoundMem(150, g_sndhandles.clear);
+	ChangeVolumeSoundMem(120, g_sndhandles.main);
+	ChangeVolumeSoundMem(130, g_sndhandles.clear);
 	ChangeVolumeSoundMem(128, g_sndhandles.coin);
 	ChangeVolumeSoundMem(100, g_sndhandles.jump);
 	ChangeVolumeSoundMem(150, g_sndhandles.drop);

@@ -40,14 +40,17 @@ int playerTimeMin, playerTimeSec;	//クリア時の残り時間を記録
 BOOL g_scoreAdded = FALSE;			//スコアが追加されたかどうか
 BOOL g_scoreTotaled = FALSE;		//スコアが加算されたかどうか
 
+BOOL g_countDownFlag = FALSE;	//カウントダウン開始フラグ
+int g_countDownEndTime;			//カウントダウン終了時刻
+
 //色
-extern int blownColor = GetColor(134, 74, 43);
-extern int orangeColor = GetColor(255, 160, 16);
-extern int yellowColor = GetColor(227, 199, 0);
-extern int whiteColor = GetColor(255, 255, 255);
-extern int pinkColor = GetColor(255, 0, 255);
-extern int blackColor = GetColor(0, 0, 0);
-extern int blueColor = GetColor(80, 128, 255);
+int blownColor = GetColor(134, 74, 43);
+int orangeColor = GetColor(255, 160, 16);
+int yellowColor = GetColor(227, 199, 0);
+int whiteColor = GetColor(255, 255, 255);
+int pinkColor = GetColor(255, 0, 255);
+int blackColor = GetColor(0, 0, 0);
+int blueColor = GetColor(80, 128, 255);
 
 int WINAPI WinMain(HINSTANCE h1, HINSTANCE hP, LPSTR lpC, int nC){
 	//ウィンドウモードにする
@@ -82,9 +85,18 @@ int WINAPI WinMain(HINSTANCE h1, HINSTANCE hP, LPSTR lpC, int nC){
 		int curtime = GetNowCount();
 		g_frametime = (float)(curtime - g_lasttime) / 1000.0f;
 		g_lasttime = curtime;
-		g_limittimemin = (TIMELIMIT - (g_lasttime - g_limittimerstart) / 1000) / 60;
-		g_limittimesec = (TIMELIMIT - (g_lasttime - g_limittimerstart) / 1000) % 60;
-		g_scoretime = TIMELIMIT * 1000 - ((g_lasttime - g_limittimerstart));
+
+		if (g_countDownFlag == TRUE) { // カウントダウンが終了した場合のみ計算
+			g_limittimemin = (TIMELIMIT - (g_lasttime - g_countDownEndTime) / 1000) / 60;
+			g_limittimesec = (TIMELIMIT - (g_lasttime - g_countDownEndTime) / 1000) % 60;
+			g_scoretime = TIMELIMIT * 1000 - (g_lasttime - g_countDownEndTime);
+		}
+		else{
+			//カウントダウン中はタイマーを進めない
+			g_limittimemin = TIMELIMIT / 60;
+			g_limittimesec = TIMELIMIT % 60;
+			g_scoretime = TIMELIMIT * 1000;
+		}
 
 		ClearDrawScreen();
 		//画面描画関数に切り替え
@@ -227,6 +239,11 @@ void DrawGameClear(){
 //ゲームオーバー画面描画
 void DrawGameOver(){
 
+	StopSoundMem(g_sndhandles.main);
+	if (CheckSoundMem(g_sndhandles.title) == 0) {
+		PlaySoundMem(g_sndhandles.title, DX_PLAYTYPE_LOOP);
+	}
+
 	int key = GetJoypadInputState(DX_INPUT_KEY_PAD1);
 	if (IsAKeyTrigger(key) == TRUE) {
 		InitStage();
@@ -234,7 +251,7 @@ void DrawGameOver(){
 	}
 	DrawBox(0, 0, 800, 600, GetColor(0, 0, 0), TRUE);
 	//テキスト表示
-	DrawStringToHandle(100, 200, "ゲームオーバー",
+	DrawStringToHandle(100, 200, "タイムオーバー",
 		GetColor(255, 0, 0), g_largefont);
 	//5秒経ったらタイトル画面へ
 	if (g_lasttime - g_timerstart > 500) {

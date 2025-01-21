@@ -25,6 +25,11 @@ BOOL switch3 = FALSE;
 BOOL switch4 = FALSE;
 BOOL switch5 = FALSE;
 
+//カウントダウン用変数
+int g_startTime;			//ゲーム開始時刻
+int g_elapsedTime;			//経過した時刻
+int remainingTime;			//残り時間
+
 //ステージ初期化
 void InitStage(){
 	char buf[256];
@@ -67,7 +72,14 @@ void InitStage(){
 	g_stagedata.mapwidth[3] = (int)strlen(g_mapdata[0][0]) + (int)strlen(g_mapdata[1][0]) + (int)strlen(g_mapdata[2][0]) + (int)strlen(g_mapdata[3][0]);
 	g_stagedata.mapwidth[4] = (int)strlen(g_mapdata[0][0]) + (int)strlen(g_mapdata[1][0]) + (int)strlen(g_mapdata[2][0]) + (int)strlen(g_mapdata[3][0]) + (int)strlen(g_mapdata[4][0]);
 
+	//カウントダウンの設定
+	g_startTime = GetNowCount();
+	g_countDownFlag = FALSE;
+	g_countDownEndTime = g_startTime + 3000; // カウントダウンが終了する時刻
+
+	//メインステージ曲の再生
 	StopSoundMem(g_sndhandles.title);
+	StopSoundMem(g_sndhandles.clear);
 	if (CheckSoundMem(g_sndhandles.main) == 0) {
 		PlaySoundMem(g_sndhandles.main, DX_PLAYTYPE_LOOP);
 	}
@@ -83,6 +95,7 @@ void InitStage(){
 	g_stagedata.hero.jumpforward = 0;
 	g_stagedata.hero.coinCount = 0;
 	g_stagedata.hero.deathCount = 0;
+	g_savepoint = 0;
 
 	//フェードイベントの初期化
 	opacity = 0;
@@ -92,7 +105,6 @@ void InitStage(){
 	savepoint3 = FALSE;
 	savepoint4 = FALSE;
 	savepoint5 = FALSE;
-
 	switch2 = FALSE;
 	switch3 = FALSE;
 	switch4 = FALSE;
@@ -156,7 +168,7 @@ void GameMain(){
 		DrawGraph(5000 + size5x * 2 - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[4], TRUE);
 	}
 
-
+	//フェードイン、フェードアウトの設定
 	if (savepoint3 == FALSE){
 		if (g_savepoint == 2){
 			if (fadein == FALSE){
@@ -216,8 +228,8 @@ void GameMain(){
 	}
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, opacity);
 	DrawBox(0, 0, 1300, 730, GetColor(255, 255, 255), TRUE);
-
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
 	//アニメーションカウンタ
 	g_stagedata.animcounter++;
 	g_stagedata.animcounter &= MAXINT;
@@ -244,6 +256,23 @@ void DrawHero(int ac){
 	int fiveKey = CheckHitKey(KEY_INPUT_5);
 	int nineKey = CheckHitKey(KEY_INPUT_9);
 
+	//カウントダウン
+	g_elapsedTime = GetNowCount() - g_startTime;
+	if (g_elapsedTime >= 3000){
+		g_countDownFlag = TRUE;
+	}
+	if (g_countDownFlag == FALSE) {
+		remainingTime = 3 - g_elapsedTime / 1000;
+		DrawFormatString(320, 240, GetColor(0, 0, 0), "スタートまで: %d秒", remainingTime);
+	}
+	else{
+		if (g_elapsedTime < 4000){
+			SetFontSize(20);
+			DrawString(320, 240, "GO!!", GetColor(0, 0, 0));
+			SetFontSize(16);
+		}
+	}
+
 	double mv = 200.0 * g_stagedata.hero.pushSpeed; //移動量計算
 	float hx = g_stagedata.hero.x;
 	float hy = g_stagedata.hero.y;
@@ -258,71 +287,74 @@ void DrawHero(int ac){
 		}
 	}
 
-	//Enterキーを押すたびに加速
-	if (g_deviceflag == TRUE){
-		DrawString(100, 300, "別デバイス用", GetColor(255, 255, 255));
-		if (IsEnterKeyTrigger(enterKey) && g_savepoint != 4){
-			if (mv <= 3){
-				g_stagedata.hero.pushSpeed += HEROSPEED / 2;
-			}
-			else if (mv <= 5){
-				g_stagedata.hero.pushSpeed += HEROSPEED / 4;
-			}
-			else if (mv <= 7){
-				g_stagedata.hero.pushSpeed += HEROSPEED / 6;
-			}
-			else if (mv <= 9){
-				g_stagedata.hero.pushSpeed += HEROSPEED / 8;
-			}
-			else if (mv <= 10){
-				g_stagedata.hero.pushSpeed += HEROSPEED / 10;
-			}
-			else if (mv <= 12){
-				g_stagedata.hero.pushSpeed += HEROSPEED / 14;
-			}
-			else if (mv <= 13){
-				g_stagedata.hero.pushSpeed += HEROSPEED / 18;
-			}
-			else if (mv <= 15){
-				g_stagedata.hero.pushSpeed += HEROSPEED / 20;
-			}
-			else{
-				g_stagedata.hero.pushSpeed += HEROSPEED / 200;
-			}
-		}
-	}
-	else{
-		if (IsEnterKeyTrigger(enterKey) && g_savepoint != 4){
-			if (mv <= 3){
-				g_stagedata.hero.pushSpeed += HEROSPEED;
-			}
-			else if (mv <= 5){
-				g_stagedata.hero.pushSpeed += HEROSPEED / 2;
-			}
-			else if (mv <= 7){
-				g_stagedata.hero.pushSpeed += HEROSPEED / 3;
-			}
-			else if (mv <= 9){
-				g_stagedata.hero.pushSpeed += HEROSPEED / 4;
-			}
-			else if (mv <= 10){
-				g_stagedata.hero.pushSpeed += HEROSPEED / 5;
-			}
-			else if (mv <= 12){
-				g_stagedata.hero.pushSpeed += HEROSPEED / 7;
-			}
-			else if (mv <= 13){
-				g_stagedata.hero.pushSpeed += HEROSPEED / 9;
-			}
-			else if (mv <= 15){
-				g_stagedata.hero.pushSpeed += HEROSPEED / 10;
-			}
-			else{
-				g_stagedata.hero.pushSpeed += HEROSPEED / 100;
+	if (g_countDownFlag == TRUE){
+		//Enterキーを押すたびに加速
+		if (g_deviceflag == TRUE){
+			DrawString(100, 300, "別デバイス用", GetColor(255, 255, 255));
+			if (IsEnterKeyTrigger(enterKey) && g_savepoint != 4){
+				if (mv <= 3){
+					g_stagedata.hero.pushSpeed += HEROSPEED / 2;
+				}
+				else if (mv <= 5){
+					g_stagedata.hero.pushSpeed += HEROSPEED / 4;
+				}
+				else if (mv <= 7){
+					g_stagedata.hero.pushSpeed += HEROSPEED / 6;
+				}
+				else if (mv <= 9){
+					g_stagedata.hero.pushSpeed += HEROSPEED / 8;
+				}
+				else if (mv <= 10){
+					g_stagedata.hero.pushSpeed += HEROSPEED / 10;
+				}
+				else if (mv <= 12){
+					g_stagedata.hero.pushSpeed += HEROSPEED / 14;
+				}
+				else if (mv <= 13){
+					g_stagedata.hero.pushSpeed += HEROSPEED / 18;
+				}
+				else if (mv <= 15){
+					g_stagedata.hero.pushSpeed += HEROSPEED / 20;
+				}
+				else{
+					g_stagedata.hero.pushSpeed += HEROSPEED / 200;
+				}
 			}
 		}
+		else{
+			if (IsEnterKeyTrigger(enterKey) && g_savepoint != 4){
+				if (mv <= 3){
+					g_stagedata.hero.pushSpeed += HEROSPEED;
+				}
+				else if (mv <= 5){
+					g_stagedata.hero.pushSpeed += HEROSPEED / 2;
+				}
+				else if (mv <= 7){
+					g_stagedata.hero.pushSpeed += HEROSPEED / 3;
+				}
+				else if (mv <= 9){
+					g_stagedata.hero.pushSpeed += HEROSPEED / 4;
+				}
+				else if (mv <= 10){
+					g_stagedata.hero.pushSpeed += HEROSPEED / 5;
+				}
+				else if (mv <= 12){
+					g_stagedata.hero.pushSpeed += HEROSPEED / 7;
+				}
+				else if (mv <= 13){
+					g_stagedata.hero.pushSpeed += HEROSPEED / 9;
+				}
+				else if (mv <= 15){
+					g_stagedata.hero.pushSpeed += HEROSPEED / 10;
+				}
+				else{
+					g_stagedata.hero.pushSpeed += HEROSPEED / 100;
+				}
+			}
+		}
+
 	}
-	
+	//スピードを加算
 	mv = 200.0 * g_stagedata.hero.pushSpeed;
 
 	//ゴール後のスピード調整
@@ -395,14 +427,16 @@ void DrawHero(int ac){
 	}
 	
 	//ジャンプ処理その2
-	if (g_stagedata.hero.jumping == FALSE){
-		if (IsSpaceKeyTrigger(spaceKey) == TRUE && g_stagedata.hero.noground == FALSE && g_savepoint != 4)
-		{
-			PlaySoundMem(g_sndhandles.jump, DX_PLAYTYPE_BACK);
+	if (g_countDownFlag == TRUE){
+		if (g_stagedata.hero.jumping == FALSE){
+			if (IsSpaceKeyTrigger(spaceKey) == TRUE && g_stagedata.hero.noground == FALSE && g_savepoint != 4)
+			{
+				PlaySoundMem(g_sndhandles.jump, DX_PLAYTYPE_BACK);
 
-			g_stagedata.hero.jumping = TRUE;
-			g_stagedata.hero.jumppower = JUMP_POWER;
-			g_stagedata.hero.jumpforward = hx;
+				g_stagedata.hero.jumping = TRUE;
+				g_stagedata.hero.jumppower = JUMP_POWER;
+				g_stagedata.hero.jumpforward = hx;
+			}
 		}
 	}
 	
