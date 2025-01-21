@@ -57,6 +57,7 @@ BOOL LoadGameSound(){
 
 	if ((g_sndhandles.title = LoadSoundMem("media\\BGM_title.mp3")) == -1) return FALSE;
 	if ((g_sndhandles.main = LoadSoundMem("media\\BGM_main.mp3")) == -1) return FALSE;
+	if ((g_sndhandles.claer = LoadSoundMem("media\\BGM_clear.mp3")) == -1) return FALSE;
 
 	//‰¹—Ê‚Ì•ÏX(255:’Êí 0:–³‰¹)
 	ChangeVolumeSoundMem(128, g_sndhandles.title);

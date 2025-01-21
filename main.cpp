@@ -146,6 +146,11 @@ void DrawGameMain(){
 void DrawGameClear(){
 	DrawBox(0, 0, 1300, 730, blackColor, TRUE);
 
+	StopSoundMem(g_sndhandles.main);
+	if (CheckSoundMem(g_sndhandles.claer) == 0) {
+		PlaySoundMem(g_sndhandles.claer, DX_PLAYTYPE_LOOP);
+	}
+
 	//スコアを一度だけ反映させる
 	if (g_scoreTotaled == FALSE){
 		//時間を記録
