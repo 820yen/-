@@ -85,18 +85,13 @@ int WINAPI WinMain(HINSTANCE h1, HINSTANCE hP, LPSTR lpC, int nC){
 		int curtime = GetNowCount();
 		g_frametime = (float)(curtime - g_lasttime) / 1000.0f;
 		g_lasttime = curtime;
+		if (g_lasttime - g_countDownEndTime <= 3000){
+			g_limittimerstart = g_lasttime;
+		}
 
-		if (g_countDownFlag == TRUE) { // カウントダウンが終了した場合のみ計算
-			g_limittimemin = (TIMELIMIT - (g_lasttime - g_countDownEndTime) / 1000) / 60;
-			g_limittimesec = (TIMELIMIT - (g_lasttime - g_countDownEndTime) / 1000) % 60;
-			g_scoretime = TIMELIMIT * 1000 - (g_lasttime - g_countDownEndTime);
-		}
-		else{
-			//カウントダウン中はタイマーを進めない
-			g_limittimemin = TIMELIMIT / 60;
-			g_limittimesec = TIMELIMIT % 60;
-			g_scoretime = TIMELIMIT * 1000;
-		}
+		g_limittimemin = (TIMELIMIT - (g_lasttime - g_limittimerstart) / 1000) / 60;
+		g_limittimesec = (TIMELIMIT - (g_lasttime - g_limittimerstart) / 1000) % 60;
+		g_scoretime = TIMELIMIT * 1000 - ((g_lasttime - g_limittimerstart));
 
 		ClearDrawScreen();
 		//画面描画関数に切り替え
@@ -145,6 +140,7 @@ void DrawGameTitle(){
 	if (IsAKeyTrigger(key) == TRUE) {
 		g_gamestate = GAME_MAIN;
 		g_limittimerstart = g_lasttime;
+		g_countDownEndTime = g_lasttime;
 		InitStage();
 		playerScore = 0; //スコアをリセット
 		g_TextStep = 0;	 //テキストステップをリセット

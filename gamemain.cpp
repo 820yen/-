@@ -75,7 +75,6 @@ void InitStage(){
 	//カウントダウンの設定
 	g_startTime = GetNowCount();
 	g_countDownFlag = FALSE;
-	g_countDownEndTime = g_startTime + 3000; // カウントダウンが終了する時刻
 
 	//メインステージ曲の再生
 	StopSoundMem(g_sndhandles.title);
@@ -85,7 +84,7 @@ void InitStage(){
 	}
 
 	//主人公の位置とステータスを初期化
-	g_stagedata.hero.x = 2 * IMG_CHIPSIZE;
+	g_stagedata.hero.x = 2 * IMG_CHIPSIZE;	//ゴール前 500 * IMG_CHIPSIZE;
 	g_stagedata.hero.y = 10 * IMG_CHIPSIZE;
 	g_stagedata.hero.pushSpeed = 0;
 	g_stagedata.hero.turn = FALSE;
@@ -113,6 +112,7 @@ void InitStage(){
 	ZeroMemory(g_stagedata.enemies, sizeof(g_stagedata.enemies));
 	ZeroMemory(g_stagedata.knives, sizeof(g_stagedata.knives));
 	g_stagedata.scrollx = 0;
+	//クリア地点 scrollx = 25000;
 }
 
 void GameMain(){
@@ -163,7 +163,7 @@ void GameMain(){
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 		DrawBox(0, 0, 1300, 730, GetColor(255, 255, 255), TRUE);
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
-		DrawGraph(5000 - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[4], TRUE);
+		DrawGraph(4700 - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[4], TRUE);
 		DrawGraph(5000 + size5x - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[4], TRUE);
 		DrawGraph(5000 + size5x * 2 - int(g_stagedata.scrollx / 5), 0, g_imghandles.background[4], TRUE);
 	}
@@ -258,7 +258,7 @@ void DrawHero(int ac){
 
 	//カウントダウン
 	g_elapsedTime = GetNowCount() - g_startTime;
-	if (g_elapsedTime >= 3000){
+	if (g_lasttime - g_countDownEndTime >= 3000){
 		g_countDownFlag = TRUE;
 	}
 	if (g_countDownFlag == FALSE) {
@@ -475,7 +475,7 @@ void DrawHero(int ac){
 	}
 
 	//スクロール補正
-	if (hx - g_stagedata.scrollx > SCROLL_STAPOS) {
+	if (hx - g_stagedata.scrollx > SCROLL_STAPOS && hx <= (g_stagedata.mapwidth[4] - 20) * IMG_CHIPSIZE) {
 		g_stagedata.scrollx += (hx - g_stagedata.hero.x);
 		g_stagedata.scroll_stop = g_stagedata.scrollx;
 	}
@@ -483,6 +483,13 @@ void DrawHero(int ac){
 		g_stagedata.scrollx -= (g_stagedata.hero.x - hx);
 		g_stagedata.scroll_stop = g_stagedata.scrollx;
 	}
+
+	//スクロールストップ
+	if (hx > (g_stagedata.mapwidth[4] - 20) * IMG_CHIPSIZE){
+		g_stagedata.scrollx = g_stagedata.scroll_stop;
+	}
+
+
 	g_stagedata.hero.x = hx;
 	g_stagedata.hero.y = hy;
 
