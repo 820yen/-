@@ -262,13 +262,15 @@ void DrawHero(int ac){
 		g_countDownFlag = TRUE;
 	}
 	if (g_countDownFlag == FALSE) {
+		SetFontSize(150);
 		remainingTime = 3 - g_elapsedTime / 1000;
-		DrawFormatString(320, 240, GetColor(0, 0, 0), "スタートまで: %d秒", remainingTime);
+		DrawFormatString(600, 280, GetColor(0, 0, 0), "%d", remainingTime);
+		SetFontSize(16);
 	}
 	else{
 		if (g_elapsedTime < 4000){
-			SetFontSize(20);
-			DrawString(320, 240, "GO!!", GetColor(0, 0, 0));
+			SetFontSize(200);
+			DrawString(450, 250, "GO!!", GetColor(0, 0, 0));
 			SetFontSize(16);
 		}
 	}
@@ -493,6 +495,8 @@ void DrawHero(int ac){
 	g_stagedata.hero.x = hx;
 	g_stagedata.hero.y = hy;
 
+	SetFontSize(30);
+
 	//主人公描画
 	DrawRotaGraph2((int)(g_stagedata.hero.x - g_stagedata.scrollx), 
 		(int)g_stagedata.hero.y, 0, 0, 1, 0,
@@ -505,14 +509,18 @@ void DrawHero(int ac){
 	DrawFormatString(100, 170, GetColor(0, 0, 0),
 		"コイン：%d", g_stagedata.hero.coinCount);
 	//残り時間
+	SetFontSize(50);
+	DrawBox(585, 45, 720, 100, GetColor(255, 255, 255), TRUE);
+	DrawBox(585, 45, 720, 100, GetColor(0, 0, 0), FALSE);
 	if (10 <= g_limittimesec){
-		DrawFormatString(100, 140, GetColor(0, 0, 0),
-			"残り時間 :  %d:%d", g_limittimemin, g_limittimesec);
+		DrawFormatString(600, 50, GetColor(0, 0, 0),
+			"%d:%d", g_limittimemin, g_limittimesec);
 	}
 	else{
-		DrawFormatString(100, 140, GetColor(0, 0, 0),
-			"残り時間 :  %d:0%d", g_limittimemin, g_limittimesec);
+		DrawFormatString(600, 50, GetColor(0, 0, 0),
+			"%d:0%d", g_limittimemin, g_limittimesec);
 	}
+	SetFontSize(30);
 	//残り距離
 	DrawFormatString(1000, 300, GetColor(0, 0, 0),
 		"菓道まで：%.1fkm →", ((g_stagedata.mapwidth[4] - g_stagedata.hero.x / 50)
@@ -540,6 +548,7 @@ void DrawHero(int ac){
 	if (g_limitflag == FALSE){
 		DrawString(100, 260, "タイムリミット：オフ", GetColor(255, 255, 255));
 	}
+	SetFontSize(16);
 }
 
 //ブロックとの当たり判定
