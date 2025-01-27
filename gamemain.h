@@ -79,7 +79,6 @@ void InitStage();
 void DrawHero(int ac);
 void DrawMap();
 AtariInfo CheckBlock(float x, float y, float rx);
-void DrawKnife(int key);
 BOOL IsSpaceKeyTrigger(int key);
 BOOL IsEnterKeyTrigger(int key);
 BOOL IsRKeyTrigger(int key);

@@ -7,15 +7,10 @@ BOOL LoadGameImage(){
 	if (LoadDivGraph("media\\smp2_chara01.png", 2, 2, 1, 50, 50, g_imghandles.hero) == -1){
 		return FALSE;
 	}
-	if (LoadDivGraph("media\\smp2_chara02.png", 2, 2, 1, 50, 50, g_imghandles.monster[0]) == -1){
-		return FALSE;
-	}
-	if (LoadDivGraph("media\\smp2_chara03.png", 2, 2, 1, 50, 50, g_imghandles.monster[1]) == -1){
-		return FALSE;
-	}
 	if (LoadDivGraph("media\\coin.png", 6, 6, 1, 50, 50, g_imghandles.coin) == -1){
 		return FALSE;
 	}
+	if ((g_imghandles.kyabecoin = LoadGraph("media\\kyabetutarou_dotto.png")) == -1) return FALSE;
 
 	if ((g_imghandles.background[0] = LoadGraph("media\\stage1_background.jpg")) == -1) return FALSE;
 	if ((g_imghandles.background[1] = LoadGraph("media\\stage2_background.jpg")) == -1) return FALSE;
@@ -24,8 +19,6 @@ BOOL LoadGameImage(){
 	if ((g_imghandles.background[4] = LoadGraph("media\\stage5_background.png")) == -1) return FALSE;
 
 	if ((g_imghandles.block = LoadGraph("media\\smp2_block.png")) == -1) return FALSE;
-	if ((g_imghandles.bullet = LoadGraph("media\\smp2_bullet.png")) == -1) return FALSE;
-	if ((g_imghandles.knife = LoadGraph("media\\smp2_knife.png")) == -1) return FALSE;
 	if ((g_imghandles.title = LoadGraph("media\\title.png")) == -1) return FALSE;
 
 	if ((g_imghandles.sogenc = LoadGraph("media\\jimen_sogen_center_B.png")) == -1) return FALSE;

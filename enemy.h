@@ -7,10 +7,6 @@ struct CharaData;
 
 void SetEnemy(int mx, int my);
 void DrawEnemy(int ac);
-CharaData MoveCrabMonster(CharaData cd);
-CharaData MoveOctMonster(CharaData cd);
-CharaData MoveBullet(CharaData cd);
 CharaData CoinSetting(CharaData cd);
-void AtariHeroAndMonster(int idx);
 
 #endif
