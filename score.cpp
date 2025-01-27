@@ -96,6 +96,6 @@ void DrawRanking(const ScoreData scores[]) {
 	for (int i = 0; i < MAXRANKING; i++) {
 		char text[64];
 		sprintf_s(text, "%2d. %6d %3d", i + 1, scores[i].score, scores[i].number);
-		DrawString(x, y + i * 20, text, GetColor(255, 255, 255));
+		DrawString(x, y + i * 30, text, GetColor(0,0,0));
 	}
 }

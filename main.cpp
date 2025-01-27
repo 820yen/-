@@ -153,7 +153,6 @@ void DrawGameMain(){
 }
 //ゲームクリア画面描画
 void DrawGameClear(){
-	DrawBox(0, 0, 1300, 730, blackColor, TRUE);
 
 	//スコアを一度だけ反映させる
 	if (g_scoreTotaled == FALSE){
@@ -187,41 +186,35 @@ void DrawGameClear(){
 	//テキスト表示
 	if (g_TextStep >= 2){
 		DrawStringToHandle(200, 50, "ゲームクリア",
-			orangeColor, g_largefont);
+			blackColor, g_largefont);
 	}
-	if (g_TextStep >= 4){
-		SetFontSize(30);
+	if (g_TextStep >= 6){
 		if (10 <= playerTimeSec){
-			DrawFormatString(162, 200, whiteColor,
+			DrawFormatString(162, 200, blackColor,
 				"残り時間 : %d:%d", playerTimeMin, playerTimeSec);
 		}
 		else{
-			DrawFormatString(162, 200, whiteColor,
+			DrawFormatString(162, 200, blackColor,
 				"残り時間 : %d:0%d", playerTimeMin, playerTimeSec);
 		}
-		SetFontSize(16);
 	}
-	if (g_TextStep >= 5){
-		SetFontSize(30);
-		DrawFormatString(162, 280, whiteColor,
+	if (g_TextStep >= 10){
+		DrawFormatString(162, 280, blackColor,
 			"死亡回数：%d", g_stagedata.hero.deathCount);
-		SetFontSize(16);
 	}
-	if (g_TextStep >= 6){
-		SetFontSize(30);
-		DrawFormatString(162, 360, whiteColor,
+	if (g_TextStep >= 14){
+		DrawFormatString(162, 360, blackColor,
 			"コイン枚数：%d", g_stagedata.hero.coinCount);
-		SetFontSize(16);
 	}
-	if (g_TextStep >= 10){
-		SetFontSize(50);
-		DrawFormatString(162, 480, yellowColor,
+	if (g_TextStep >= 20){
+		SetFontSize(100);
+		DrawFormatString(162, 450, blackColor,
 			"スコア：%d", playerScore);
-		SetFontSize(16);
+		SetFontSize(30);
 	}
-	if (g_TextStep >= 10){
+	if (g_TextStep >= 20){
 		DrawStringToHandle(162, 600, "Enterキーでタイトルに戻る",
-			blueColor, g_smallfont);
+			blackColor, g_smallfont);
 
 		//Enterキーでタイトル画面へ
 		int enterKey = CheckHitKey(KEY_INPUT_RETURN);

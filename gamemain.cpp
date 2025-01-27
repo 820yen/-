@@ -265,13 +265,13 @@ void DrawHero(int ac){
 		SetFontSize(150);
 		remainingTime = 3 - g_elapsedTime / 1000;
 		DrawFormatString(600, 280, GetColor(0, 0, 0), "%d", remainingTime);
-		SetFontSize(16);
+		SetFontSize(30);
 	}
 	else{
 		if (g_elapsedTime < 4000){
 			SetFontSize(200);
 			DrawString(450, 250, "GO!!", GetColor(0, 0, 0));
-			SetFontSize(16);
+			SetFontSize(30);
 		}
 	}
 
@@ -366,7 +366,12 @@ void DrawHero(int ac){
 			PlaySoundMem(g_sndhandles.clear, DX_PLAYTYPE_LOOP);
 		}
 		g_stagedata.hero.pushSpeed = 0;
-		mv = 2;
+		if ((g_stagedata.mapwidth[4] - g_stagedata.hero.x / 50 - 1) / (g_stagedata.mapwidth[4] - 2) > 0){
+			 	mv = 2;
+		}
+		else{
+			mv = 0;
+		}
 	}
 
 	//ジャンプ処理
@@ -496,41 +501,38 @@ void DrawHero(int ac){
 	g_stagedata.hero.x = hx;
 	g_stagedata.hero.y = hy;
 
-	SetFontSize(30);
-
 	//主人公描画
 	DrawRotaGraph2((int)(g_stagedata.hero.x - g_stagedata.scrollx), 
 		(int)g_stagedata.hero.y, 0, 0, 1, 0,
 		g_imghandles.hero[ac % ANIMFRAME], TRUE, g_stagedata.hero.turn);
-
-	//スピードメータ
-	DrawFormatString(100, 200, GetColor(0, 0, 0),
-		"スピード：%.2f", mv);
-	//コイン所持数
-	DrawFormatString(100, 170, GetColor(0, 0, 0),
-		"コイン：%d", g_stagedata.hero.coinCount);
-	//残り時間
-	SetFontSize(50);
-	DrawBox(585, 45, 720, 100, GetColor(255, 255, 255), TRUE);
-	DrawBox(585, 45, 720, 100, GetColor(0, 0, 0), FALSE);
-	if (10 <= g_limittimesec){
-		DrawFormatString(600, 50, GetColor(0, 0, 0),
-			"%d:%d", g_limittimemin, g_limittimesec);
+	if (g_savepoint != 4){
+		//スピードメータ
+		DrawFormatString(100, 200, GetColor(0, 0, 0),
+			"スピード：%.2f", mv);
+		//コイン所持数
+		DrawGraph(100, 130, g_imghandles.kyabecoin, TRUE);
+		DrawFormatString(140, 135, GetColor(0, 0, 0),
+			"×%d", g_stagedata.hero.coinCount);
+		//残り時間
+		SetFontSize(50);
+		DrawBox(585, 45, 720, 100, GetColor(255, 255, 255), TRUE);
+		DrawBox(585, 45, 720, 100, GetColor(0, 0, 0), FALSE);
+		if (10 <= g_limittimesec){
+			DrawFormatString(600, 50, GetColor(0, 0, 0),
+				"%d:%d", g_limittimemin, g_limittimesec);
+		}
+		else{
+			DrawFormatString(600, 50, GetColor(0, 0, 0),
+				"%d:0%d", g_limittimemin, g_limittimesec);
+		}
+		SetFontSize(30);
 	}
-	else{
-		DrawFormatString(600, 50, GetColor(0, 0, 0),
-			"%d:0%d", g_limittimemin, g_limittimesec);
-	}
-	SetFontSize(30);
-	//残り距離
-	DrawFormatString(1000, 300, GetColor(0, 0, 0),
-		"菓道まで：%.1fkm →", ((g_stagedata.mapwidth[4] - g_stagedata.hero.x / 50)
-		/ (g_stagedata.mapwidth[4] - 2))
-		 * 17.5);
-	//死亡回数
-	DrawFormatString(100, 230, GetColor(0, 0, 0),
-		"死亡回数：%d", g_stagedata.hero.deathCount);
 	
+		//残り距離
+		DrawFormatString(960, 300, GetColor(0, 0, 0),
+			"ゴールまで：%.1fkm →", ((g_stagedata.mapwidth[4] - g_stagedata.hero.x / 50)
+			/ (g_stagedata.mapwidth[4] - 2))
+			* 17.5);
 
 	//デバッグモード
 	if (IsQKeyTrigger(qKey)){
@@ -549,7 +551,6 @@ void DrawHero(int ac){
 	if (g_limitflag == FALSE){
 		DrawString(100, 260, "タイムリミット：オフ", GetColor(255, 255, 255));
 	}
-	SetFontSize(16);
 }
 
 //ブロックとの当たり判定
@@ -582,8 +583,6 @@ BOOL _CheckBlockSub(float x, float y){
 		return FALSE;
 	}
 	if (mx >= g_stagedata.mapwidth[4]) {
-		g_gamestate = GAME_CLEAR;
-		g_timerstart = g_lasttime;
 		return FALSE;
 	}
 
@@ -752,6 +751,9 @@ void DrawMap(){
 				SetEnemy(x + sc, y);  //敵の位置だけを SetEnemy に渡す
 			}
 		}
+	}
+	if (g_savepoint == 4){
+		DrawGameClear();
 	}
 }
 
