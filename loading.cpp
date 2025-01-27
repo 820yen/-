@@ -44,7 +44,8 @@ BOOL LoadGameImage(){
 
 //‰¹ŠyAŒø‰Ê‰¹
 BOOL LoadGameSound(){
-	if ((g_sndhandles.coin = LoadSoundMem("media\\coin.mp3")) == -1) return FALSE;
+	//if ((g_sndhandles.coin = LoadSoundMem("media\\coin.mp3")) == -1) return FALSE;
+	if ((g_sndhandles.kyabetu = LoadSoundMem("media\\paku.mp3")) == -1) return FALSE;
 	if ((g_sndhandles.jump = LoadSoundMem("media\\jump.mp3")) == -1) return FALSE;
 	if ((g_sndhandles.drop = LoadSoundMem("media\\drop.mp3")) == -1) return FALSE;
 

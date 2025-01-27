@@ -84,7 +84,7 @@ CharaData CoinSetting(CharaData cd) {
 
 	//ƒRƒCƒ“ÚG‚Ìˆ—
 	if ((ax1 < bx2) && (bx1 < ax2) && (ay1 < by2) && (by1 < ay2)) {
-		PlaySoundMem(g_sndhandles.coin, DX_PLAYTYPE_BACK);
+		PlaySoundMem(g_sndhandles.kyabetu, DX_PLAYTYPE_BACK);
 		cd.living = FALSE;
 		g_stagedata.hero.coinCount++;
 		return cd;

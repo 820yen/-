@@ -24,6 +24,7 @@ extern ImageHandles g_imghandles;
 
 struct SoundHandles{
 	int coin;
+	int kyabetu;
 	int jump;
 	int drop;
 	int title, main, clear;
