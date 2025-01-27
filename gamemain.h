@@ -15,7 +15,7 @@
 #define ANIM_RATE 4
 #define SCROLL_STAPOS 500
 #define JUMP_POWER 750.0f
-#define GRAVITY 30.0f
+#define GRAVITY 1800.0f
 #define JUMP_FORWARD 200.0f
 #define MAX_ENEMY 200
 #define MAX_KNIFE 4

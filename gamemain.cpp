@@ -371,15 +371,15 @@ void DrawHero(int ac){
 
 	//ジャンプ処理
 	if (g_stagedata.hero.jumping == TRUE){
-		g_stagedata.hero.jumppower -= GRAVITY;
+		g_stagedata.hero.jumppower -= GRAVITY * (g_lasttime - g_jumptimerstart) / 1000;
 		hy -= (g_stagedata.hero.jumppower * g_frametime);
 	}
 
 	//移動処理
-	hx += mv;
+	hx += mv * (g_lasttime - g_jumptimerstart) / 1000 * 60;
 	//加速減少処理
 	if (g_stagedata.hero.pushSpeed > 0) {
-		g_stagedata.hero.pushSpeed -= SLOWSPEED;
+		g_stagedata.hero.pushSpeed -= SLOWSPEED * (g_lasttime - g_jumptimerstart) / 1000 * 60;
 	}
 	else{
 		g_stagedata.hero.pushSpeed = 0;
@@ -393,12 +393,12 @@ void DrawHero(int ac){
 	if (g_stagedata.hero.turn == FALSE){
 		if (atari.UL == TRUE){
 			if (atari.ULU == TRUE){
-				g_stagedata.hero.jumppower = -GRAVITY;
+				g_stagedata.hero.jumppower = -GRAVITY * (g_lasttime - g_jumptimerstart) / 1000;
 			}
 		}
 		if (atari.UR == TRUE){
 			if (atari.URU == TRUE){
-				g_stagedata.hero.jumppower = -GRAVITY;
+				g_stagedata.hero.jumppower = -GRAVITY * (g_lasttime - g_jumptimerstart) / 1000;
 			}
 			if (atari.URR == TRUE){
 				hx = g_stagedata.hero.x;
@@ -412,6 +412,7 @@ void DrawHero(int ac){
 			}
 		}
 	}
+	g_jumptimerstart = g_lasttime;
 
 	//接地チェック
 	if (atari.GL == TRUE || atari.GR == TRUE) {

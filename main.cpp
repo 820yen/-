@@ -8,6 +8,7 @@ int g_lasttime = 0;		//直前の計測時間
 float g_frametime = 0;	//1ループにかかった時間
 int g_timerstart;		//タイマー用変数
 int g_limittimerstart;	//タイマー用変数時間制限
+int g_jumptimerstart;	//ジャンプの読み込み時間
 int g_limittimemin;	//時間制限分
 int g_limittimesec;	//時間制限秒
 int g_scoretime;	//スコアタイム
