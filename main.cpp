@@ -75,6 +75,13 @@ int WINAPI WinMain(HINSTANCE h1, HINSTANCE hP, LPSTR lpC, int nC){
 	if (LoadGameSound() == FALSE) return -1;
 
 	//フォント読みこみ
+	//LPCSTR font_path = "media\\Buildingsandundertherailwaytracksfree_ver.otf"; // 読み込むフォントファイルのパス
+	//if (AddFontResourceEx(font_path, FR_PRIVATE, NULL) > 0) {
+	//}
+	//else {
+	//	return FALSE;
+	//}
+	//ChangeFont("Buildingsandundertherailwaytracksfree_ver", DX_CHARSET_DEFAULT);
 	g_largefont = CreateFontToHandle("メイリオ", 90, -1, DX_FONTTYPE_ANTIALIASING);
 	g_mediumfont = CreateFontToHandle("メイリオ", 65, -1, DX_FONTTYPE_ANTIALIASING);
 	g_middlefont = CreateFontToHandle("メイリオ", 42, -1, DX_FONTTYPE_ANTIALIASING);
@@ -142,6 +149,7 @@ void DrawGameTitle(){
 	//キーをチェックして画面を切り替え
 	int key = GetJoypadInputState(DX_INPUT_KEY_PAD1);
 	if (IsAKeyTrigger(key) == TRUE) {
+		PlaySoundMem(g_sndhandles.countdown, DX_PLAYTYPE_BACK);
 		g_gamestate = GAME_MAIN;
 		g_limittimerstart = g_lasttime;
 		g_countDownEndTime = g_lasttime;
@@ -176,6 +184,9 @@ void DrawGameClear(){
 	//スコアをランキングに一度だけ追加
 	if (g_scoreAdded == FALSE && g_TextStep >= 20) {
 		AddScore(scores, playerScore);
+		//拍手を再生
+		PlaySoundMem(g_sndhandles.handclap, DX_PLAYTYPE_BACK);
+
 		g_scoreAdded = TRUE;			//スコアが追加されたことを記録
 	}
 
@@ -203,11 +214,12 @@ void DrawGameClear(){
 	}
 	if (g_TextStep >= 10){
 		DrawFormatString(162, 280, blackColor,
-			"死亡回数：%d", g_stagedata.hero.deathCount);
+			"落下回数：%d", g_stagedata.hero.deathCount);
 	}
 	if (g_TextStep >= 14){
-		DrawFormatString(162, 360, blackColor,
-			"コイン枚数：%d", g_stagedata.hero.coinCount);
+		DrawGraph(162, 353, g_imghandles.kyabecoin, TRUE);
+		DrawFormatString(202, 360, GetColor(0, 0, 0),
+			"×%d", g_stagedata.hero.coinCount);
 	}
 	if (g_TextStep >= 20){
 		SetFontSize(100);

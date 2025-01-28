@@ -508,14 +508,14 @@ void DrawHero(int ac){
 	if (g_savepoint != 4){
 		//スピードメータ
 		DrawBox(10, 10, 500, 60, GetColor(0, 0, 0), TRUE);
-		DrawBox(15, 15, 15 + 32 * mv, 55, GetColor(0, 0, 255), TRUE);
-		if (mv >= 7){
-			DrawBox(239, 15, 239 + 32 * (mv - 7), 55, GetColor(255, 255, 0), TRUE);
+		DrawBoxGrad(15, 15, 207, 55, GetColor(0, 255, 0), GetColor(255, 255, 0),GetColor(0, 255, 0), GetColor(255, 255, 0));
+		if (mv >= 6){
+			DrawBoxGrad(207, 15, 335, 55, GetColor(255, 255, 0), GetColor(255, 240, 0), GetColor(255, 255, 0), GetColor(255, 240, 0));
 		}
-		if (mv >= 12){
-			DrawBox(399, 15, 399 + 32 * (mv - 12), 55, GetColor(255, 0, 0), TRUE);
+		if (mv >= 10){
+			DrawBoxGrad(335, 15, 495, 55, GetColor(255, 240, 0), GetColor(255, 0, 0), GetColor(255, 240, 0), GetColor(255, 0, 0));
 		}
-
+		DrawBox(495, 15, 495 - 32 * (15 - mv), 55, GetColor(0, 0, 0), TRUE);
 
 		//コイン所持数
 		DrawGraph(20, 65, g_imghandles.kyabecoin, TRUE);
@@ -839,4 +839,63 @@ BOOL Is159KeyTrigger(int key1, int key2, int key3){
 		g_stagedata.g_159key_prev = FALSE;
 	}
 	return FALSE;
+}
+
+// グラデーションカラーの四角形を描画する ( 各頂点の色を指定する: 左上, 右上, 左下, 右下 )
+int DrawBoxGrad(int x1, int y1, int x2, int y2, int Colorlt, int Colorrt, int Colorlb, int Colorrb)
+{
+	const int		VERT_X = 8;						// 小さいグラデーションに分割する数
+	const int		VERT_Y = 8;
+	int				red[4], green[4], blue[4];		// 4つの頂点の色
+	unsigned short	indices[(VERT_Y - 1) * (VERT_X - 1) * 6];
+	VERTEX2D		vertex[VERT_Y][VERT_X];			// ポリゴンの頂点の情報
+
+	if (Colorlb == 0) Colorlb = Colorlt;		// 四角形の左下の色が指定されていなければ上の色をコピーする
+	if (Colorrb == 0) Colorrb = Colorrt;		// 四角形の右下の色が指定されていなければ上の色をコピーする
+	GetColor2(Colorlt, &red[0], &green[0], &blue[0]);
+	GetColor2(Colorrt, &red[1], &green[1], &blue[1]);
+	GetColor2(Colorlb, &red[2], &green[2], &blue[2]);
+	GetColor2(Colorrb, &red[3], &green[3], &blue[3]);
+
+	for (int iy = 0; iy < VERT_Y; iy++)
+	{
+		for (int ix = 0; ix < VERT_X; ix++)
+		{
+			vertex[iy][ix].pos.z = 0.0f;			// 各頂点の情報をセット
+			vertex[iy][ix].rhw = 1.0f;
+			vertex[iy][ix].dif.a = 0xff;
+			vertex[iy][ix].u = 0.0f;
+			vertex[iy][ix].v = 0.0f;
+
+			vertex[iy][ix].pos.x = static_cast<float>(x2 - x1) * ix / (VERT_X - 1) + static_cast<float>(x1);
+			vertex[iy][ix].pos.y = static_cast<float>(y2 - y1) * iy / (VERT_Y - 1) + static_cast<float>(y1);
+
+			vertex[iy][ix].dif.r = static_cast<BYTE>(
+				(((red[0] * ((VERT_X - 1) - ix) + red[1] * ix) / (VERT_X - 1) * ((VERT_Y - 1) - iy)
+				+ (red[2] * ((VERT_X - 1) - ix) + red[3] * ix) / (VERT_X - 1) * iy)) / (VERT_Y - 1));
+			vertex[iy][ix].dif.g = static_cast<BYTE>(
+				(((green[0] * ((VERT_X - 1) - ix) + green[1] * ix) / (VERT_X - 1) * ((VERT_Y - 1) - iy)
+				+ (green[2] * ((VERT_X - 1) - ix) + green[3] * ix) / (VERT_X - 1) * iy)) / (VERT_Y - 1));
+			vertex[iy][ix].dif.b = static_cast<BYTE>(
+				(((blue[0] * ((VERT_X - 1) - ix) + blue[1] * ix) / (VERT_X - 1) * ((VERT_Y - 1) - iy)
+				+ (blue[2] * ((VERT_X - 1) - ix) + blue[3] * ix) / (VERT_X - 1) * iy)) / (VERT_Y - 1));
+		}
+	}
+
+	int i = 0;
+	for (int iy = 0; iy < VERT_Y - 1; iy++)
+	{
+		for (int ix = 0; ix < VERT_X - 1; ix++)
+		{
+			indices[i] = static_cast<unsigned short>(iy * VERT_X + ix);					// 頂点インデックスを作成
+			indices[i + 1] = static_cast<unsigned short>(iy * VERT_X + ix + 1);
+			indices[i + 2] = static_cast<unsigned short>((iy + 1) * VERT_X + ix);
+			indices[i + 3] = static_cast<unsigned short>((iy + 1) * VERT_X + ix + 1);
+			indices[i + 4] = static_cast<unsigned short>((iy + 1) * VERT_X + ix);
+			indices[i + 5] = static_cast<unsigned short>(iy * VERT_X + ix + 1);
+			i += 6;
+		}
+	}
+
+	return DrawPolygonIndexed2D(&vertex[0][0], VERT_X * VERT_Y, indices, (VERT_Y - 1) * (VERT_X - 1) * 2, DX_NONE_GRAPH, FALSE);
 }

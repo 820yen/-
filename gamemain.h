@@ -85,5 +85,7 @@ BOOL IsRKeyTrigger(int key);
 BOOL IsQKeyTrigger(int key);
 BOOL IsWKeyTrigger(int key);
 BOOL Is159KeyTrigger(int key1, int key2, int key3);
+int DrawBoxGrad(int x1, int y1, int x2, int y2, int Colorlt, int Colorrt, int Colorlb, int Colorrb);
+
 
 #endif

@@ -28,6 +28,7 @@ struct SoundHandles{
 	int jump;
 	int drop;
 	int title, main, clear;
+	int handclap, countdown;
 };
 extern SoundHandles g_sndhandles;
 
