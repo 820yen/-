@@ -84,7 +84,7 @@ void InitStage(){
 	}
 
 	//主人公の位置とステータスを初期化
-	g_stagedata.hero.x = 500 * IMG_CHIPSIZE;	//ゴール前 500 * IMG_CHIPSIZE;
+	g_stagedata.hero.x = 2 * IMG_CHIPSIZE;	//ゴール前 500 * IMG_CHIPSIZE;
 	g_stagedata.hero.y = 10 * IMG_CHIPSIZE;
 	g_stagedata.hero.pushSpeed = 0;
 	g_stagedata.hero.turn = FALSE;
@@ -111,7 +111,7 @@ void InitStage(){
 
 	ZeroMemory(g_stagedata.enemies, sizeof(g_stagedata.enemies));
 	ZeroMemory(g_stagedata.knives, sizeof(g_stagedata.knives));
-	g_stagedata.scrollx = 25000;
+	g_stagedata.scrollx = 0;
 	//クリア地点 scrollx = 25000;
 }
 
