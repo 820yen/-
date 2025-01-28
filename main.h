@@ -18,6 +18,9 @@ extern int g_scoretime;	//スコアタイム
 extern BOOL g_countDownFlag; //カウントダウンしたかどうか
 extern int g_countDownEndTime; // カウントダウンが終了する時刻
 
+extern int playerNumber;
+extern BOOL g_addedFlag;
+
 enum GameState{				//ゲーム状態
 	GAME_TITLE, GAME_MAIN,
 	GAME_CLEAR, GAME_OVER

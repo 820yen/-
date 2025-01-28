@@ -84,7 +84,7 @@ void InitStage(){
 	}
 
 	//主人公の位置とステータスを初期化
-	g_stagedata.hero.x = 2 * IMG_CHIPSIZE;	//ゴール前 500 * IMG_CHIPSIZE;
+	g_stagedata.hero.x = 500 * IMG_CHIPSIZE;	//ゴール前 500 * IMG_CHIPSIZE;
 	g_stagedata.hero.y = 10 * IMG_CHIPSIZE;
 	g_stagedata.hero.pushSpeed = 0;
 	g_stagedata.hero.turn = FALSE;
@@ -111,7 +111,7 @@ void InitStage(){
 
 	ZeroMemory(g_stagedata.enemies, sizeof(g_stagedata.enemies));
 	ZeroMemory(g_stagedata.knives, sizeof(g_stagedata.knives));
-	g_stagedata.scrollx = 0;
+	g_stagedata.scrollx = 25000;
 	//クリア地点 scrollx = 25000;
 }
 
@@ -507,11 +507,19 @@ void DrawHero(int ac){
 		g_imghandles.hero[ac % ANIMFRAME], TRUE, g_stagedata.hero.turn);
 	if (g_savepoint != 4){
 		//スピードメータ
-		DrawFormatString(100, 200, GetColor(0, 0, 0),
-			"スピード：%.2f", mv);
+		DrawBox(10, 10, 500, 60, GetColor(0, 0, 0), TRUE);
+		DrawBox(15, 15, 15 + 32 * mv, 55, GetColor(0, 0, 255), TRUE);
+		if (mv >= 7){
+			DrawBox(239, 15, 239 + 32 * (mv - 7), 55, GetColor(255, 255, 0), TRUE);
+		}
+		if (mv >= 12){
+			DrawBox(399, 15, 399 + 32 * (mv - 12), 55, GetColor(255, 0, 0), TRUE);
+		}
+
+
 		//コイン所持数
-		DrawGraph(100, 130, g_imghandles.kyabecoin, TRUE);
-		DrawFormatString(140, 135, GetColor(0, 0, 0),
+		DrawGraph(20, 65, g_imghandles.kyabecoin, TRUE);
+		DrawFormatString(60, 72, GetColor(0, 0, 0),
 			"×%d", g_stagedata.hero.coinCount);
 		//残り時間
 		SetFontSize(50);
@@ -528,11 +536,11 @@ void DrawHero(int ac){
 		SetFontSize(30);
 	}
 	
-		//残り距離
-		DrawFormatString(960, 300, GetColor(0, 0, 0),
-			"ゴールまで：%.1fkm →", ((g_stagedata.mapwidth[4] - g_stagedata.hero.x / 50)
-			/ (g_stagedata.mapwidth[4] - 2))
-			* 17.5);
+	//残り距離
+	DrawFormatString(960, 300, GetColor(0, 0, 0),
+		"ゴールまで：%.1fkm →", ((g_stagedata.mapwidth[4] - g_stagedata.hero.x / 50)
+		/ (g_stagedata.mapwidth[4] - 2))
+		* 17.5);
 
 	//デバッグモード
 	if (IsQKeyTrigger(qKey)){

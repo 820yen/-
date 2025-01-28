@@ -1,4 +1,5 @@
 #include "score.h"
+#include "main.h"
 #include <stdio.h>
 #include <DxLib.h>
 
@@ -27,6 +28,7 @@ void SavePlayerNumber() {
 		fprintf_s(file, "%d\n", playerNumber);
 		fclose(file);
 	}
+	
 }
 
 //スコアをファイルから読みこむ
@@ -83,7 +85,7 @@ void AddScore(ScoreData scores[], int score) {
 			break;
 		}
 	}
-	playerNumber++;
+	
 }
 
 //ランキングを描画する
@@ -96,6 +98,17 @@ void DrawRanking(const ScoreData scores[]) {
 	for (int i = 0; i < MAXRANKING; i++) {
 		char text[64];
 		sprintf_s(text, "%2d. %6d %3d", i + 1, scores[i].score, scores[i].number);
-		DrawString(x, y + i * 30, text, GetColor(0,0,0));
+		DrawFormatString(1000, 200, GetColor(0, 0, 0), "あなたの番号は:%d", playerNumber);
+		if (scores[i].number == playerNumber){
+			DrawString(x, y + i * 30, text, GetColor(255, 0, 0));
+		}
+		else{
+			DrawString(x, y + i * 30, text, GetColor(0,0,0));
+		}
+		
+	}
+	if (g_addedFlag == TRUE){
+		playerNumber++;
+		g_addedFlag = FALSE;
 	}
 }

@@ -4,7 +4,7 @@ ImageHandles g_imghandles;
 SoundHandles g_sndhandles;
 
 BOOL LoadGameImage(){
-	if (LoadDivGraph("media\\smp2_chara01.png", 2, 2, 1, 50, 50, g_imghandles.hero) == -1){
+	if (LoadDivGraph("media\\kyabetsutaro.png", 2, 2, 1, 50, 50, g_imghandles.hero) == -1){
 		return FALSE;
 	}
 	if (LoadDivGraph("media\\coin.png", 6, 6, 1, 50, 50, g_imghandles.coin) == -1){

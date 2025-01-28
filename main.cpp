@@ -37,9 +37,11 @@ int g_largefont;			//大サイズフォントハンドル
 //スコア管理用変数
 ScoreData scores[MAXRANKING] = { 0 };
 int playerScore = 0;				//プレイヤースコア
+int playerNumber;
 int playerTimeMin, playerTimeSec;	//クリア時の残り時間を記録
 BOOL g_scoreAdded = FALSE;			//スコアが追加されたかどうか
 BOOL g_scoreTotaled = FALSE;		//スコアが加算されたかどうか
+BOOL g_addedFlag = FALSE;
 
 BOOL g_countDownFlag = FALSE;	//カウントダウン開始フラグ
 int g_countDownEndTime;			//カウントダウン終了時刻
@@ -78,6 +80,7 @@ int WINAPI WinMain(HINSTANCE h1, HINSTANCE hP, LPSTR lpC, int nC){
 	g_middlefont = CreateFontToHandle("メイリオ", 42, -1, DX_FONTTYPE_ANTIALIASING);
 	g_normalfont = CreateFontToHandle("メイリオ", 30, -1, DX_FONTTYPE_ANTIALIASING);
 	g_smallfont = CreateFontToHandle("メイリオ", 18, -1, DX_FONTTYPE_ANTIALIASING);
+	SetFontSize(30);
 
 	SetDrawScreen(DX_SCREEN_BACK);
 	g_lasttime = GetNowCount() & INT_MAX;	//現在時刻の記録
@@ -171,7 +174,7 @@ void DrawGameClear(){
 	}
 
 	//スコアをランキングに一度だけ追加
-	if (g_scoreAdded == FALSE) {
+	if (g_scoreAdded == FALSE && g_TextStep >= 20) {
 		AddScore(scores, playerScore);
 		g_scoreAdded = TRUE;			//スコアが追加されたことを記録
 	}
@@ -220,6 +223,7 @@ void DrawGameClear(){
 		int enterKey = CheckHitKey(KEY_INPUT_RETURN);
 		if (IsEnterKeyTrigger(enterKey) == TRUE) {
 			g_gamestate = GAME_TITLE;
+			g_addedFlag = TRUE;
 			//フラグをリセット
 			g_scoreTotaled = FALSE;
 			g_scoreAdded = FALSE;
