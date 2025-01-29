@@ -10,7 +10,11 @@ BOOL LoadGameImage(){
 	if (LoadDivGraph("media\\coin.png", 6, 6, 1, 50, 50, g_imghandles.coin) == -1){
 		return FALSE;
 	}
+	if (LoadDivGraph("media\\meta.png", 18, 2, 9, 500, 83, g_imghandles.meta) == -1){
+		return FALSE;
+	}
 	if ((g_imghandles.kyabecoin = LoadGraph("media\\kyabecoin.png")) == -1) return FALSE;
+
 
 	if ((g_imghandles.background[0] = LoadGraph("media\\stage1_background.jpg")) == -1) return FALSE;
 	if ((g_imghandles.background[1] = LoadGraph("media\\stage2_background.jpg")) == -1) return FALSE;

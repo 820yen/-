@@ -239,7 +239,7 @@ void GameMain(){
 	DrawHero(ac);
 	DrawEnemy(ac);
 
-	if ((TIMELIMIT - (g_lasttime - g_limittimerstart) / 1000) <= 0 && g_limitflag == TRUE){
+	if ((TIMELIMIT - (g_lasttime - g_limittimerstart) / 1000) <= 0 && g_limitflag == TRUE && g_savepoint != 4){
 		g_gamestate = GAME_OVER;
 		g_timerstart = g_lasttime;	//タイマーセット
 	}
@@ -507,15 +507,20 @@ void DrawHero(int ac){
 		g_imghandles.hero[ac % ANIMFRAME], TRUE, g_stagedata.hero.turn);
 	if (g_savepoint != 4){
 		//スピードメータ
-		DrawBox(10, 10, 500, 60, GetColor(0, 0, 0), TRUE);
-		DrawBoxGrad(15, 15, 207, 55, GetColor(0, 255, 0), GetColor(255, 255, 0),GetColor(0, 255, 0), GetColor(255, 255, 0));
-		if (mv >= 6){
-			DrawBoxGrad(207, 15, 335, 55, GetColor(255, 255, 0), GetColor(255, 240, 0), GetColor(255, 255, 0), GetColor(255, 240, 0));
-		}
-		if (mv >= 10){
-			DrawBoxGrad(335, 15, 495, 55, GetColor(255, 240, 0), GetColor(255, 0, 0), GetColor(255, 240, 0), GetColor(255, 0, 0));
-		}
-		DrawBox(495, 15, 495 - 32 * (15 - mv), 55, GetColor(0, 0, 0), TRUE);
+		//DrawBox(10, 10, 500, 60, GetColor(0, 0, 0), TRUE);
+		//DrawBoxGrad(15, 15, 207, 55, GetColor(0, 255, 0), GetColor(255, 255, 0),GetColor(0, 255, 0), GetColor(255, 255, 0));
+		//if (mv >= 6){
+		//	DrawBoxGrad(207, 15, 335, 55, GetColor(255, 255, 0), GetColor(255, 240, 0), GetColor(255, 255, 0), GetColor(255, 240, 0));
+		//}
+		//if (mv >= 10){
+		//	DrawBoxGrad(335, 15, 495, 55, GetColor(255, 240, 0), GetColor(255, 0, 0), GetColor(255, 240, 0), GetColor(255, 0, 0));
+		//}
+		//DrawBox(495, 15, 495 - 32 * (15 - mv), 55, GetColor(0, 0, 0), TRUE);
+
+		//メーター描画
+		DrawRotaGraph2(10,
+			10, 510, 93, 1, 0,
+			g_imghandles.meta[(int)mv], TRUE, TRUE);
 
 		//コイン所持数
 		DrawGraph(20, 65, g_imghandles.kyabecoin, TRUE);
