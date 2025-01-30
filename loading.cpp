@@ -14,6 +14,8 @@ BOOL LoadGameImage(){
 		return FALSE;
 	}
 	if ((g_imghandles.kyabecoin = LoadGraph("media\\kyabecoin.png")) == -1) return FALSE;
+	if ((g_imghandles.ranking = LoadGraph("media\\ranking.png")) == -1) return FALSE;
+	if ((g_imghandles.clock = LoadGraph("media\\clock.png")) == -1) return FALSE;
 
 
 	if ((g_imghandles.background[0] = LoadGraph("media\\stage1_background.jpg")) == -1) return FALSE;

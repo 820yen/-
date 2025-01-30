@@ -59,7 +59,7 @@ int WINAPI WinMain(HINSTANCE h1, HINSTANCE hP, LPSTR lpC, int nC){
 	//ウィンドウモードにする
 	ChangeWindowMode(FALSE);
 	//ウィンドウサイズを変更する
-	SetGraphMode(1300, 730, 32);
+	SetGraphMode(1300, 730, 32);	//PCの解像度は1366, 768
 	//DXライブラリ初期化
 	if (DxLib_Init() == -1) return -1;
 
@@ -228,12 +228,9 @@ void DrawGameClear(){
 		SetFontSize(30);
 	}
 	if (g_TextStep >= 20){
-		DrawStringToHandle(162, 600, "Enterキーでタイトルに戻る",
-			blackColor, g_smallfont);
-
-		//Enterキーでタイトル画面へ
-		int enterKey = CheckHitKey(KEY_INPUT_RETURN);
-		if (IsEnterKeyTrigger(enterKey) == TRUE) {
+		//Zキーでタイトル画面へ
+		int key = GetJoypadInputState(DX_INPUT_KEY_PAD1);
+		if (IsAKeyTrigger(key) == TRUE) {
 			g_gamestate = GAME_TITLE;
 			g_addedFlag = TRUE;
 			//フラグをリセット

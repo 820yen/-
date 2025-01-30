@@ -92,13 +92,15 @@ void AddScore(ScoreData scores[], int score) {
 void DrawRanking(const ScoreData scores[]) {
 	//右上の位置
 	int x = 1000;
-	int y = 20;
+	int y = 100;
+
+	DrawGraph(930, 0, g_imghandles.ranking, TRUE);
 
 	//ランキングの出力
 	for (int i = 0; i < MAXRANKING; i++) {
 		char text[64];
 		sprintf_s(text, "%2d. %6d %3d", i + 1, scores[i].score, scores[i].number);
-		DrawFormatString(1000, 200, GetColor(0, 0, 0), "あなたの番号は:%d", playerNumber);
+		DrawFormatString(1000, 300, GetColor(0, 0, 0), "あなたの番号は:%d", playerNumber);
 		if (scores[i].number == playerNumber){
 			DrawString(x, y + i * 30, text, GetColor(255, 0, 0));
 		}

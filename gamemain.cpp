@@ -30,6 +30,10 @@ int g_startTime;			//ゲーム開始時刻
 int g_elapsedTime;			//経過した時刻
 int remainingTime;			//残り時間
 
+int green = 255;
+int red = 0;
+int blue = 0;
+
 //ステージ初期化
 void InitStage(){
 	char buf[256];
@@ -255,6 +259,8 @@ void DrawHero(int ac){
 	int oneKey = CheckHitKey(KEY_INPUT_1);
 	int fiveKey = CheckHitKey(KEY_INPUT_5);
 	int nineKey = CheckHitKey(KEY_INPUT_9);
+
+	int metaGraph;
 
 	//カウントダウン
 	g_elapsedTime = GetNowCount() - g_startTime;
@@ -505,22 +511,48 @@ void DrawHero(int ac){
 	DrawRotaGraph2((int)(g_stagedata.hero.x - g_stagedata.scrollx), 
 		(int)g_stagedata.hero.y, 0, 0, 1, 0,
 		g_imghandles.hero[ac % ANIMFRAME], TRUE, g_stagedata.hero.turn);
+
+	green = 255 - mv * 34 + 300;
+	red = mv * 34;
+	if (green < 0){
+		green = 0;
+	}
+	if (green > 255){
+		green = 255;
+	}
+	if (red < 0){
+		red = 0;
+	}
+	if (red > 255){
+		red = 255;
+	}
+	
 	if (g_savepoint != 4){
 		//スピードメータ
-		//DrawBox(10, 10, 500, 60, GetColor(0, 0, 0), TRUE);
-		//DrawBoxGrad(15, 15, 207, 55, GetColor(0, 255, 0), GetColor(255, 255, 0),GetColor(0, 255, 0), GetColor(255, 255, 0));
-		//if (mv >= 6){
-		//	DrawBoxGrad(207, 15, 335, 55, GetColor(255, 255, 0), GetColor(255, 240, 0), GetColor(255, 255, 0), GetColor(255, 240, 0));
-		//}
-		//if (mv >= 10){
-		//	DrawBoxGrad(335, 15, 495, 55, GetColor(255, 240, 0), GetColor(255, 0, 0), GetColor(255, 240, 0), GetColor(255, 0, 0));
-		//}
-		//DrawBox(495, 15, 495 - 32 * (15 - mv), 55, GetColor(0, 0, 0), TRUE);
-
+		DrawBox(10, 10, 500, 60, GetColor(red, green, 0), TRUE);
+		DrawBoxGrad(15, 15, 207, 55, GetColor(0, 255, 0), GetColor(255, 255, 0),GetColor(0, 255, 0), GetColor(255, 255, 0));
+		if (mv >= 6){
+			DrawBoxGrad(207, 15, 335, 55, GetColor(255, 255, 0), GetColor(255, 240, 0), GetColor(255, 255, 0), GetColor(255, 240, 0));
+		}
+		if (mv >= 10){
+			DrawBoxGrad(335, 15, 495, 55, GetColor(255, 240, 0), GetColor(255, 0, 0), GetColor(255, 240, 0), GetColor(255, 0, 0));
+		}
+		DrawBox(495, 15, 495 - 32 * (15 - mv), 55, GetColor(0, 0, 0), TRUE);
+		DrawBox(10, 10, 500, 60, GetColor(0, 0, 0), FALSE);
+		DrawBox(15, 15, 495, 55, GetColor(0, 0, 0), FALSE);
+		for (int i = 1; i < 15; i++){
+			DrawLine(15 + i * 32, 15, 15 + i * 32, 55, GetColor(0, 0, 0));
+		}
+		
 		//メーター描画
-		DrawRotaGraph2(10,
-			10, 510, 93, 1, 0,
-			g_imghandles.meta[(int)mv], TRUE, TRUE);
+		//metaGraph = mv * (18 / 15);
+		//if (metaGraph < 9){
+		//	metaGraph *= 2;
+		//}
+		//else{
+		//	metaGraph = metaGraph - 8 + (metaGraph - 9);
+		//}
+		//DrawGraph(10, 10, g_imghandles.meta[(int)metaGraph], TRUE);
 
 		//コイン所持数
 		DrawGraph(20, 65, g_imghandles.kyabecoin, TRUE);
@@ -530,6 +562,7 @@ void DrawHero(int ac){
 		SetFontSize(50);
 		DrawBox(585, 45, 720, 100, GetColor(255, 255, 255), TRUE);
 		DrawBox(585, 45, 720, 100, GetColor(0, 0, 0), FALSE);
+		DrawGraph(530, 50, g_imghandles.clock, TRUE);
 		if (10 <= g_limittimesec){
 			DrawFormatString(600, 50, GetColor(0, 0, 0),
 				"%d:%d", g_limittimemin, g_limittimesec);
@@ -540,9 +573,15 @@ void DrawHero(int ac){
 		}
 		SetFontSize(30);
 	}
+
+	if (g_debugflag == TRUE){
+		//スピード（数値）
+		DrawFormatString(100, 150, GetColor(0, 0, 0),
+			"speed：%lf", mv);
+	}
 	
 	//残り距離
-	DrawFormatString(960, 300, GetColor(0, 0, 0),
+	DrawFormatString(960, 400, GetColor(0, 0, 0),
 		"ゴールまで：%.1fkm →", ((g_stagedata.mapwidth[4] - g_stagedata.hero.x / 50)
 		/ (g_stagedata.mapwidth[4] - 2))
 		* 17.5);

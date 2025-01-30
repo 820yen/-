@@ -10,6 +10,7 @@ struct ImageHandles{
 	int monster[2][ANIMFRAME];
 	int block, diagblock, knife, bullet;
 	int meta[18];
+	int ranking, clock;
 	int coin[6];
 	int kyabecoin;
 	int title;
