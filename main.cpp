@@ -165,6 +165,8 @@ void DrawGameMain(){
 //ゲームクリア画面描画
 void DrawGameClear(){
 
+	int qKey = CheckHitKey(KEY_INPUT_Q);
+
 	//スコアを一度だけ反映させる
 	if (g_scoreTotaled == FALSE){
 		//時間を記録
@@ -230,7 +232,7 @@ void DrawGameClear(){
 	if (g_TextStep >= 20){
 		//Zキーでタイトル画面へ
 		int key = GetJoypadInputState(DX_INPUT_KEY_PAD1);
-		if (IsAKeyTrigger(key) == TRUE) {
+		if (IsQKeyTrigger(qKey)) {
 			g_gamestate = GAME_TITLE;
 			g_addedFlag = TRUE;
 			//フラグをリセット
@@ -241,6 +243,7 @@ void DrawGameClear(){
 }
 //ゲームオーバー画面描画
 void DrawGameOver(){
+	int qKey = CheckHitKey(KEY_INPUT_Q);
 
 	StopSoundMem(g_sndhandles.main);
 	if (CheckSoundMem(g_sndhandles.title) == 0) {
@@ -257,8 +260,12 @@ void DrawGameOver(){
 	DrawStringToHandle(100, 200, "タイムオーバー",
 		GetColor(255, 0, 0), g_largefont);
 	//5秒経ったらタイトル画面へ
-	if (g_lasttime - g_timerstart > 500) {
+	if (IsQKeyTrigger(qKey)){
 		g_gamestate = GAME_TITLE;
+		g_addedFlag = TRUE;
+		//フラグをリセット
+		g_scoreTotaled = FALSE;
+		g_scoreAdded = FALSE;
 	}
 }
 

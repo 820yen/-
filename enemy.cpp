@@ -66,6 +66,19 @@ void DrawEnemy(int ac){
 			}
 		}
 	}
+	//ゲームオーバー時の画面表示
+	if ((TIMELIMIT - (g_lasttime - g_limittimerstart) / 1000) <= 0 && g_limitflag == TRUE && g_savepoint != 4){
+		if (g_gameoveropacity < 255){
+			g_gameoveropacity += 5;
+		}
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, g_gameoveropacity);
+		DrawBox(0, 0, 1300, 730, GetColor(0, 0, 0), TRUE);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+		g_limittimesec = 0;
+		g_limittimemin = 0;
+		DrawStringToHandle(300, 150, "タイムオーバー",
+			GetColor(255, 0, 0), g_largefont);
+	}
 }
 
 CharaData CoinSetting(CharaData cd) {

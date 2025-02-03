@@ -25,6 +25,8 @@ BOOL switch3 = FALSE;
 BOOL switch4 = FALSE;
 BOOL switch5 = FALSE;
 
+int g_gameoveropacity;	//ゲームオーバーの背景透過変数
+
 //カウントダウン用変数
 int g_startTime;			//ゲーム開始時刻
 int g_elapsedTime;			//経過した時刻
@@ -100,6 +102,7 @@ void InitStage(){
 	g_stagedata.hero.deathCount = 0;
 	g_savepoint = 0;
 
+	g_gameoveropacity = 0; //ゲームオーバー透過変数初期化
 	//フェードイベントの初期化
 	opacity = 0;
 	fadein = FALSE;
@@ -243,10 +246,7 @@ void GameMain(){
 	DrawHero(ac);
 	DrawEnemy(ac);
 
-	if ((TIMELIMIT - (g_lasttime - g_limittimerstart) / 1000) <= 0 && g_limitflag == TRUE && g_savepoint != 4){
-		g_gamestate = GAME_OVER;
-		g_timerstart = g_lasttime;	//タイマーセット
-	}
+	
 }
 
 void DrawHero(int ac){
@@ -378,6 +378,10 @@ void DrawHero(int ac){
 		else{
 			mv = 0;
 		}
+	}
+	//ゲームオーバー時にスピード
+	if ((TIMELIMIT - (g_lasttime - g_limittimerstart) / 1000) <= 0 && g_limitflag == TRUE && g_savepoint != 4){
+		mv = 0;
 	}
 
 	//ジャンプ処理
@@ -581,16 +585,18 @@ void DrawHero(int ac){
 	}
 	
 	//残り距離
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
 	DrawFormatString(960, 400, GetColor(0, 0, 0),
 		"ゴールまで：%.1fkm →", ((g_stagedata.mapwidth[4] - g_stagedata.hero.x / 50)
 		/ (g_stagedata.mapwidth[4] - 2))
 		* 17.5);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	//デバッグモード
-	if (IsQKeyTrigger(qKey)){
-		if (g_debugflag == FALSE) g_debugflag = TRUE;
-		else g_debugflag = FALSE;
-	}
+	//if (IsQKeyTrigger(qKey)){
+	//	if (g_debugflag == FALSE) g_debugflag = TRUE;
+	//	else g_debugflag = FALSE;
+	//}
 
 	//タイムリミットのオンオフ
 	if (IsWKeyTrigger(wKey)){
