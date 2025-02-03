@@ -19,7 +19,7 @@
 #define JUMP_FORWARD 200.0f
 #define MAX_ENEMY 200
 #define MAX_KNIFE 4
-#define TIMELIMIT 10
+#define TIMELIMIT 180
 
 extern char g_mapdata[MAXSTAGE][MAP_HEIGHT][MAP_WIDTH + 1];
 

@@ -75,18 +75,18 @@ int WINAPI WinMain(HINSTANCE h1, HINSTANCE hP, LPSTR lpC, int nC){
 	if (LoadGameSound() == FALSE) return -1;
 
 	//フォント読みこみ
-	//LPCSTR font_path = "media\\Buildingsandundertherailwaytracksfree_ver.otf"; // 読み込むフォントファイルのパス
-	//if (AddFontResourceEx(font_path, FR_PRIVATE, NULL) > 0) {
-	//}
-	//else {
-	//	return FALSE;
-	//}
-	//ChangeFont("Buildingsandundertherailwaytracksfree_ver", DX_CHARSET_DEFAULT);
-	g_largefont = CreateFontToHandle("メイリオ", 90, -1, DX_FONTTYPE_ANTIALIASING);
-	g_mediumfont = CreateFontToHandle("メイリオ", 65, -1, DX_FONTTYPE_ANTIALIASING);
-	g_middlefont = CreateFontToHandle("メイリオ", 42, -1, DX_FONTTYPE_ANTIALIASING);
-	g_normalfont = CreateFontToHandle("メイリオ", 30, -1, DX_FONTTYPE_ANTIALIASING);
-	g_smallfont = CreateFontToHandle("メイリオ", 18, -1, DX_FONTTYPE_ANTIALIASING);
+	LPCSTR font_path = "media\\Harumaki-R.otf"; // 読み込むフォントファイルのパス
+	if (AddFontResourceEx(font_path, FR_PRIVATE, NULL) > 0) {
+	}
+	else {
+		return FALSE;
+	}
+	ChangeFont("はるまき R", DX_CHARSET_DEFAULT);
+	g_largefont = CreateFontToHandle("はるまき R", 90, -1, DX_CHARSET_DEFAULT);
+	g_mediumfont = CreateFontToHandle("はるまき R", 65, -1, DX_CHARSET_DEFAULT);
+	g_middlefont = CreateFontToHandle("はるまき R", 42, -1, DX_CHARSET_DEFAULT);
+	g_normalfont = CreateFontToHandle("はるまき R", 30, -1, DX_CHARSET_DEFAULT);
+	g_smallfont = CreateFontToHandle("はるまき R", 18, -1, DX_CHARSET_DEFAULT);
 	SetFontSize(30);
 
 	SetDrawScreen(DX_SCREEN_BACK);
@@ -256,9 +256,7 @@ void DrawGameOver(){
 		g_timerstart = g_lasttime;
 	}
 	DrawBox(0, 0, 800, 600, GetColor(0, 0, 0), TRUE);
-	//テキスト表示
-	DrawStringToHandle(100, 200, "タイムオーバー",
-		GetColor(255, 0, 0), g_largefont);
+	
 	//5秒経ったらタイトル画面へ
 	if (IsQKeyTrigger(qKey)){
 		g_gamestate = GAME_TITLE;

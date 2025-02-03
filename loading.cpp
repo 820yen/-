@@ -36,13 +36,32 @@ BOOL LoadGameImage(){
 	if ((g_imghandles.tsuchi = LoadGraph("media\\tsuchi.center_H.png")) == -1) return FALSE;
 	if ((g_imghandles.ganpeki = LoadGraph("media\\maptile_ganpeki_I.png")) == -1) return FALSE;
 	if ((g_imghandles.wood = LoadGraph("media\\maptile_wood_J.png")) == -1) return FALSE;
-	if ((g_imghandles.tsuchic = LoadGraph("media\\tsuchi.center_K.png")) == -1) return FALSE;
 	if ((g_imghandles.tsuchil = LoadGraph("media\\tsuchi.left_L.png")) == -1) return FALSE;
 	if ((g_imghandles.tsuchir = LoadGraph("media\\tsuchi.right_M.png")) == -1) return FALSE;
 	if ((g_imghandles.gold = LoadGraph("media\\block_gold_W.png")) == -1) return FALSE;
 	if ((g_imghandles.builda = LoadGraph("media\\build_black_X.png")) == -1) return FALSE;
 	if ((g_imghandles.buildb = LoadGraph("media\\build_win_Y.png")) == -1) return FALSE;
 	if ((g_imghandles.buildc = LoadGraph("media\\build_win_Z.png")) == -1) return FALSE;
+
+	if ((g_imghandles.kumobigl = LoadGraph("media\\kumo.big_left_U.png")) == -1) return FALSE;
+	if ((g_imghandles.kumobir = LoadGraph("media\\kumo.big_right_T.png")) == -1) return FALSE;
+
+	if ((g_imghandles.kumobl = LoadGraph("media\\kumo.block_R.png")) == -1) return FALSE;
+
+	if ((g_imghandles.kumobol = LoadGraph("media\\kumo.bottom_left_S.png")) == -1) return FALSE;
+	if ((g_imghandles.kumobor = LoadGraph("media\\kumo.bottom_right_P.png")) == -1) return FALSE;
+	if ((g_imghandles.kumobo = LoadGraph("media\\kumo.bottom_Q.png")) == -1) return FALSE;
+
+	if ((g_imghandles.kumotol = LoadGraph("media\\kumo.top_left_N.png")) == -1) return FALSE;
+	if ((g_imghandles.kumotor = LoadGraph("media\\kumo.top_right_K.png")) == -1) return FALSE;
+	if ((g_imghandles.kumoto = LoadGraph("media\\kumo.top_O.png")) == -1) return FALSE;
+
+	if ((g_imghandles.zasso = LoadGraph("media\\zasso_touka_2.png")) == -1) return FALSE;
+	if ((g_imghandles.hana = LoadGraph("media\\hana_touka_1.png")) == -1) return FALSE;
+	
+	if ((g_imghandles.kosekib = LoadGraph("media\\maptile_ganpeki_koseki_lightblue_3.png")) == -1) return FALSE;
+	if ((g_imghandles.kosekir = LoadGraph("media\\maptile_ganpeki_koseki_red_4.png")) == -1) return FALSE;
+	if ((g_imghandles.half = LoadGraph("media\\half_V.png")) == -1) return FALSE;
 	
 
 	return TRUE;

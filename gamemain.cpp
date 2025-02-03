@@ -379,15 +379,16 @@ void DrawHero(int ac){
 			mv = 0;
 		}
 	}
-	//ゲームオーバー時にスピード
-	if ((TIMELIMIT - (g_lasttime - g_limittimerstart) / 1000) <= 0 && g_limitflag == TRUE && g_savepoint != 4){
-		mv = 0;
-	}
-
 	//ジャンプ処理
 	if (g_stagedata.hero.jumping == TRUE){
 		g_stagedata.hero.jumppower -= GRAVITY * (g_lasttime - g_jumptimerstart) / 1000;
 		hy -= (g_stagedata.hero.jumppower * g_frametime);
+	}
+
+	//ゲームオーバー時にスピードを0に
+	if ((TIMELIMIT - (g_lasttime - g_limittimerstart) / 1000) <= 0 && g_limitflag == TRUE && g_savepoint != 4){
+		mv = 0;
+		hy = g_stagedata.hero.y;
 	}
 
 	//移動処理
@@ -586,7 +587,7 @@ void DrawHero(int ac){
 	
 	//残り距離
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
-	DrawFormatString(960, 400, GetColor(0, 0, 0),
+	DrawFormatString(960, 300, GetColor(0, 0, 0),
 		"ゴールまで：%.1fkm →", ((g_stagedata.mapwidth[4] - g_stagedata.hero.x / 50)
 		/ (g_stagedata.mapwidth[4] - 2))
 		* 17.5);
@@ -646,7 +647,7 @@ BOOL _CheckBlockSub(float x, float y){
 
 	//通常ブロック
 	if (blockType == 'A') return TRUE;
-	if (blockType != '0') return TRUE;
+	if (blockType != '0' && blockType != '1' && blockType != '2') return TRUE;
 	return FALSE;
 }
 AtariInfo CheckBlock(float x, float y, float rx){
@@ -732,8 +733,25 @@ void DrawMap(){
 			}
 
 			//ブロック描画（A～Z）z
-			if (cell >= 'A' && cell <= 'Z'){
+			if ((cell >= 'A' && cell <= 'Z') || (cell >= '1' && cell <= '9')){
 				switch (cell){
+				case '1':
+					DrawGraph(x * IMG_CHIPSIZE - shiftx, y * IMG_CHIPSIZE,
+						g_imghandles.hana, TRUE);
+					break;
+				case '2':
+					DrawGraph(x * IMG_CHIPSIZE - shiftx, y * IMG_CHIPSIZE,
+						g_imghandles.zasso, TRUE);
+					break;
+				case '3':
+					DrawGraph(x * IMG_CHIPSIZE - shiftx, y * IMG_CHIPSIZE,
+						g_imghandles.kosekib, TRUE);
+					break;
+				case '4':
+					DrawGraph(x * IMG_CHIPSIZE - shiftx, y * IMG_CHIPSIZE,
+						g_imghandles.kosekir, TRUE);
+					break;
+
 				case 'A':
 					DrawGraph(x * IMG_CHIPSIZE - shiftx, y * IMG_CHIPSIZE,
 						g_imghandles.block, TRUE);
@@ -786,6 +804,42 @@ void DrawMap(){
 					DrawGraph(x * IMG_CHIPSIZE - shiftx, y * IMG_CHIPSIZE,
 						g_imghandles.tsuchir, TRUE);
 					break;
+				case 'N':
+					DrawGraph(x * IMG_CHIPSIZE - shiftx, y * IMG_CHIPSIZE,
+						g_imghandles.kumotol, TRUE);
+					break;
+				case 'O':
+					DrawGraph(x * IMG_CHIPSIZE - shiftx, y * IMG_CHIPSIZE,
+						g_imghandles.kumoto, TRUE);
+					break;
+				case 'P':
+					DrawGraph(x * IMG_CHIPSIZE - shiftx, y * IMG_CHIPSIZE,
+						g_imghandles.kumobor, TRUE);
+					break;
+				case 'Q':
+					DrawGraph(x * IMG_CHIPSIZE - shiftx, y * IMG_CHIPSIZE,
+						g_imghandles.kumobo, TRUE);
+					break;
+				case 'R':
+					DrawGraph(x * IMG_CHIPSIZE - shiftx, y * IMG_CHIPSIZE,
+						g_imghandles.kumobl, TRUE);
+					break;
+				case 'S':
+					DrawGraph(x * IMG_CHIPSIZE - shiftx, y * IMG_CHIPSIZE,
+						g_imghandles.kumobol, TRUE);
+					break;
+				case 'T':
+					DrawGraph(x * IMG_CHIPSIZE - shiftx, y * IMG_CHIPSIZE,
+						g_imghandles.kumobir, TRUE);
+					break;
+				case 'U':
+					DrawGraph(x * IMG_CHIPSIZE - shiftx, y * IMG_CHIPSIZE,
+						g_imghandles.kumobigl, TRUE);
+					break;
+				case 'V':
+					DrawGraph(x * IMG_CHIPSIZE - shiftx, y * IMG_CHIPSIZE,
+						g_imghandles.half, TRUE);
+					break;
 				case 'W':
 					DrawGraph(x * IMG_CHIPSIZE - shiftx, y * IMG_CHIPSIZE,
 						g_imghandles.gold, TRUE);
@@ -805,7 +859,7 @@ void DrawMap(){
 				}
 			}
 			//モンスターの検出 (1～9)
-			if (cell >= '1' && cell <= '9') {
+			if (cell == '5') {
 				SetEnemy(x + sc, y);  //敵の位置だけを SetEnemy に渡す
 			}
 		}

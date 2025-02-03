@@ -76,8 +76,21 @@ void DrawEnemy(int ac){
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 		g_limittimesec = 0;
 		g_limittimemin = 0;
-		DrawStringToHandle(300, 150, "タイムオーバー",
+		DrawStringToHandle(300, 100, "タイムオーバー",
 			GetColor(255, 0, 0), g_largefont);
+
+		//落下回数
+		DrawFormatString(282, 280, GetColor(255, 255, 255),
+			"落下回数：%d", g_stagedata.hero.deathCount);
+		//コイン枚数
+		DrawGraph(282, 353, g_imghandles.kyabecoin, TRUE);
+		DrawFormatString(322, 360, GetColor(255, 255, 255),
+			"×%d", g_stagedata.hero.coinCount);
+		//残り距離
+		DrawFormatString(282, 440, GetColor(255, 255, 255),
+			"残り距離：%.1fkm", (g_stagedata.mapwidth[4] - g_stagedata.hero.x / 50)
+			/ (g_stagedata.mapwidth[4] - 2)
+			* 17.5);
 	}
 }
 

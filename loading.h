@@ -21,6 +21,11 @@ struct ImageHandles{
 	int kumoc, kumol, kumor;
 	int gold;
 	int tsuchic, tsuchil, tsuchir;
+	int kumobigl, kumobir, kumobl;
+	int kumobol, kumobor, kumobo;
+	int kumotol, kumotor, kumoto;
+	int zasso, hana;
+	int kosekib, kosekir, half;
 };
 extern ImageHandles g_imghandles;
 

@@ -91,10 +91,10 @@ void AddScore(ScoreData scores[], int score) {
 //ランキングを描画する
 void DrawRanking(const ScoreData scores[]) {
 	//右上の位置
-	int x = 1120;
+	int x = 1125;
 	int y = 80;
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
-	DrawGraph(930, 0, g_imghandles.ranking, TRUE);
+	DrawGraph(1085, 0, g_imghandles.ranking, TRUE);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	//ランキングの出力
@@ -102,7 +102,7 @@ void DrawRanking(const ScoreData scores[]) {
 	for (int i = 0; i < MAXRANKING; i++) {
 		char text[64];
 		sprintf_s(text, "%2d. %6d %3d", i + 1, scores[i].score, scores[i].number);
-		DrawFormatString(1150, 300, GetColor(0, 0, 0), "No.%d", playerNumber);
+		DrawFormatString(1200, 250, GetColor(0, 0, 0), "No.%d", playerNumber);
 		if (scores[i].number == playerNumber){
 			DrawString(x, y + i * 30, text, GetColor(255, 0, 0));
 		}
