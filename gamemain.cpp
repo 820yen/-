@@ -245,6 +245,10 @@ void GameMain(){
 	DrawMap();
 	DrawHero(ac);
 	DrawEnemy(ac);
+	//ゲームオーバー時の画面表示
+	if ((TIMELIMIT - (g_lasttime - g_limittimerstart) / 1000) <= 0 && g_limitflag == TRUE && g_savepoint != 4){
+		DrawGameOver();
+	}
 
 	
 }
@@ -561,20 +565,23 @@ void DrawHero(int ac){
 
 		//コイン所持数
 		DrawGraph(20, 65, g_imghandles.kyabecoin, TRUE);
-		DrawFormatString(60, 72, GetColor(0, 0, 0),
-			"×%d", g_stagedata.hero.coinCount);
+		char text_coin[64];
+		sprintf_s(text_coin, "×%d", g_stagedata.hero.coinCount);
+		DrawString(60, 72, text_coin, GetColor(255, 255, 255), GetColor(0, 0, 0));
 		//残り時間
 		SetFontSize(50);
-		DrawBox(585, 45, 720, 100, GetColor(255, 255, 255), TRUE);
-		DrawBox(585, 45, 720, 100, GetColor(0, 0, 0), FALSE);
+		DrawBox(585, 45, 730, 100, GetColor(255, 255, 255), TRUE);
+		DrawBox(585, 45, 730, 100, GetColor(0, 0, 0), FALSE);
 		DrawGraph(530, 50, g_imghandles.clock, TRUE);
 		if (10 <= g_limittimesec){
-			DrawFormatString(600, 50, GetColor(0, 0, 0),
-				"%d:%d", g_limittimemin, g_limittimesec);
+			char text[64];
+			sprintf_s(text, "%d:%d", g_limittimemin, g_limittimesec);
+			DrawString(592, 45, text, GetColor(255, 255, 255), GetColor(0, 0, 0));
 		}
 		else{
-			DrawFormatString(600, 50, GetColor(0, 0, 0),
-				"%d:0%d", g_limittimemin, g_limittimesec);
+			char text[64];
+			sprintf_s(text, "%d:0%d", g_limittimemin, g_limittimesec);
+			DrawString(592, 45, text, GetColor(255, 255, 255), GetColor(0, 0, 0));
 		}
 		SetFontSize(30);
 	}
@@ -587,10 +594,10 @@ void DrawHero(int ac){
 	
 	//残り距離
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
-	DrawFormatString(960, 300, GetColor(0, 0, 0),
-		"ゴールまで：%.1fkm →", ((g_stagedata.mapwidth[4] - g_stagedata.hero.x / 50)
-		/ (g_stagedata.mapwidth[4] - 2))
-		* 17.5);
+	char text_distance[64];
+	sprintf_s(text_distance, "ゴール：%.1fkm →", ((g_stagedata.mapwidth[4] - g_stagedata.hero.x / 50)
+		/ (g_stagedata.mapwidth[4] - 2)) * 17.5);
+	DrawString(950, 300, text_distance, GetColor(255, 255, 255), GetColor(0, 0, 0));
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	//デバッグモード
@@ -647,7 +654,7 @@ BOOL _CheckBlockSub(float x, float y){
 
 	//通常ブロック
 	if (blockType == 'A') return TRUE;
-	if (blockType != '0' && blockType != '1' && blockType != '2') return TRUE;
+	if (blockType != '0' && blockType != '1' && blockType != '2' && blockType != 'a') return TRUE;
 	return FALSE;
 }
 AtariInfo CheckBlock(float x, float y, float rx){
@@ -733,7 +740,7 @@ void DrawMap(){
 			}
 
 			//ブロック描画（A～Z）z
-			if ((cell >= 'A' && cell <= 'Z') || (cell >= '1' && cell <= '9')){
+			if ((cell >= 'a' && cell <= 'z') || (cell >= 'A' && cell <= 'Z') || (cell >= '1' && cell <= '9')){
 				switch (cell){
 				case '1':
 					DrawGraph(x * IMG_CHIPSIZE - shiftx, y * IMG_CHIPSIZE,
@@ -750,6 +757,13 @@ void DrawMap(){
 				case '4':
 					DrawGraph(x * IMG_CHIPSIZE - shiftx, y * IMG_CHIPSIZE,
 						g_imghandles.kosekir, TRUE);
+					break;
+
+				case'a':
+					SetDrawBlendMode(DX_BLENDMODE_ALPHA, 130);
+					DrawGraph(x * IMG_CHIPSIZE - shiftx, y * IMG_CHIPSIZE,
+						g_imghandles.tsuchic_t, TRUE);
+					SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 					break;
 
 				case 'A':
@@ -794,7 +808,7 @@ void DrawMap(){
 					break;
 				case 'K':
 					DrawGraph(x * IMG_CHIPSIZE - shiftx, y * IMG_CHIPSIZE,
-						g_imghandles.tsuchic, TRUE);
+						g_imghandles.kumotor, TRUE);
 					break;
 				case 'L':
 					DrawGraph(x * IMG_CHIPSIZE - shiftx, y * IMG_CHIPSIZE,

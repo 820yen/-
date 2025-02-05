@@ -28,6 +28,7 @@ float g_hx = 0, g_hy = 0;	//座標
 //ボタン
 BOOL g_akey_prev;			//直前のAボタンの状態
 //フォント
+int	g_minimumfont;			//極小サイズフォントハンドル
 int g_smallfont;			//小サイズフォントハンドル
 int g_normalfont;			//小中サイズフォントハンドル
 int g_middlefont;			//中サイズフォントハンドル
@@ -82,11 +83,13 @@ int WINAPI WinMain(HINSTANCE h1, HINSTANCE hP, LPSTR lpC, int nC){
 		return FALSE;
 	}
 	ChangeFont("はるまき R", DX_CHARSET_DEFAULT);
-	g_largefont = CreateFontToHandle("はるまき R", 90, -1, DX_CHARSET_DEFAULT);
-	g_mediumfont = CreateFontToHandle("はるまき R", 65, -1, DX_CHARSET_DEFAULT);
-	g_middlefont = CreateFontToHandle("はるまき R", 42, -1, DX_CHARSET_DEFAULT);
-	g_normalfont = CreateFontToHandle("はるまき R", 30, -1, DX_CHARSET_DEFAULT);
-	g_smallfont = CreateFontToHandle("はるまき R", 18, -1, DX_CHARSET_DEFAULT);
+	g_largefont = CreateFontToHandle("はるまき R", 90, -1, DX_CHARSET_DEFAULT, GetColor(255,255,255));
+	g_mediumfont = CreateFontToHandle("はるまき R", 65, -1, DX_CHARSET_DEFAULT, GetColor(255, 255, 255));
+	g_middlefont = CreateFontToHandle("はるまき R", 42, -1, DX_CHARSET_DEFAULT, GetColor(255, 255, 255));
+	g_normalfont = CreateFontToHandle("はるまき R", 30, -1, DX_CHARSET_DEFAULT, GetColor(255, 255, 255));
+	g_smallfont = CreateFontToHandle("はるまき R", 18, -1, DX_CHARSET_DEFAULT, GetColor(255, 255, 255));
+	g_minimumfont = CreateFontToHandle("はるまき R", 16, -1, DX_CHARSET_DEFAULT, GetColor(255, 255, 255));
+	ChangeFontType(DX_FONTTYPE_EDGE);
 	SetFontSize(30);
 
 	SetDrawScreen(DX_SCREEN_BACK);
@@ -202,31 +205,36 @@ void DrawGameClear(){
 	//テキスト表示
 	if (g_TextStep >= 2){
 		DrawStringToHandle(200, 50, "ゲームクリア",
-			blackColor, g_largefont);
+			whiteColor, g_largefont, blackColor);
 	}
 	if (g_TextStep >= 6){
 		if (10 <= playerTimeSec){
-			DrawFormatString(162, 200, blackColor,
-				"残り時間 : %d:%d", playerTimeMin, playerTimeSec);
+			char text[64];
+			sprintf_s(text, "残り時間 : %d:%d", playerTimeMin, playerTimeSec);
+			DrawString(162, 200, text, whiteColor, blackColor);
 		}
 		else{
-			DrawFormatString(162, 200, blackColor,
-				"残り時間 : %d:0%d", playerTimeMin, playerTimeSec);
+			char text[64];
+			sprintf_s(text, "残り時間 : %d:0%d", playerTimeMin, playerTimeSec);
+			DrawString(162, 200, text, whiteColor, blackColor);
 		}
 	}
 	if (g_TextStep >= 10){
-		DrawFormatString(162, 280, blackColor,
-			"落下回数：%d", g_stagedata.hero.deathCount);
+		char text[64];
+		sprintf_s(text, "落下回数：%d", g_stagedata.hero.deathCount);
+		DrawString(162, 280, text, whiteColor, blackColor);
 	}
 	if (g_TextStep >= 14){
 		DrawGraph(162, 353, g_imghandles.kyabecoin, TRUE);
-		DrawFormatString(202, 360, GetColor(0, 0, 0),
-			"×%d", g_stagedata.hero.coinCount);
+		char text[64];
+		sprintf_s(text, "×%d", g_stagedata.hero.coinCount);
+		DrawString(202, 360, text, whiteColor, blackColor);
 	}
 	if (g_TextStep >= 20){
 		SetFontSize(100);
-		DrawFormatString(162, 450, blackColor,
-			"スコア：%d", playerScore);
+		char text[64];
+		sprintf_s(text, "スコア：%d", playerScore);
+		DrawString(162, 450, text, whiteColor, blackColor);
 		SetFontSize(30);
 	}
 	if (g_TextStep >= 20){
@@ -251,13 +259,32 @@ void DrawGameOver(){
 	}
 
 	int key = GetJoypadInputState(DX_INPUT_KEY_PAD1);
-	if (IsAKeyTrigger(key) == TRUE) {
-		InitStage();
-		g_timerstart = g_lasttime;
+
+	if (g_gameoveropacity < 255){
+		g_gameoveropacity += 5;
 	}
-	DrawBox(0, 0, 800, 600, GetColor(0, 0, 0), TRUE);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, g_gameoveropacity);
+	DrawBox(0, 0, 1300, 730, GetColor(0, 0, 0), TRUE);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	g_limittimesec = 0;
+	g_limittimemin = 0;
+	DrawStringToHandle(300, 100, "タイムオーバー",
+		GetColor(255, 0, 0), g_largefont);
+
+	//落下回数
+	DrawFormatString(282, 280, GetColor(255, 255, 255),
+		"落下回数：%d", g_stagedata.hero.deathCount);
+	//コイン枚数
+	DrawGraph(282, 353, g_imghandles.kyabecoin, TRUE);
+	DrawFormatString(322, 360, GetColor(255, 255, 255),
+		"×%d", g_stagedata.hero.coinCount);
+	//残り距離
+	DrawFormatString(282, 440, GetColor(255, 255, 255),
+		"残り距離：%.1fkm", (g_stagedata.mapwidth[4] - g_stagedata.hero.x / 50)
+		/ (g_stagedata.mapwidth[4] - 2)
+		* 17.5);
 	
-	//5秒経ったらタイトル画面へ
+	//Qキーが押されたらタイトル画面へ
 	if (IsQKeyTrigger(qKey)){
 		g_gamestate = GAME_TITLE;
 		g_addedFlag = TRUE;

@@ -100,14 +100,18 @@ void DrawRanking(const ScoreData scores[]) {
 	//ƒ‰ƒ“ƒLƒ“ƒO‚Ìo—Í
 	SetFontSize(16);
 	for (int i = 0; i < MAXRANKING; i++) {
-		char text[64];
+		char text[64], text_No[10];
 		sprintf_s(text, "%2d. %6d %3d", i + 1, scores[i].score, scores[i].number);
-		DrawFormatString(1200, 250, GetColor(0, 0, 0), "No.%d", playerNumber);
+		sprintf_s(text_No, "No.%d", playerNumber);
+		DrawString(1200, 250, text_No, GetColor(255, 255, 255), GetColor(0, 0, 0));
+
 		if (scores[i].number == playerNumber){
-			DrawString(x, y + i * 30, text, GetColor(255, 0, 0));
+			DrawStringToHandle(x, y + i * 30, text,
+				GetColor(255, 0, 0), g_minimumfont);
 		}
 		else{
-			DrawString(x, y + i * 30, text, GetColor(0,0,0));
+			DrawStringToHandle(x, y + i * 30, text,
+				GetColor(0, 0, 0), g_minimumfont);
 		}
 		
 	}

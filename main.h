@@ -31,6 +31,7 @@ extern GameState g_gamestate;
 //ボタン
 extern BOOL g_akey_prev;	//直前のAボタンの状態
 //フォント
+extern int g_minimumfont;	//極小サイズフォントハンドル
 extern int g_smallfont;		//小サイズフォントハンドル
 extern int g_normalfont;	//小中サイズフォントハンドル
 extern int g_middlefont;	//中サイズフォントハンドル

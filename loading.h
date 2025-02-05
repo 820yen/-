@@ -20,7 +20,7 @@ struct ImageHandles{
 	int sogenc, sogenl, sogenr;
 	int kumoc, kumol, kumor;
 	int gold;
-	int tsuchic, tsuchil, tsuchir;
+	int tsuchic, tsuchil, tsuchir, tsuchic_t;
 	int kumobigl, kumobir, kumobl;
 	int kumobol, kumobor, kumobo;
 	int kumotol, kumotor, kumoto;

@@ -45,7 +45,6 @@ BOOL LoadGameImage(){
 
 	if ((g_imghandles.kumobigl = LoadGraph("media\\kumo.big_left_U.png")) == -1) return FALSE;
 	if ((g_imghandles.kumobir = LoadGraph("media\\kumo.big_right_T.png")) == -1) return FALSE;
-
 	if ((g_imghandles.kumobl = LoadGraph("media\\kumo.block_R.png")) == -1) return FALSE;
 
 	if ((g_imghandles.kumobol = LoadGraph("media\\kumo.bottom_left_S.png")) == -1) return FALSE;
@@ -62,6 +61,8 @@ BOOL LoadGameImage(){
 	if ((g_imghandles.kosekib = LoadGraph("media\\maptile_ganpeki_koseki_lightblue_3.png")) == -1) return FALSE;
 	if ((g_imghandles.kosekir = LoadGraph("media\\maptile_ganpeki_koseki_red_4.png")) == -1) return FALSE;
 	if ((g_imghandles.half = LoadGraph("media\\half_V.png")) == -1) return FALSE;
+	
+	if ((g_imghandles.tsuchic_t = LoadGraph("media\\tsuchi_center_toumei_a.png")) == -1) return FALSE;
 	
 
 	return TRUE;
