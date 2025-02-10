@@ -178,10 +178,10 @@ void DrawGameClear(){
 
 		//スコアを計算
 		playerScore += g_scoretime + g_stagedata.hero.coinCount * 500;
-		//playerScore -= g_stagedata.hero.deathCount * 10000;
+		playerScore -= g_stagedata.hero.deathCount * 10000;
 
-		if (playerScore < 0){
-			playerScore = 0;
+		if (playerScore < g_stagedata.hero.coinCount * 500){
+			playerScore = g_stagedata.hero.coinCount * 500;
 		}
 		g_scoreTotaled = TRUE;			//スコアが加算されたことを記録
 	}
