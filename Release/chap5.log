@@ -1,0 +1,55 @@
+﻿2025/03/07 15:13:21 にビルドを開始しました。
+     1>ノード 2 上のプロジェクト "C:\Users\tsg_student.NFV25.000.001\Documents\キャベツ太郎\chap5.vcxproj" (Build ターゲット)。
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _WINDOWS /D _MBCS /Gm- /EHsc /MT /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt enemy.cpp gamemain.cpp loading.cpp main.cpp score.cpp
+         enemy.cpp
+         gamemain.cpp
+     1>gamemain.cpp(139): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>gamemain.cpp(399): warning C4244: '+=' : 'double' から 'float' への変換です。データが失われる可能性があります。
+     1>gamemain.cpp(476): warning C4244: '=' : 'int' から 'float' への変換です。データが失われる可能性があります。
+     1>gamemain.cpp(479): warning C4244: '=' : 'int' から 'float' への変換です。データが失われる可能性があります。
+     1>gamemain.cpp(482): warning C4244: '=' : 'int' から 'float' への変換です。データが失われる可能性があります。
+     1>gamemain.cpp(485): warning C4244: '=' : 'int' から 'float' への変換です。データが失われる可能性があります。
+     1>gamemain.cpp(524): warning C4244: '=' : 'double' から 'int' への変換です。データが失われる可能性があります。
+     1>gamemain.cpp(525): warning C4244: '=' : 'double' から 'int' への変換です。データが失われる可能性があります。
+     1>gamemain.cpp(549): warning C4244: '引数' : 'double' から 'int' への変換です。データが失われる可能性があります。
+     1>gamemain.cpp(267): warning C4101: 'metaGraph' : ローカル変数は 1 度も使われていません。
+     1>gamemain.cpp(665): warning C4244: '初期化中' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>gamemain.cpp(671): warning C4244: '初期化中' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>gamemain.cpp(674): warning C4244: '引数' : 'int' から 'float' への変換です。データが失われる可能性があります。
+     1>gamemain.cpp(675): warning C4244: '引数' : 'int' から 'float' への変換です。データが失われる可能性があります。
+     1>gamemain.cpp(676): warning C4244: '引数' : 'int' から 'float' への変換です。データが失われる可能性があります。
+     1>gamemain.cpp(677): warning C4244: '引数' : 'int' から 'float' への変換です。データが失われる可能性があります。
+     1>gamemain.cpp(678): warning C4244: '引数' : 'int' から 'float' への変換です。データが失われる可能性があります。
+     1>gamemain.cpp(679): warning C4244: '引数' : 'int' から 'float' への変換です。データが失われる可能性があります。
+     1>gamemain.cpp(681): warning C4244: '引数' : 'int' から 'float' への変換です。データが失われる可能性があります。
+     1>gamemain.cpp(682): warning C4244: '引数' : 'int' から 'float' への変換です。データが失われる可能性があります。
+     1>gamemain.cpp(683): warning C4244: '引数' : 'int' から 'float' への変換です。データが失われる可能性があります。
+     1>gamemain.cpp(684): warning C4244: '引数' : 'int' から 'float' への変換です。データが失われる可能性があります。
+     1>gamemain.cpp(697): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>gamemain.cpp(698): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>gamemain.cpp(699): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>gamemain.cpp(700): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>gamemain.cpp(702): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>gamemain.cpp(703): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>gamemain.cpp(705): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>gamemain.cpp(706): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>gamemain.cpp(707): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>gamemain.cpp(708): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
+         loading.cpp
+         main.cpp
+         score.cpp
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\tsg_student.NFV25.000.001\Documents\キャベツ太郎\Release\chap5.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:"C:\DxLib_VC\プロジェクトに追加すべきファイル_VC用" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\tsg_student.NFV25.000.001\Documents\キャベツ太郎\Release\chap5.pdb" /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\tsg_student.NFV25.000.001\Documents\キャベツ太郎\Release\chap5.lib" /MACHINE:X86 /SAFESEH:NO Release\enemy.obj
+         Release\gamemain.obj
+         Release\loading.obj
+         Release\main.obj
+         Release\score.obj
+         コード生成しています。
+         コード生成が終了しました。
+         chap5.vcxproj -> C:\Users\tsg_student.NFV25.000.001\Documents\キャベツ太郎\Release\chap5.exe
+     1>プロジェクト "C:\Users\tsg_student.NFV25.000.001\Documents\キャベツ太郎\chap5.vcxproj" (Build ターゲット) のビルドが完了しました。
+
+ビルドに成功しました。
+
+経過時間 00:00:09.06
